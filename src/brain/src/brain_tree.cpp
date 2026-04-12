@@ -11,6 +11,7 @@
 #include "visualization_msgs/msg/marker_array.hpp"
 #include <fstream>
 #include <ios>
+#include "behaviortree_cpp/loggers/groot2_publisher.h"
 
 /**
  * Here we use a macro definition to reduce the code for RegisterBuilder. The effect of REGISTER_BUILDER(Test) after expansion is
@@ -64,6 +65,9 @@ void BrainTree::init()
 
     factory.registerBehaviorTreeFromFile(brain->config->get_tree_file_path());
     tree = factory.createTree("MainTree");
+    
+    // This is for the behavioral trees
+    groot_publisher_ = std::make_unique<BT::Groot2Publisher>(tree, 1667);
 
     // After construction, initialize blackboard entries
     initEntry();

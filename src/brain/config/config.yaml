@@ -1,17 +1,17 @@
 brain_node:
   ros__parameters:
     game:
-      team_id: 29 # must be consistent with GameControl
+      team_id: 67 # must be consistent with GameControl
       player_id: 1 # 1 | 2 | 3 | 4 | 5
       field_type: "adult_size" # adult_size | kid_size | robo_league
-      player_role: "striker" # striker | goal_keeper
+      player_role: "goal_keeper" # striker | goal_keeper
       treat_person_as_robot: false
       number_of_players: 3
       
     robot:
       robot_name: "" # When multiple robots exist, specify e.g. "robot0", "robot1"; leave empty for single robot
-      robot_height: 0.8 # 1.12 for T1
-      odom_factor: 0.8 # 1.2 for T1
+      robot_height: 1.12 # 1.12 for T1
+      odom_factor: 1.2 # 1.2 for T1
       vx_factor: 0.50
       yaw_offset: 0.0
       vx_limit: 1.0
@@ -58,7 +58,7 @@ brain_node:
       chase_ao_safe_dist: 3.5
 
     RLVisionKick:
-      enableAutoVisualKick: true
+      enableAutoVisualKick: false
       autoVisualKickEnableDistMin: 0.2
       autoVisualKickEnableDistMax: 4.0
       autoVisualKickEnableAngle: 0.8
@@ -69,25 +69,23 @@ brain_node:
 
     enable_com: true
     
+    rerunLog:
+      enable: true
+      server_addr: "192.168.0.100:9876"
+      enable_tcp: true
+      server_ip: "192.168.0.100:9876"
+      enable_file: true
+      log_dir: "/home/booster/Workspace/rrlog"
+      max_log_file_mins: 5.0
+      img_interval: 1
+    
     recovery:
       retry_max_count: 2
 
     vision:
-        # image_camera_info_topic: "/camera/camera/color/camera_info" # realsense
-        # depth_image_topic: "/camera/camera/aligned_depth_to_color/image_raw" # realsense
-        # depth_camera_info_topic: "/camera/camera/aligned_depth_to_color/camera_info" # realsense
+        image_camera_info_topic: "/camera/camera/color/camera_info" # realsense
+        depth_image_topic: "/camera/camera/aligned_depth_to_color/image_raw" # realsense
+        depth_camera_info_topic: "/camera/camera/aligned_depth_to_color/camera_info" # realsense
 
-        # image_camera_info_topic: "/zed/zed_node/left/camera_info" # zed
-        # depth_image_topic: "/zed/zed_node/depth/depth_registered" # zed
-        # depth_camera_info_topic: "/zed/zed_node/depth/camera_info" # zed
-
-        image_camera_info_topic: "/StereoNetNode/rectified_image" # d-robotics
-        depth_image_topic: "/StereoNetNode/stereonet_depth" # d-robotics
-        depth_camera_info_topic: "/StereoNetNode/stereonet_depth/camera_info" # d-robotics
-
-        
-        # image_camera_info_topic: "/camera/robot0_rgbd_camera/rgb/camera_info" # simulated
-        # depth_image_topic: "/camera/robot0_rgbd_camera/depth/image_raw" # simulated
-        # depth_camera_info_topic: "/camera/robot0_rgbd_camera/depth/camera_info" # simulated
     
-    game_control_ip: "127.0.0.1"
+    game_control_ip: "192.168.0.103"

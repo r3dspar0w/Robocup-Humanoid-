@@ -50,7 +50,7 @@ int RobotClient::standUp()
 int RobotClient::RLVisionKick(bool start)
 {
     booster_interface::msg::BoosterApiReqMsg msg;
-    msg.api_id = static_cast<int64_t>(booster::robot::b1::LocoApiId::kVisualKick);
+    msg.api_id = static_cast<int64_t>(booster::robot::b1::LocoApiId::kShoot);
     nlohmann::json body;
     body["start"] = start;  // Add start parameter to indicate whether to enter VisualKick mode
     msg.body = body.dump();
