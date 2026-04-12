@@ -12,3 +12,6 @@ LCross5: [ 5.955,  0.000]
 XCross1: [ 4.505, -4.010]
 XCross2: [ 1.565, -4.010]
 PenalityPoint: [ 2.965,  0.885]
+
+#this file describes the mapping of important soccer-field landmarks
+#field.yaml describes the robots landmark for field localisation

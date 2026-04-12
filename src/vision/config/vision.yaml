@@ -103,3 +103,7 @@ calibration:
 misc:
   save_data_nonstationary: true
 robot_name: "" # If there are multiple robots, specify the name, e.g., "robot0", "robot1", etc. Leave empty for a single robot
+
+
+#main settings file for the whole vision node, which tells the package 
+#which camera topics to subscribe to 

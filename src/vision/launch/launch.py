@@ -26,7 +26,7 @@ def handle_configuration(context, *args, **kwargs):
     save_data = LaunchConfiguration('save_data')
     save_depth = LaunchConfiguration('save_depth')
     offline_mode = LaunchConfiguration('offline_mode')
-    save_fps = LaunchConfiguration('save_fps')
+    save_fps = LaunchConfiguration('save_fps') 
     detection_model_path = LaunchConfiguration('detection_model_path')
     segmentation_model_path = LaunchConfiguration('segmentation_model_path')
     sim = LaunchConfiguration('sim')
