@@ -1,15 +1,35 @@
 <!-- locate behavior tree -->
+<!--
+   What Each Parameter Means:
+   msecs_interval -> Updates every X miliseconds
+   max_dist -> Only trusts landmarks within 2 meters
+   max_drift -> Ignore Corrections if too far off (likely it is wrong)
+-->
 
 <root BTCPP_format="4" >
-  <BehaviorTree ID="Locate">
-     <Sequence name="root">
-        <SelfLocate mode="trust_direction" />
-        <SelfLocate1M msecs_interval="300" max_dist="3.0" max_drift="2.0" />
-        <SelfLocate2T msecs_interval="300" max_dist="3.0" max_drift="2.0" />
-        <SelfLocatePT msecs_interval="300" max_dist="3.0" max_drift="2.0" />
-        <SelfLocateLT msecs_interval="300" max_dist="3.0" max_drift="2.0" />
-        <SelfLocate2X msecs_interval="300" max_dist="3.0" max_drift="2.0" />
-        <SelfLocateBorder msecs_interval="300" max_dist="3.0" max_drift="2.0"/>
-     </Sequence>
-  </BehaviorTree>
+<BehaviorTree ID="Locate">
+   <Sequence name="root">
+      <!-- Based on how I have been moving, I estimate where I am -->
+      <SelfLocate mode="trust_direction" />
+
+      <!-- Uses 1 Marker (a known object like goalpost or line) -->
+      <SelfLocate1M msecs_interval="300" max_dist="3.0" max_drift="2.0" />
+
+      <!-- Use 2 T Junctions -->
+      <!-- Use line intersections on the field to locate myself -->
+      <SelfLocate2T msecs_interval="300" max_dist="3.0" max_drift="2.0" />
+
+      <!-- Use Penalty Spot or specific point to refine position -->
+      <SelfLocatePT msecs_interval="300" max_dist="3.0" max_drift="2.0" />
+
+      <!-- Combine Lines + T Junction features for better accuracy -->
+      <SelfLocateLT msecs_interval="300" max_dist="3.0" max_drift="2.0" />
+
+      <!-- Use X intersections (cross lines) -->
+      <SelfLocate2X msecs_interval="300" max_dist="3.0" max_drift="2.0" />
+
+      <!-- Use Field Boundaries (edges of fields) to confirm -->
+      <SelfLocateBorder msecs_interval="300" max_dist="3.0" max_drift="2.0"/>
+   </Sequence>
+</BehaviorTree>
 </root>

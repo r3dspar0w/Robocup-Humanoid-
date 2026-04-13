@@ -1,17 +1,27 @@
 <!-- Cam find and track ball -->
 
 <root BTCPP_format="4" >
-  <BehaviorTree ID="CamFindAndTrackBall">
-     <Sequence name="root">
+<BehaviorTree ID="CamFindAndTrackBall">
+   <Sequence name="root">
+      <!-- If Else Statement -->
+      <!-- 
+         It follows the syntax:
          <IfThenElse>
-             <ScriptCondition        name="Ball location known?" code="ball_location_known || tm_ball_pos_reliable" />
-             <Sequence               name="[Yes] -> Track ball and adjust position" >
-                <CamTrackBall />
-             </Sequence>
-             <Sequence               name="[No] -> Find ball">
-                <CamFindBall />
-             </Sequence>
-         </IfThenElse>
-     </Sequence>
-  </BehaviorTree>
+            <Condition />
+            <ThenBranch />
+            <ElseBranch />
+         <IfThenElse />
+      -->
+      <IfThenElse>
+         <!-- Condition that is Evaluated-->
+         <ScriptCondition        name="Ball location known?" code="ball_location_known || tm_ball_pos_reliable" />
+         <Sequence               name="[Yes] -> Track ball and adjust position" >
+            <CamTrackBall />
+         </Sequence>
+         <Sequence               name="[No] -> Find ball">
+            <CamFindBall />
+         </Sequence>
+      </IfThenElse>
+   </Sequence>
+</BehaviorTree>
 </root>

@@ -4,9 +4,16 @@
    <include path="./subtree_locate.xml" />
    <BehaviorTree ID="GoalKeeperFreekick">
       <ReactiveSequence >
+         <!-- Searches for the ball AND tracks it once it is found -->
          <SubTree ID="CamFindAndTrackBall" _autoremap="true" />
+
+         <!-- if ball is not known, GO TO READY POSITION -->
          <GoToReadyPosition _while="!ball_location_known" />
+
+         <!-- If ball is known, BLOCK THE GOAL -->
          <GoToGoalBlockingPosition _while="ball_location_known" />
+
+         <!-- Constantly updates position -->
          <SelfLocate mode="trust_direction" _while="odom_calibrated" />
       </ReactiveSequence>
    </BehaviorTree>

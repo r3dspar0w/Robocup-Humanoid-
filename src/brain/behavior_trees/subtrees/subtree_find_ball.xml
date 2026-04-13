@@ -2,18 +2,29 @@
 
 <root BTCPP_format="4" >
   <BehaviorTree ID="FindBall">
-     <Sequence name="root">
+    <Sequence name="root">
+        <!-- Make Sure that Robot is in safe space before finding ball-->
         <ReactiveSequence>
+            <!-- If Robot is near boundary, move back in -->
             <GoBackInField />
+            <!-- Quickly Scan Surroundings with Camera -->
             <CamFastScan />
         </ReactiveSequence>
+
+        <!-- Rotate 180 degrees-->
         <TurnOnSpot rad="3.14"  towards_ball="true"/>
+
+        <!-- Same as above -->
         <ReactiveSequence>
             <GoBackInField />
             <CamFastScan />
         </ReactiveSequence>
+
+        <!-- Reset and Wait -->
         <ReactiveSequence>
+          <!-- Move to default position -->
           <GoToReadyPosition  vx_limit="0.7" />
+          <!-- Pause for 5 sec -->
           <Sleep msec="5000" />
         </ReactiveSequence>
       </Sequence>

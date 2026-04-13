@@ -10,30 +10,86 @@
     <include path="./subtrees/subtree_auto_standup_and_locate.xml" />
     <BehaviorTree ID="MainTree">
         <Sequence name="root">
+
+            <!-- Set Control State to 3 -->
             <RunOnce><Script code="control_state=3" /></RunOnce>
+
+            <!-- 1 = manual/assist (for testing purposes)-->
+            <!-- 2 = locate/calibrate -->
+            <!-- 3 = auto mode (Autonomous Game Logic)-->
+
+            <!-- CONTROL STATE = 1 -->
             <ReactiveSequence _while="control_state==1 || assist_kick || go_manual || assist_chase" >
+
                 <SimpleChase _while="assist_chase" vx_limit="1.5" vy_limit="0.1" stop_dist="0.0" stop_angle="0.3" />
+
+                <!-- Moves it to chase mode -->
+
+                <!-- Assist Chase Mode Parameters 
+
+                    vx_limit: Maximum forward/backwards speed 
+                    vy_limit: Maximum Sideways speed 
+                    (*humanoids are less stable sideways)
+                    stop_dist: distance from target where robot should stop
+                    stop_angle: Allowed angle error before stopping (in radians!)
+                -->
                 <Sequence _while="assist_kick">
                     <Kick speed_limit="0.9" min_msec_kick="1000"/>
+
+                    <!--
+                    Kick Parameters
+                    speed_limit: Maximum Speed (or strength) of the kicking motion;
+                    (ie 0.9 = 90% of full power)
+                    *note: too high -> robot will lose balance
+                           too low -> ball will not reach goal, and can be easily intercepted
+                    min_msec_kick: Minimum time (in ms) the kick action must run
+                    -->
+
                </Sequence>
             </ReactiveSequence>
 
+            <!-- CONTROL STATE 2 -->
             <ReactiveSequence _while="control_state==2" name="if you need to pickup, go to the field entrance position, then press LT + A, recalibrate and locate, wait for a few seconds, then press LT + B to continue">
+
+                <!-- 
+                    !odom_calibrated checks whether the location of the robot is calibrated or not 
+                    odom_calibrated = false -> robot is lost
+                    true -> robot has a good estimate of its position
+                    
+                    tldr: Scans its surroundings (goalpost etc) until position is reliable
+                -->
                 <CamScanField  _while="!odom_calibrated"/>
+
+                <!-- Finalise my position and align myself properly with the field-->
                 <SubTree ID="CamFindAndTrackBall" _autoremap="true" _while="odom_calibrated" />
+
+                <!-- Finalise my position and align myself properly with the field-->
                 <SelfLocateEnterField />
             </ReactiveSequence>
 
+            <!-- CONTROL STATE 3 -->
             <ReactiveSequence _while="control_state==3 && (!go_manual)" name="wrap a layer for control strategy switch, 3 is the state of LT+B on the controller, 2 is LT+A, 1 is LT+X">
+                <!-- Locates itself -->
                 <SubTree ID="AutoGetUpAndLocate" _autoremap="true" />
+
+                <!-- If the game controller says that we are penalised, use this logic -->
                 <ReactiveSequence _while="gc_is_under_penalty" name="currently under penalty or substitute state">
+                    <!-- Gets the robot to stop moving -->
                     <SetVelocity />
+
+                    <!-- These codes have the same idea of: -->
+                    <!-- 1. Scan the field, 2. Track ball, 3. Locate self-->
                     <CamScanField  _while="!odom_calibrated"/>
                     <SubTree ID="CamFindAndTrackBall" _autoremap="true" _while="odom_calibrated" />
                     <SelfLocateEnterField />
                 </ReactiveSequence>
 
+                <!-- Normal Play Bock when not penalised -->
                 <ReactiveSequence _while="!gc_is_under_penalty" name="no penalty, normal play">
+
+                    <!-- If game is paused -->
+
+                    <!-- don't play, but keep sensors and positioning ready -->
                     <ReactiveSequence _while="gc_game_sub_state_type=='TIMEOUT'" name="game paused. during pause, game state must be INITIAL">
                         <SetVelocity />
                         <CamScanField _while="!odom_calibrated"/>
@@ -41,47 +97,74 @@
                         <SelfLocateEnterField />
                     </ReactiveSequence>
 
+                    <!-- Normal Game Flow -->
                     <ReactiveSequence _while="gc_game_sub_state_type=='NONE'" name="normal play">
+
+                        <!-- INITIAL STATE (preparing before game starts) -->
+                        <!-- 1. Scans Field -->
+                        <!-- 2. Track Ball -->
+                        <!-- 3. Locate Self -->
                         <ReactiveSequence _while="gc_game_state=='INITIAL'" name="stand at the field entrance position">
                             <CamScanField _while="!odom_calibrated"/>
                             <SubTree ID="CamFindAndTrackBall" _autoremap="true" _while="odom_calibrated" />
                             <SelfLocateEnterField />
                         </ReactiveSequence>
 
+                        <!-- READY STATE (Robot is ready to move to its starting spot) -->
                         <ReactiveSequence _while="gc_game_state=='READY'" name="move to own starting position inside the field">
+                            <!-- pitch: look slightly down; yaw: look straight ahead-->
                             <MoveHead pitch="0.35" yaw="0.0" />
+
+                            <!-- Walk to starting position, but limit speed(velocity)-->
                             <GoToReadyPosition  vx_limit="0.7" />
+
+                            <!-- Locate Subtree -> Confirm where the robot is -->
                             <SubTree ID="Locate" _autoremap="true" />
                         </ReactiveSequence>
 
+                        <!-- SET STATE (Ready but not moving yet stage) -->
                         <ReactiveSequence _while="gc_game_state=='SET'" name="stand ready and wait for the game to start">
                             <SubTree ID="CamFindAndTrackBall" _autoremap="true" />
                             <SetVelocity />
                             <SubTree ID="Locate" _autoremap="true" />
                         </ReactiveSequence>
 
+                        <!-- PLAY STATE (play is active) -->
                         <ReactiveSequence _while="gc_game_state=='PLAY'" name="game play">
+                            <!-- Strikers Behavior -->
                             <SubTree ID="StrikerPlay" _autoremap="true" _while="player_role == 'striker'" />
+                            <!-- Goal Keepers Behavior -->
                             <SubTree ID="GoalKeeperPlay" _autoremap="true" _while="player_role == 'goal_keeper'" />
                         </ReactiveSequence>
 
+                        <!-- MATCH OVER -->
                         <ReactiveSequence _while="gc_game_state=='END'" name="game end">
                             <SetVelocity />
                         </ReactiveSequence>
 
                     </ReactiveSequence>
 
+                    <!-- PLAY STATE (for FREE KICK) -->
                     <ReactiveSequence _while="gc_game_sub_state_type=='FREE_KICK' && gc_game_state=='PLAY'" name="free kick">
+
+                        <!-- STOP PHASE -->
+                        <!-- Robot is waiting and preparing itself -->
                         <ReactiveSequence _while="gc_game_sub_state=='STOP'">
                             <SubTree ID="CamFindAndTrackBall" _autoremap="true" />
                             <SubTree ID="Locate" _autoremap="true" _while="ball_location_known"/>
                             <SetVelocity />
                         </ReactiveSequence>
+
+                        <!-- PREPARATION PHASE -->
                         <ReactiveSequence _while="gc_game_sub_state=='GET_READY'">
                             <SubTree ID="Locate" _autoremap="true" _while="ball_location_known" />
+
+                            <!-- Runs either one of the roles -->
                             <SubTree ID="StrikerFreekick" _autoremap="true" _while="player_role == 'striker'" />
                             <SubTree ID="GoalKeeperFreekick" _autoremap="true" _while="player_role == 'goal_keeper'"/>
                         </ReactiveSequence>
+
+                        <!-- FREE KICK -->
                         <ReactiveSequence _while="gc_game_sub_state=='SET'">
                             <SubTree ID="CamFindAndTrackBall" _autoremap="true" />
                             <SubTree ID="Locate" _autoremap="true" _while="ball_location_known" />

@@ -1,3 +1,5 @@
+<!-- Similar to the strikers play -->
+
 <root BTCPP_format="4" >
    <include path="./subtree_cam_find_and_track_ball.xml" />
    <include path="./subtree_find_ball.xml" />
@@ -22,13 +24,53 @@
                   <SetVelocity />
                </ReactiveSequence>
                <Sequence _while="!wait_for_opponent_kickoff" name="normal play">
+                  <!-- 
+                     Striker has more layers of reactive sequences to handle multi step attack strategy. 
+                     Goalkeeper has simpler nested sequences because logic is mostly reactive defence (position -> block -> clear)
+                  -->
                   <Sequence>
                      <SubTree ID="CamFindAndTrackBall" _autoremap="true" />
-                     <GoalieDecide decision_out="{decision}" decision_in="{decision}" chase_threshold="3.0"/>
+
+                     <!-- One of the main difference between striker and goalie BT -->
+                     <!-- This uses <GoalieDecide .../>-->
+
+                     <!-- Everything here runs in sequence too, instead of the ReactiveSequence in the striker BT-->
+                     <!-- 
+                     Decisions Available:
+                        Find
+                        Retreat
+                        Chase 
+                        Adjust
+                        Kick
+
+                     *note that offensice behaviors like:
+                        assist
+                        cross
+                     are not present
+                     -->
+                     <!-- Goalkeepers have greater chase_thresholds -->
+                     <!-- They can start intercepting early, without leaving goal line -->
+                     <GoalieDecide
+                        decision_out="{decision}"
+                        decision_in="{decision}"
+                        chase_threshold="3.0"
+                        adjust_angle_tolerance="0.18"
+                        adjust_y_tolerance="0.12"
+                     />
+
+                     <!-- The Below 2 is to ensure that they return to goal -->
+                     <!-- Ensures that they return to goal even if they do not see the ball. -->
+                     <!-- Strikers only focus on finding ball for offense -->
                      <GoToGoalBlockingPosition _while="decision=='find'" theta_tolerance="0.6" />
                      <GoToGoalBlockingPosition _while="decision == 'retreat'" theta_tolerance="0.6" />
-                     <Chase   _while="decision == 'chase'"  vx_limit="0.8"  vy_limit="0.3"  vtheta_limit="1.0"  dist="0.1" safe_dist="0.5" />
+
+                     <!-- Goalkeeper can chase, but they should return back to goal -->
+                     <GoalieChase   _while="decision == 'chase'"  vx_limit="0.8"  vy_limit="0.3"  vtheta_limit="1.0"  dist="0.1" safe_dist="0.5" />
+                     <!-- Slightly different Adjust to prioritise blocking angle rather than approaching ball for a shot -->
                      <Adjust _while="decision =='adjust'" turn_threshold="0.8" range="0.2" vx_limit="0.8" vy_limit="0.6" vtheta_limit="1.0" vtheta_factor="4.5" tangential_speed_far="0.9" tangential_speed_near="0.3" />
+
+                     <!-- Goalkeepers usually kick faster to clear ball away-->
+                     <!-- Strikers kick for precision, not goalie-->
                      <Kick _while="decision == 'kick'" speed_limit="1.2" min_msec_kick="600"/>
                   </Sequence>
                </Sequence>
