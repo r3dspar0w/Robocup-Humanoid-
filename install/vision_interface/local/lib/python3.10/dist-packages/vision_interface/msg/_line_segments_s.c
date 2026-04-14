@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_generator_py/vision_interface/msg/_line_segments_s.c

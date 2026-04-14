@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/detection_converter/ament_cmake_core/detection_converterConfig.cmake

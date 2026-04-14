@@ -1,0 +1,66 @@
+[0.149s] Invoking command in '/home/booster/Workspace/robocup_demo/build/vision': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/vision -- -j5 -l5
+[0.334s] [ 27%] Built target yolov8_trt
+[0.409s] [ 42%] Built target booster_vision_base
+[0.500s] [ 48%] Built target yolov8_seg
+[0.582s] [ 57%] Built target booster_vision_calibration
+[0.703s] [ 63%] Built target yolov8_det
+[0.849s] [ 72%] Built target yolov8_model
+[1.004s] [ 78%] Built target booster_vision_pose_estimator
+[1.210s] [ 90%] Built target vision_node
+[1.365s] [100%] Built target calibration_node
+[1.433s] Invoked command in '/home/booster/Workspace/robocup_demo/build/vision' returned '0': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/vision -- -j5 -l5
+[1.435s] Invoking command in '/home/booster/Workspace/robocup_demo/build/vision': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/booster/Workspace/robocup_demo/build/vision
+[1.463s] -- Install configuration: ""
+[1.464s] -- Execute custom install script
+[1.464s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/lib/libbooster_vision_base.so
+[1.465s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/lib/libyolov8_trt.so
+[1.465s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/lib/vision/yolov8_det
+[1.465s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/lib/vision/yolov8_seg
+[1.466s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/lib/libyolov8_model.so
+[1.466s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/lib/libbooster_vision_pose_estimator.so
+[1.466s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/lib/vision/calibration_node
+[1.467s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/lib/libbooster_vision_calibration.so
+[1.467s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/lib/vision/vision_node
+[1.468s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/launch/launch.py
+[1.468s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/config/field.yaml
+[1.468s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/config/vision.yaml
+[1.469s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/backup_bad_engines/best_orin.engine
+[1.469s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/backup_bad_local_models/best_digua_10.3.engine
+[1.469s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/backup_bad_local_models/best_digua_1223_10.3.engine
+[1.469s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/backup_bad_local_models/best_digua_second_10.3.engine
+[1.469s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/backup_bad_local_models/sim_data_det_0126.onnx
+[1.470s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/backup_bad_local_models/sim_data_seg_0126.onnx
+[1.470s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/best_orin.engine
+[1.470s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/best_orin_10.3.engine
+[1.470s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/best_seg_orin.engine
+[1.470s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/best_seg_orin_10.3.engine
+[1.470s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/k1_realsense_10.3.engine
+[1.471s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/ament_index/resource_index/package_run_dependencies/vision
+[1.471s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/ament_index/resource_index/parent_prefix_path/vision
+[1.471s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/environment/ament_prefix_path.sh
+[1.471s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/environment/ament_prefix_path.dsv
+[1.472s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/environment/path.sh
+[1.472s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/environment/path.dsv
+[1.472s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/local_setup.bash
+[1.472s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/local_setup.sh
+[1.480s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/local_setup.zsh
+[1.481s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/local_setup.dsv
+[1.481s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/package.dsv
+[1.494s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/ament_index/resource_index/packages/vision
+[1.494s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/cmake/ament_cmake_export_include_directories-extras.cmake
+[1.495s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/cmake/visionConfig.cmake
+[1.495s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/cmake/visionConfig-version.cmake
+[1.495s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision/share/vision/package.xml
+[1.495s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision/lib
+[1.495s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision/lib/install
+[1.496s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision/lib/libceres.so.2.2.0
+[1.496s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision/lib/log
+[1.496s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision/lib/log/build_2026-04-02_11-00-54
+[1.496s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision/lib/log/latest_build
+[1.496s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision/lib/log/latest
+[1.496s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision/lib/cmake
+[1.496s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision/lib/cmake/Ceres
+[1.497s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision/lib/libceres.so.4
+[1.497s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision/lib/build
+[1.497s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision/lib/libceres.so
+[1.503s] Invoked command in '/home/booster/Workspace/robocup_demo/build/vision' returned '0': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/booster/Workspace/robocup_demo/build/vision

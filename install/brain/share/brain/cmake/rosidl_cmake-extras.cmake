@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/brain/rosidl_cmake/rosidl_cmake-extras.cmake

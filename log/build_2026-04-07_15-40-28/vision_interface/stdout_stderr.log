@@ -1,0 +1,445 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Found rclcpp: 16.0.12 (/opt/ros/humble/share/rclcpp/cmake)
+-- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+-- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)
+-- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+-- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+-- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "3.0.2")  
+-- Found FastRTPS: /opt/ros/humble/include  
+-- Using RMW implementation 'rmw_fastrtps_cpp' as default
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+-- Found geometry_msgs: 4.8.0 (/opt/ros/humble/share/geometry_msgs/cmake)
+-- Found sensor_msgs: 4.8.0 (/opt/ros/humble/share/sensor_msgs/cmake)
+-- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+-- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+-- Found PythonLibs: /usr/lib/aarch64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+-- Using PYTHON_EXECUTABLE: /usr/bin/python3
+-- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+-- Using PYTHON_LIBRARIES: /usr/lib/aarch64-linux-gnu/libpython3.10.so
+-- Found PythonExtra: .so  
+-- Using numpy include directory: /home/booster/.local/lib/python3.10/site-packages/numpy/core/include
+-- Found ament_lint_auto: 0.12.12 (/opt/ros/humble/share/ament_lint_auto/cmake)
+-- Added test 'lint_cmake' to check CMake code style
+-- Added test 'xmllint' to check XML markup files
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/booster/Workspace/robocup_demo/build/vision_interface
+[  0%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[  0%] Built target vision_interface__cpp
+[  0%] Built target ament_cmake_python_symlink_vision_interface
+[  1%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[  2%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vision_interface/msg/detail/detected_object__type_support.cpp.o[0m
+[  3%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vision_interface/msg/detail/detections__type_support.cpp.o[0m
+[  4%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vision_interface/msg/detail/line_segments__type_support.cpp.o[0m
+[  5%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vision_interface/msg/detail/cal_param__type_support.cpp.o[0m
+[  6%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vision_interface/msg/detail/detections_track__type_support.cpp.o[0m
+[  7%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vision_interface/msg/detail/segmentation_point__type_support.cpp.o[0m
+[  8%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vision_interface/msg/detail/segmentation_line__type_support.cpp.o[0m
+[  9%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vision_interface/msg/detail/segmentation_result__type_support.cpp.o[0m
+[ 10%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vision_interface/msg/detail/image_head_position__type_support.cpp.o[0m
+[ 11%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/vision_interface/msg/detail/ball__type_support.cpp.o[0m
+[ 12%] [32m[1mLinking CXX shared library libvision_interface__rosidl_typesupport_introspection_cpp.so[0m
+[ 12%] Built target vision_interface__rosidl_typesupport_introspection_cpp
+running egg_info
+creating vision_interface.egg-info
+writing vision_interface.egg-info/PKG-INFO
+writing dependency_links to vision_interface.egg-info/dependency_links.txt
+writing top-level names to vision_interface.egg-info/top_level.txt
+writing manifest file 'vision_interface.egg-info/SOURCES.txt'
+reading manifest file 'vision_interface.egg-info/SOURCES.txt'
+writing manifest file 'vision_interface.egg-info/SOURCES.txt'
+[ 12%] Built target ament_cmake_python_build_vision_interface_egg
+[ 13%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[ 14%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vision_interface/msg/detail/dds_fastrtps/detected_object__type_support.cpp.o[0m
+[ 14%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vision_interface/msg/detail/dds_fastrtps/line_segments__type_support.cpp.o[0m
+[ 15%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vision_interface/msg/detail/dds_fastrtps/cal_param__type_support.cpp.o[0m
+[ 16%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vision_interface/msg/detail/dds_fastrtps/detections_track__type_support.cpp.o[0m
+[ 17%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vision_interface/msg/detail/dds_fastrtps/segmentation_point__type_support.cpp.o[0m
+[ 18%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vision_interface/msg/detail/dds_fastrtps/segmentation_line__type_support.cpp.o[0m
+[ 19%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vision_interface/msg/detail/dds_fastrtps/segmentation_result__type_support.cpp.o[0m
+[ 20%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vision_interface/msg/detail/dds_fastrtps/image_head_position__type_support.cpp.o[0m
+[ 21%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vision_interface/msg/detail/dds_fastrtps/ball__type_support.cpp.o[0m
+[ 22%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/vision_interface/msg/detail/dds_fastrtps/detections__type_support.cpp.o[0m
+[ 23%] [32m[1mLinking CXX shared library libvision_interface__rosidl_typesupport_fastrtps_cpp.so[0m
+[ 23%] Built target vision_interface__rosidl_typesupport_fastrtps_cpp
+[ 24%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[ 25%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vision_interface/msg/detected_object__type_support.cpp.o[0m
+[ 26%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vision_interface/msg/cal_param__type_support.cpp.o[0m
+[ 27%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vision_interface/msg/detections_track__type_support.cpp.o[0m
+[ 28%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vision_interface/msg/segmentation_point__type_support.cpp.o[0m
+[ 29%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vision_interface/msg/segmentation_line__type_support.cpp.o[0m
+[ 30%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vision_interface/msg/segmentation_result__type_support.cpp.o[0m
+[ 31%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vision_interface/msg/image_head_position__type_support.cpp.o[0m
+[ 32%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vision_interface/msg/ball__type_support.cpp.o[0m
+[ 33%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vision_interface/msg/line_segments__type_support.cpp.o[0m
+[ 34%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/vision_interface/msg/detections__type_support.cpp.o[0m
+[ 35%] [32m[1mLinking CXX shared library libvision_interface__rosidl_typesupport_cpp.so[0m
+[ 35%] Built target vision_interface__rosidl_typesupport_cpp
+[ 36%] [34m[1mGenerating C code for ROS interfaces[0m
+[ 37%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_c.dir/rosidl_generator_c/vision_interface/msg/detail/detected_object__functions.c.o[0m
+[ 38%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_c.dir/rosidl_generator_c/vision_interface/msg/detail/detections_track__functions.c.o[0m
+[ 39%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_c.dir/rosidl_generator_c/vision_interface/msg/detail/segmentation_point__functions.c.o[0m
+[ 40%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_c.dir/rosidl_generator_c/vision_interface/msg/detail/segmentation_line__functions.c.o[0m
+[ 41%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_c.dir/rosidl_generator_c/vision_interface/msg/detail/segmentation_result__functions.c.o[0m
+[ 42%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_c.dir/rosidl_generator_c/vision_interface/msg/detail/image_head_position__functions.c.o[0m
+[ 43%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_c.dir/rosidl_generator_c/vision_interface/msg/detail/ball__functions.c.o[0m
+[ 44%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_c.dir/rosidl_generator_c/vision_interface/msg/detail/cal_param__functions.c.o[0m
+[ 45%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_c.dir/rosidl_generator_c/vision_interface/msg/detail/line_segments__functions.c.o[0m
+[ 46%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_c.dir/rosidl_generator_c/vision_interface/msg/detail/detections__functions.c.o[0m
+[ 47%] [32m[1mLinking C shared library libvision_interface__rosidl_generator_c.so[0m
+[ 47%] Built target vision_interface__rosidl_generator_c
+[ 48%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[ 49%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/detected_object__type_support_c.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/line_segments__type_support_c.cpp.o[0m
+[ 51%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/cal_param__type_support_c.cpp.o[0m
+[ 52%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/detections_track__type_support_c.cpp.o[0m
+[ 53%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/segmentation_point__type_support_c.cpp.o[0m
+[ 54%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/segmentation_line__type_support_c.cpp.o[0m
+[ 55%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/segmentation_result__type_support_c.cpp.o[0m
+[ 56%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/image_head_position__type_support_c.cpp.o[0m
+[ 57%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/ball__type_support_c.cpp.o[0m
+[ 58%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/detections__type_support_c.cpp.o[0m
+[ 59%] [32m[1mLinking CXX shared library libvision_interface__rosidl_typesupport_fastrtps_c.so[0m
+[ 59%] Built target vision_interface__rosidl_typesupport_fastrtps_c
+[ 60%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[ 61%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_c.dir/rosidl_typesupport_c/vision_interface/msg/detected_object__type_support.cpp.o[0m
+[ 62%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_c.dir/rosidl_typesupport_c/vision_interface/msg/cal_param__type_support.cpp.o[0m
+[ 63%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_c.dir/rosidl_typesupport_c/vision_interface/msg/detections_track__type_support.cpp.o[0m
+[ 64%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_c.dir/rosidl_typesupport_c/vision_interface/msg/segmentation_point__type_support.cpp.o[0m
+[ 65%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_c.dir/rosidl_typesupport_c/vision_interface/msg/segmentation_line__type_support.cpp.o[0m
+[ 66%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_c.dir/rosidl_typesupport_c/vision_interface/msg/segmentation_result__type_support.cpp.o[0m
+[ 66%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_c.dir/rosidl_typesupport_c/vision_interface/msg/image_head_position__type_support.cpp.o[0m
+[ 67%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_c.dir/rosidl_typesupport_c/vision_interface/msg/ball__type_support.cpp.o[0m
+[ 68%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_c.dir/rosidl_typesupport_c/vision_interface/msg/line_segments__type_support.cpp.o[0m
+[ 69%] [32mBuilding CXX object CMakeFiles/vision_interface__rosidl_typesupport_c.dir/rosidl_typesupport_c/vision_interface/msg/detections__type_support.cpp.o[0m
+[ 70%] [32m[1mLinking CXX shared library libvision_interface__rosidl_typesupport_c.so[0m
+[ 70%] Built target vision_interface__rosidl_typesupport_c
+[ 71%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[ 72%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vision_interface/msg/detail/detected_object__type_support.c.o[0m
+[ 73%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vision_interface/msg/detail/detections_track__type_support.c.o[0m
+[ 74%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vision_interface/msg/detail/segmentation_point__type_support.c.o[0m
+[ 75%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vision_interface/msg/detail/segmentation_line__type_support.c.o[0m
+[ 76%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vision_interface/msg/detail/segmentation_result__type_support.c.o[0m
+[ 77%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vision_interface/msg/detail/image_head_position__type_support.c.o[0m
+[ 78%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vision_interface/msg/detail/ball__type_support.c.o[0m
+[ 79%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vision_interface/msg/detail/cal_param__type_support.c.o[0m
+[ 80%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vision_interface/msg/detail/line_segments__type_support.c.o[0m
+[ 81%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/vision_interface/msg/detail/detections__type_support.c.o[0m
+[ 82%] [32m[1mLinking C shared library libvision_interface__rosidl_typesupport_introspection_c.so[0m
+[ 82%] Built target vision_interface__rosidl_typesupport_introspection_c
+[ 82%] Built target vision_interface
+[ 83%] [34m[1mGenerating Python code for ROS interfaces[0m
+[ 83%] Built target vision_interface__py
+[ 84%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_py.dir/rosidl_generator_py/vision_interface/msg/_detected_object_s.c.o[0m
+[ 85%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_py.dir/rosidl_generator_py/vision_interface/msg/_detections_track_s.c.o[0m
+[ 86%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_py.dir/rosidl_generator_py/vision_interface/msg/_segmentation_point_s.c.o[0m
+[ 87%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_py.dir/rosidl_generator_py/vision_interface/msg/_segmentation_line_s.c.o[0m
+[ 88%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_py.dir/rosidl_generator_py/vision_interface/msg/_segmentation_result_s.c.o[0m
+[ 89%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_py.dir/rosidl_generator_py/vision_interface/msg/_image_head_position_s.c.o[0m
+[ 90%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_py.dir/rosidl_generator_py/vision_interface/msg/_ball_s.c.o[0m
+[ 91%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_py.dir/rosidl_generator_py/vision_interface/msg/_cal_param_s.c.o[0m
+[ 92%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_py.dir/rosidl_generator_py/vision_interface/msg/_line_segments_s.c.o[0m
+[ 93%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_generator_py.dir/rosidl_generator_py/vision_interface/msg/_detections_s.c.o[0m
+[ 94%] [32m[1mLinking C shared library rosidl_generator_py/vision_interface/libvision_interface__rosidl_generator_py.so[0m
+[ 94%] Built target vision_interface__rosidl_generator_py
+[ 95%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/vision_interface/_vision_interface_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[ 96%] [32m[1mLinking C shared library rosidl_generator_py/vision_interface/vision_interface_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so[0m
+[ 96%] Built target vision_interface__rosidl_typesupport_fastrtps_c__pyext
+[ 97%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/vision_interface/_vision_interface_s.ep.rosidl_typesupport_c.c.o[0m
+[ 98%] [32m[1mLinking C shared library rosidl_generator_py/vision_interface/vision_interface_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so[0m
+[ 98%] Built target vision_interface__rosidl_typesupport_c__pyext
+[ 99%] [32mBuilding C object CMakeFiles/vision_interface__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/vision_interface/_vision_interface_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[100%] [32m[1mLinking C shared library rosidl_generator_py/vision_interface/vision_interface_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so[0m
+[100%] Built target vision_interface__rosidl_typesupport_introspection_c__pyext
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/ament_index/resource_index/rosidl_interfaces/vision_interface
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/ball.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/cal_param.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__functions.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__struct.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__type_support.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__functions.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__struct.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__type_support.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__functions.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__struct.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__type_support.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__functions.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__struct.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__type_support.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__functions.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__struct.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__type_support.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__functions.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__struct.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__type_support.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__functions.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__struct.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__type_support.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__functions.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__struct.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__type_support.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__functions.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__struct.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__type_support.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__functions.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__struct.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__type_support.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detected_object.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detections.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detections_track.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/image_head_position.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/line_segments.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/rosidl_generator_c__visibility_control.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/segmentation_line.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/segmentation_point.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/segmentation_result.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/library_path.sh
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/library_path.dsv
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__rosidl_typesupport_fastrtps_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__rosidl_typesupport_fastrtps_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__rosidl_typesupport_fastrtps_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__rosidl_typesupport_fastrtps_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__rosidl_typesupport_fastrtps_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__rosidl_typesupport_fastrtps_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__rosidl_typesupport_fastrtps_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__rosidl_typesupport_fastrtps_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__rosidl_typesupport_fastrtps_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__rosidl_typesupport_fastrtps_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/ball.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/cal_param.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__builder.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__struct.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__traits.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__type_support.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__builder.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__struct.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__traits.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__type_support.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__builder.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__struct.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__traits.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__type_support.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__builder.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__struct.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__traits.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__type_support.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__builder.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__struct.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__traits.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__type_support.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__builder.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__struct.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__traits.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__type_support.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__builder.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__struct.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__traits.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__type_support.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__builder.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__struct.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__traits.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__type_support.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__builder.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__struct.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__traits.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__type_support.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__builder.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__struct.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__traits.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__type_support.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detected_object.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detections.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detections_track.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/image_head_position.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/line_segments.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/rosidl_generator_cpp__visibility_control.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/segmentation_line.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/segmentation_point.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/segmentation_result.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__rosidl_typesupport_fastrtps_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__rosidl_typesupport_fastrtps_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__rosidl_typesupport_fastrtps_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__rosidl_typesupport_fastrtps_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__rosidl_typesupport_fastrtps_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__rosidl_typesupport_fastrtps_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__rosidl_typesupport_fastrtps_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__rosidl_typesupport_fastrtps_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__rosidl_typesupport_fastrtps_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__rosidl_typesupport_fastrtps_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__rosidl_typesupport_introspection_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__rosidl_typesupport_introspection_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__rosidl_typesupport_introspection_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__rosidl_typesupport_introspection_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__rosidl_typesupport_introspection_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__rosidl_typesupport_introspection_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__rosidl_typesupport_introspection_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__rosidl_typesupport_introspection_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__rosidl_typesupport_introspection_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__rosidl_typesupport_introspection_c.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/rosidl_typesupport_introspection_c__visibility_control.h
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__rosidl_typesupport_introspection_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__rosidl_typesupport_introspection_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__rosidl_typesupport_introspection_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__rosidl_typesupport_introspection_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__rosidl_typesupport_introspection_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__rosidl_typesupport_introspection_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__rosidl_typesupport_introspection_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__rosidl_typesupport_introspection_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__rosidl_typesupport_introspection_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__rosidl_typesupport_introspection_cpp.hpp
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/pythonpath.sh
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/pythonpath.dsv
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface-1.0.0-py3.10.egg-info/PKG-INFO
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface-1.0.0-py3.10.egg-info/SOURCES.txt
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface-1.0.0-py3.10.egg-info/dependency_links.txt
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface-1.0.0-py3.10.egg-info/top_level.txt
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/__init__.py
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/_vision_interface_s.ep.rosidl_typesupport_c.c
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/_vision_interface_s.ep.rosidl_typesupport_fastrtps_c.c
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/_vision_interface_s.ep.rosidl_typesupport_introspection_c.c
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/libvision_interface__rosidl_generator_py.so
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/__init__.py
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_ball.py
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_ball_s.c
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_cal_param.py
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_cal_param_s.c
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_detected_object.py
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_detected_object_s.c
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_detections.py
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_detections_s.c
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_detections_track.py
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_detections_track_s.c
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_image_head_position.py
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_image_head_position_s.c
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_line_segments.py
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_line_segments_s.c
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_segmentation_line.py
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_segmentation_line_s.c
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_segmentation_point.py
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_segmentation_point_s.c
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_segmentation_result.py
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_segmentation_result_s.c
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/vision_interface_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/vision_interface_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/vision_interface_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/vision_interface_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/vision_interface_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/vision_interface_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/DetectedObject.idl
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/Detections.idl
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/LineSegments.idl
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/CalParam.idl
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/DetectionsTrack.idl
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/SegmentationPoint.idl
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/SegmentationLine.idl
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/SegmentationResult.idl
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/ImageHeadPosition.idl
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/Ball.idl
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/DetectedObject.msg
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/Detections.msg
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/LineSegments.msg
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/CalParam.msg
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/DetectionsTrack.msg
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/SegmentationPoint.msg
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/SegmentationLine.msg
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/SegmentationResult.msg
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/ImageHeadPosition.msg
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/Ball.msg
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/ament_index/resource_index/package_run_dependencies/vision_interface
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/ament_index/resource_index/parent_prefix_path/vision_interface
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/ament_prefix_path.sh
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/ament_prefix_path.dsv
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/path.sh
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/path.dsv
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/local_setup.bash
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/local_setup.sh
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/local_setup.zsh
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/local_setup.dsv
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/package.dsv
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/ament_index/resource_index/packages/vision_interface
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/rosidl_cmake-extras.cmake
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/ament_cmake_export_libraries-extras.cmake
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/ament_cmake_export_targets-extras.cmake
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interfaceConfig.cmake
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interfaceConfig-version.cmake
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/package.xml
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_generator_c.so
+-- Set runtime path of "/home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_generator_c.so" to ""
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_fastrtps_c.so
+-- Set runtime path of "/home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_fastrtps_c.so" to ""
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_fastrtps_cpp.so
+-- Set runtime path of "/home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_fastrtps_cpp.so" to ""
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_introspection_c.so
+-- Set runtime path of "/home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_introspection_c.so" to ""
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_c.so
+-- Set runtime path of "/home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_c.so" to ""
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_introspection_cpp.so
+-- Set runtime path of "/home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_introspection_cpp.so" to ""
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_cpp.so
+-- Set runtime path of "/home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_cpp.so" to ""
+Listing '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface'...
+Compiling '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/__init__.py'...
+Listing '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg'...
+Compiling '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/__init__.py'...
+Compiling '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_ball.py'...
+Compiling '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_cal_param.py'...
+Compiling '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_detected_object.py'...
+Compiling '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_detections.py'...
+Compiling '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_detections_track.py'...
+Compiling '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_image_head_position.py'...
+Compiling '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_line_segments.py'...
+Compiling '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_segmentation_line.py'...
+Compiling '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_segmentation_point.py'...
+Compiling '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_segmentation_result.py'...
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_generator_py.so
+-- Set runtime path of "/home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_generator_py.so" to ""
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_generator_cExport.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_generator_cExport-noconfig.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_typesupport_fastrtps_cExport.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_generator_cppExport.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_typesupport_fastrtps_cppExport.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_introspection_cExport.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_introspection_cExport-noconfig.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_cExport.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_cExport-noconfig.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_introspection_cppExport.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_cppExport.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_cppExport-noconfig.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_generator_pyExport.cmake
+-- Installing: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_generator_pyExport-noconfig.cmake

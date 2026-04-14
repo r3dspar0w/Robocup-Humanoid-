@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/booster_msgs/rosidl_generator_c/booster_msgs/msg/rpc_req_msg.h

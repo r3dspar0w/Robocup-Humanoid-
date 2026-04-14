@@ -1,0 +1,10 @@
+/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_adapter/vision_interface:msg/DetectedObject.idl
+/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_adapter/vision_interface:msg/Detections.idl
+/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_adapter/vision_interface:msg/LineSegments.idl
+/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_adapter/vision_interface:msg/CalParam.idl
+/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_adapter/vision_interface:msg/DetectionsTrack.idl
+/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_adapter/vision_interface:msg/SegmentationPoint.idl
+/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_adapter/vision_interface:msg/SegmentationLine.idl
+/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_adapter/vision_interface:msg/SegmentationResult.idl
+/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_adapter/vision_interface:msg/ImageHeadPosition.idl
+/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_adapter/vision_interface:msg/Ball.idl

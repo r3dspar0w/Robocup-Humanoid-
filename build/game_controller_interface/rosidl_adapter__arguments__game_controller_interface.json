@@ -1,0 +1,8 @@
+{
+  "package_name": "game_controller_interface",
+  "non_idl_tuples": [
+    "/home/booster/Workspace/robocup_demo/src/interface/game_controller_interface:msg/GameControlData.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/game_controller_interface:msg/RobotInfo.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/game_controller_interface:msg/TeamInfo.msg"
+  ]
+}

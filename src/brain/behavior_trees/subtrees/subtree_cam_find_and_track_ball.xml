@@ -1,0 +1,17 @@
+<!-- Cam find and track ball -->
+
+<root BTCPP_format="4" >
+  <BehaviorTree ID="CamFindAndTrackBall">
+     <Sequence name="root">
+         <IfThenElse>
+             <ScriptCondition        name="Ball location known?" code="ball_location_known || tm_ball_pos_reliable" />
+             <Sequence               name="[Yes] -> Track ball and adjust position" >
+                <CamTrackBall />
+             </Sequence>
+             <Sequence               name="[No] -> Find ball">
+                <CamFindBall />
+             </Sequence>
+         </IfThenElse>
+     </Sequence>
+  </BehaviorTree>
+</root>

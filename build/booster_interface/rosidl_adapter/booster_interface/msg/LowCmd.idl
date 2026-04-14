@@ -1,0 +1,24 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from booster_interface/msg/LowCmd.msg
+// generated code does not contain a copyright notice
+
+#include "booster_interface/msg/MotorCmd.idl"
+
+module booster_interface {
+  module msg {
+    module LowCmd_Constants {
+      const int8 CMD_TYPE_PARALLEL = 0;
+      const int8 CMD_TYPE_SERIAL = 1;
+    };
+    @verbatim (language="comment", text=
+      "constants")
+    struct LowCmd {
+      @verbatim (language="comment", text=
+        "fields" "\n"
+        "use CMD_TYPE_PARALLEL or CMD_TYPE_SERIAL")
+      int8 cmd_type;
+
+      sequence<booster_interface::msg::MotorCmd> motor_cmd;
+    };
+  };
+};

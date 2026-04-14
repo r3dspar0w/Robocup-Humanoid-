@@ -1,0 +1,26 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from vision_interface/msg/DetectionsTrack.msg
+// generated code does not contain a copyright notice
+
+#include "std_msgs/msg/Header.idl"
+#include "vision_interface/msg/DetectedObject.idl"
+
+module vision_interface {
+  module msg {
+    struct DetectionsTrack {
+      std_msgs::msg::Header header;
+
+      @verbatim (language="comment", text=
+        "\"yolo\" or \"pysot\" or \"none\"")
+      string ball_type;
+
+      sequence<vision_interface::msg::DetectedObject> detected_objects;
+
+      sequence<float> radar_x;
+
+      sequence<float> radar_y;
+
+      sequence<float> corner_pos;
+    };
+  };
+};

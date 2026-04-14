@@ -1,0 +1,21 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/game_controller_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/game_controller_interface/msg/detail/dds_fastrtps/game_control_data__type_support.cpp.o"
+  "CMakeFiles/game_controller_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/game_controller_interface/msg/detail/dds_fastrtps/game_control_data__type_support.cpp.o.d"
+  "CMakeFiles/game_controller_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/game_controller_interface/msg/detail/dds_fastrtps/robot_info__type_support.cpp.o"
+  "CMakeFiles/game_controller_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/game_controller_interface/msg/detail/dds_fastrtps/robot_info__type_support.cpp.o.d"
+  "CMakeFiles/game_controller_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/game_controller_interface/msg/detail/dds_fastrtps/team_info__type_support.cpp.o"
+  "CMakeFiles/game_controller_interface__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/game_controller_interface/msg/detail/dds_fastrtps/team_info__type_support.cpp.o.d"
+  "libgame_controller_interface__rosidl_typesupport_fastrtps_cpp.pdb"
+  "libgame_controller_interface__rosidl_typesupport_fastrtps_cpp.so"
+  "rosidl_typesupport_fastrtps_cpp/game_controller_interface/msg/detail/dds_fastrtps/game_control_data__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/game_controller_interface/msg/detail/dds_fastrtps/robot_info__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/game_controller_interface/msg/detail/dds_fastrtps/team_info__type_support.cpp"
+  "rosidl_typesupport_fastrtps_cpp/game_controller_interface/msg/detail/game_control_data__rosidl_typesupport_fastrtps_cpp.hpp"
+  "rosidl_typesupport_fastrtps_cpp/game_controller_interface/msg/detail/robot_info__rosidl_typesupport_fastrtps_cpp.hpp"
+  "rosidl_typesupport_fastrtps_cpp/game_controller_interface/msg/detail/team_info__rosidl_typesupport_fastrtps_cpp.hpp"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/game_controller_interface__rosidl_typesupport_fastrtps_cpp.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

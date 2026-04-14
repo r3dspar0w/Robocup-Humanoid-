@@ -1,0 +1,10 @@
+/home/booster/Workspace/robocup_demo/build/game_controller/CMakeFiles/uninstall.dir
+/home/booster/Workspace/robocup_demo/build/game_controller/CMakeFiles/game_controller_uninstall.dir
+/home/booster/Workspace/robocup_demo/build/game_controller/CMakeFiles/game_controller_node.dir
+/home/booster/Workspace/robocup_demo/build/game_controller/CMakeFiles/test.dir
+/home/booster/Workspace/robocup_demo/build/game_controller/CMakeFiles/edit_cache.dir
+/home/booster/Workspace/robocup_demo/build/game_controller/CMakeFiles/rebuild_cache.dir
+/home/booster/Workspace/robocup_demo/build/game_controller/CMakeFiles/list_install_components.dir
+/home/booster/Workspace/robocup_demo/build/game_controller/CMakeFiles/install.dir
+/home/booster/Workspace/robocup_demo/build/game_controller/CMakeFiles/install/local.dir
+/home/booster/Workspace/robocup_demo/build/game_controller/CMakeFiles/install/strip.dir

@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/brain/rosidl_typesupport_fastrtps_cpp/brain/msg/detail/kick__rosidl_typesupport_fastrtps_cpp.hpp

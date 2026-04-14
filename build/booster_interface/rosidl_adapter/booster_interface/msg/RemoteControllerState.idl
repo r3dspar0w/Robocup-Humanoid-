@@ -1,0 +1,94 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from booster_interface/msg/RemoteControllerState.msg
+// generated code does not contain a copyright notice
+
+
+module booster_interface {
+  module msg {
+    struct RemoteControllerState {
+      @verbatim (language="comment", text=
+        "SDL_EventType, value reference from SDL2/SDL_events.h")
+      uint32 event;
+
+      @verbatim (language="comment", text=
+        "left stick horizontal direction, push left to -1, push right to 1")
+      float lx;
+
+      @verbatim (language="comment", text=
+        "left stick vertical direction, push front to -1, push back to 1")
+      float ly;
+
+      @verbatim (language="comment", text=
+        "right stick horizontal direction, push left to -1, push right to 1")
+      float rx;
+
+      @verbatim (language="comment", text=
+        "right stick vertical direction, push front to -1, push back to 1")
+      float ry;
+
+      boolean a;
+
+      boolean b;
+
+      boolean x;
+
+      boolean y;
+
+      boolean lb;
+
+      boolean rb;
+
+      boolean lt;
+
+      boolean rt;
+
+      boolean ls;
+
+      boolean rs;
+
+      boolean back;
+
+      boolean start;
+
+      @verbatim (language="comment", text=
+        "Hat centered")
+      boolean hat_c;
+
+      @verbatim (language="comment", text=
+        "Hat up")
+      boolean hat_u;
+
+      @verbatim (language="comment", text=
+        "Hat down")
+      boolean hat_d;
+
+      @verbatim (language="comment", text=
+        "Hat left")
+      boolean hat_l;
+
+      @verbatim (language="comment", text=
+        "Hat right")
+      boolean hat_r;
+
+      @verbatim (language="comment", text=
+        "Hat left up")
+      boolean hat_lu;
+
+      @verbatim (language="comment", text=
+        "Hat left down")
+      boolean hat_ld;
+
+      @verbatim (language="comment", text=
+        "Hat right up")
+      boolean hat_ru;
+
+      @verbatim (language="comment", text=
+        "Hat right down")
+      boolean hat_rd;
+
+      @verbatim (language="comment", text=
+        "Hat position, value reference from SDL2/SDL_joystick.h")
+      uint8 hat_pos;
+    };
+  };
+};

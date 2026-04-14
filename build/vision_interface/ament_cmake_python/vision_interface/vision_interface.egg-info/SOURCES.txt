@@ -1,0 +1,17 @@
+setup.py
+vision_interface/__init__.py
+vision_interface.egg-info/PKG-INFO
+vision_interface.egg-info/SOURCES.txt
+vision_interface.egg-info/dependency_links.txt
+vision_interface.egg-info/top_level.txt
+vision_interface/msg/__init__.py
+vision_interface/msg/_ball.py
+vision_interface/msg/_cal_param.py
+vision_interface/msg/_detected_object.py
+vision_interface/msg/_detections.py
+vision_interface/msg/_detections_track.py
+vision_interface/msg/_image_head_position.py
+vision_interface/msg/_line_segments.py
+vision_interface/msg/_segmentation_line.py
+vision_interface/msg/_segmentation_point.py
+vision_interface/msg/_segmentation_result.py

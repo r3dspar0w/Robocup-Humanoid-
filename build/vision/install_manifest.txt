@@ -1,0 +1,5 @@
+/home/booster/Workspace/robocup_demo/install/vision/lib/libceres.so.2.2.0
+/home/booster/Workspace/robocup_demo/install/vision/lib/log/latest_build
+/home/booster/Workspace/robocup_demo/install/vision/lib/log/latest
+/home/booster/Workspace/robocup_demo/install/vision/lib/libceres.so.4
+/home/booster/Workspace/robocup_demo/install/vision/lib/libceres.so

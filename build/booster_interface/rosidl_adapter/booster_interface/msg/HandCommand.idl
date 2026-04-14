@@ -1,0 +1,19 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from booster_interface/msg/HandCommand.msg
+// generated code does not contain a copyright notice
+
+#include "booster_interface/msg/HandParam.idl"
+
+module booster_interface {
+  module msg {
+    struct HandCommand {
+      sequence<booster_interface::msg::HandParam> hand_param;
+
+      int32 force_mode;
+
+      int32 hand_index;
+
+      int32 hand_type;
+    };
+  };
+};

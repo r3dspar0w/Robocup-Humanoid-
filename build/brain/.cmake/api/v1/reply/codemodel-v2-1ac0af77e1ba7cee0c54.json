@@ -1,0 +1,242 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-ac8093eaeea44af4ebbd.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18
+					]
+				},
+				{
+					"build" : "brain__py",
+					"jsonFile" : "directory-brain__py-092bc76800e2b6ae169a.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/booster/Workspace/robocup_demo/build/brain/brain__py",
+					"targetIndexes" : 
+					[
+						4
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "brain",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_brain_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_brain_egg-894cb0f2d158bd90b410.json",
+					"name" : "ament_cmake_python_build_brain_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_symlink_brain::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_symlink_brain-7d1a8a62ca77fb7d5777.json",
+					"name" : "ament_cmake_python_symlink_brain",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "brain::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-brain-d7986faa0bf744528de0.json",
+					"name" : "brain",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "brain__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-brain__cpp-ca757275cc4e58f195a8.json",
+					"name" : "brain__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "brain__py::@6342d4f608d24cce0572",
+					"jsonFile" : "target-brain__py-a3b00ce72eda32326b13.json",
+					"name" : "brain__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "brain__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-brain__rosidl_generator_c-a32a7ae3c7c19390b53d.json",
+					"name" : "brain__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "brain__rosidl_generator_py::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-brain__rosidl_generator_py-ad6fff8b93b521342ab2.json",
+					"name" : "brain__rosidl_generator_py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "brain__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-brain__rosidl_typesupport_c-c2313d5726a0077962df.json",
+					"name" : "brain__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "brain__rosidl_typesupport_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-brain__rosidl_typesupport_c__pyext-2fc70f612a8835a15c57.json",
+					"name" : "brain__rosidl_typesupport_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "brain__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-brain__rosidl_typesupport_cpp-92bcd087facdae5cc667.json",
+					"name" : "brain__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "brain__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-brain__rosidl_typesupport_fastrtps_c-a8781aeae9d1c0eb0dd3.json",
+					"name" : "brain__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "brain__rosidl_typesupport_fastrtps_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-brain__rosidl_typesupport_fastrtps_c__pyext-573247d514db2e975a8a.json",
+					"name" : "brain__rosidl_typesupport_fastrtps_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "brain__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-brain__rosidl_typesupport_fastrtps_cpp-50026326a57c0c5f99e3.json",
+					"name" : "brain__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "brain__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-brain__rosidl_typesupport_introspection_c-aa1ece5adc6bc60a74bd.json",
+					"name" : "brain__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "brain__rosidl_typesupport_introspection_c__pyext::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-brain__rosidl_typesupport_introspection_c__pyext-ee5cfde9830906e5b74f.json",
+					"name" : "brain__rosidl_typesupport_introspection_c__pyext",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "brain__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-brain__rosidl_typesupport_introspection_cpp-e3a7e5d93c400669d472.json",
+					"name" : "brain__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "brain_node::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-brain_node-338bf5ff86bf85ce1d39.json",
+					"name" : "brain_node",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "brain_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-brain_uninstall-7a2bdba87678b9cca3df.json",
+					"name" : "brain_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-ccd2abbe0082367d9d81.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/booster/Workspace/robocup_demo/build/brain",
+		"source" : "/home/booster/Workspace/robocup_demo/src/brain"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

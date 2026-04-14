@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/booster_interface/rosidl_typesupport_fastrtps_cpp/booster_interface/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h

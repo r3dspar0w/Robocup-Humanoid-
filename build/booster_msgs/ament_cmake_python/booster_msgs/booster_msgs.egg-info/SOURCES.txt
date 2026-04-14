@@ -1,0 +1,10 @@
+setup.py
+booster_msgs/__init__.py
+booster_msgs.egg-info/PKG-INFO
+booster_msgs.egg-info/SOURCES.txt
+booster_msgs.egg-info/dependency_links.txt
+booster_msgs.egg-info/top_level.txt
+booster_msgs/msg/__init__.py
+booster_msgs/msg/_binary_data.py
+booster_msgs/msg/_rpc_req_msg.py
+booster_msgs/msg/_rpc_resp_msg.py

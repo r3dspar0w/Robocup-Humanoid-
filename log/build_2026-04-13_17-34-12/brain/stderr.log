@@ -1,0 +1,15 @@
+[01m[K/home/booster/Workspace/robocup_demo/src/brain/src/brain_tree.cpp:[m[K In member function ‘[01m[Kvirtual BT::NodeStatus GoalieDecide::tick()[m[K’:
+[01m[K/home/booster/Workspace/robocup_demo/src/brain/src/brain_tree.cpp:1048:46:[m[K [01;31m[Kerror: [m[K‘[01m[Kfd[m[K’ was not declared in this scope
+ 1048 |     const auto homePose = calcGoalieHomePose([01;31m[Kfd[m[K);
+      |                                              [01;31m[K^~[m[K
+[01m[K/home/booster/Workspace/robocup_demo/src/brain/src/brain_tree.cpp:1050:102:[m[K [01;31m[Kerror: [m[K‘[01m[KballWithinDefensiveThreshold[m[K’ was not declared in this scope
+ 1050 | >data->robotPoseToField.x > homePose.x + returnHomeXMargin && ![01;31m[KballWithinDefensiveThreshold[m[K;
+      |                                                                [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+
+[01m[K/home/booster/Workspace/robocup_demo/src/brain/src/brain_tree.cpp:[m[K At global scope:
+[01m[K/home/booster/Workspace/robocup_demo/src/brain/src/brain_tree.cpp:126:8:[m[K [01;35m[Kwarning: [m[K‘[01m[Kdouble {anonymous}::calcGoalieDefensiveThresholdX(const FieldDimensions&, double)[m[K’ defined but not used [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-function-Wunused-function]8;;[m[K]
+  126 | double [01;35m[KcalcGoalieDefensiveThresholdX[m[K(const FieldDimensions &fd, double defensiveThresholdRatio)
+      |        [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+gmake[2]: *** [CMakeFiles/brain_node.dir/build.make:146: CMakeFiles/brain_node.dir/src/brain_tree.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:593: CMakeFiles/brain_node.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

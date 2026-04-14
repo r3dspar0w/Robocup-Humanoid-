@@ -1,0 +1,10 @@
+setup.py
+game_controller_interface/__init__.py
+game_controller_interface.egg-info/PKG-INFO
+game_controller_interface.egg-info/SOURCES.txt
+game_controller_interface.egg-info/dependency_links.txt
+game_controller_interface.egg-info/top_level.txt
+game_controller_interface/msg/__init__.py
+game_controller_interface/msg/_game_control_data.py
+game_controller_interface/msg/_robot_info.py
+game_controller_interface/msg/_team_info.py

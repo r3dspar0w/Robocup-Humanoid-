@@ -1,0 +1,154 @@
+[0.060s] Invoking command in '/home/booster/Workspace/robocup_demo/build/booster_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/booster_msgs -- -j5 -l5
+[0.299s] [  2%] Built target booster_msgs__cpp
+[0.436s] [  2%] Built target ament_cmake_python_symlink_booster_msgs
+[0.586s] [ 12%] Built target booster_msgs__rosidl_typesupport_introspection_cpp
+[1.689s] running egg_info
+[1.691s] writing booster_msgs.egg-info/PKG-INFO
+[1.691s] writing dependency_links to booster_msgs.egg-info/dependency_links.txt
+[1.692s] writing top-level names to booster_msgs.egg-info/top_level.txt
+[1.703s] reading manifest file 'booster_msgs.egg-info/SOURCES.txt'
+[1.706s] writing manifest file 'booster_msgs.egg-info/SOURCES.txt'
+[1.904s] [ 12%] Built target ament_cmake_python_build_booster_msgs_egg
+[2.008s] [ 23%] Built target booster_msgs__rosidl_typesupport_fastrtps_cpp
+[2.131s] [ 34%] Built target booster_msgs__rosidl_typesupport_cpp
+[2.249s] [ 44%] Built target booster_msgs__rosidl_generator_c
+[2.347s] [ 55%] Built target booster_msgs__rosidl_typesupport_fastrtps_c
+[2.457s] [ 65%] Built target booster_msgs__rosidl_typesupport_c
+[2.570s] [ 76%] Built target booster_msgs__rosidl_typesupport_introspection_c
+[2.670s] [ 76%] Built target booster_msgs
+[2.766s] [ 78%] Built target booster_msgs__py
+[2.862s] [ 87%] Built target booster_msgs__rosidl_generator_py
+[2.956s] [ 91%] Built target booster_msgs__rosidl_typesupport_fastrtps_c__pyext
+[3.094s] [ 95%] Built target booster_msgs__rosidl_typesupport_c__pyext
+[3.192s] [100%] Built target booster_msgs__rosidl_typesupport_introspection_c__pyext
+[3.296s] Invoked command in '/home/booster/Workspace/robocup_demo/build/booster_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/booster_msgs -- -j5 -l5
+[3.304s] Invoking command in '/home/booster/Workspace/robocup_demo/build/booster_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/booster/Workspace/robocup_demo/build/booster_msgs
+[3.333s] -- Install configuration: ""
+[3.339s] -- Execute custom install script
+[3.341s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/ament_index/resource_index/rosidl_interfaces/booster_msgs
+[3.342s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/binary_data.h
+[3.347s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/binary_data__functions.h
+[3.348s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/binary_data__struct.h
+[3.349s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/binary_data__type_support.h
+[3.352s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_req_msg__functions.h
+[3.353s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_req_msg__struct.h
+[3.354s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_req_msg__type_support.h
+[3.355s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_resp_msg__functions.h
+[3.356s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_resp_msg__struct.h
+[3.357s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_resp_msg__type_support.h
+[3.358s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/rosidl_generator_c__visibility_control.h
+[3.359s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/rpc_req_msg.h
+[3.360s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/rpc_resp_msg.h
+[3.361s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/environment/library_path.sh
+[3.361s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/environment/library_path.dsv
+[3.361s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/binary_data__rosidl_typesupport_fastrtps_c.h
+[3.366s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_req_msg__rosidl_typesupport_fastrtps_c.h
+[3.368s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_resp_msg__rosidl_typesupport_fastrtps_c.h
+[3.369s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[3.372s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/binary_data__rosidl_typesupport_introspection_c.h
+[3.372s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_req_msg__rosidl_typesupport_introspection_c.h
+[3.374s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_resp_msg__rosidl_typesupport_introspection_c.h
+[3.390s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[3.391s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/binary_data.hpp
+[3.391s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/binary_data__builder.hpp
+[3.391s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/binary_data__struct.hpp
+[3.391s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/binary_data__traits.hpp
+[3.392s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/binary_data__type_support.hpp
+[3.392s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_req_msg__builder.hpp
+[3.392s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_req_msg__struct.hpp
+[3.392s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_req_msg__traits.hpp
+[3.392s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_req_msg__type_support.hpp
+[3.392s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_resp_msg__builder.hpp
+[3.393s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_resp_msg__struct.hpp
+[3.393s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_resp_msg__traits.hpp
+[3.393s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_resp_msg__type_support.hpp
+[3.393s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+[3.393s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/rpc_req_msg.hpp
+[3.393s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/rpc_resp_msg.hpp
+[3.393s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/binary_data__rosidl_typesupport_fastrtps_cpp.hpp
+[3.393s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_req_msg__rosidl_typesupport_fastrtps_cpp.hpp
+[3.395s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_resp_msg__rosidl_typesupport_fastrtps_cpp.hpp
+[3.395s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[3.395s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/binary_data__rosidl_typesupport_introspection_cpp.hpp
+[3.395s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_req_msg__rosidl_typesupport_introspection_cpp.hpp
+[3.395s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/include/booster_msgs/booster_msgs/msg/detail/rpc_resp_msg__rosidl_typesupport_introspection_cpp.hpp
+[3.395s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/environment/pythonpath.sh
+[3.395s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/environment/pythonpath.dsv
+[3.396s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs-0.0.0-py3.10.egg-info/PKG-INFO
+[3.396s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs-0.0.0-py3.10.egg-info/SOURCES.txt
+[3.400s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs-0.0.0-py3.10.egg-info/dependency_links.txt
+[3.404s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs-0.0.0-py3.10.egg-info/top_level.txt
+[3.406s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/__init__.py
+[3.406s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/_booster_msgs_s.ep.rosidl_typesupport_c.c
+[3.406s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/_booster_msgs_s.ep.rosidl_typesupport_fastrtps_c.c
+[3.406s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/_booster_msgs_s.ep.rosidl_typesupport_introspection_c.c
+[3.406s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/booster_msgs_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so
+[3.406s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/booster_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so
+[3.407s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/booster_msgs_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so
+[3.410s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/libbooster_msgs__rosidl_generator_py.so
+[3.410s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/msg/__init__.py
+[3.414s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/msg/_binary_data.py
+[3.414s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/msg/_binary_data_s.c
+[3.414s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/msg/_rpc_req_msg.py
+[3.418s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/msg/_rpc_req_msg_s.c
+[3.418s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/msg/_rpc_resp_msg.py
+[3.422s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/msg/_rpc_resp_msg_s.c
+[3.423s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/booster_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so
+[3.423s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/booster_msgs_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so
+[3.424s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/booster_msgs_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so
+[3.424s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/msg/BinaryData.idl
+[3.424s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/msg/RpcReqMsg.idl
+[3.424s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/msg/RpcRespMsg.idl
+[3.424s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/msg/BinaryData.msg
+[3.425s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/msg/RpcReqMsg.msg
+[3.426s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/msg/RpcRespMsg.msg
+[3.426s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/ament_index/resource_index/package_run_dependencies/booster_msgs
+[3.426s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/ament_index/resource_index/parent_prefix_path/booster_msgs
+[3.426s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/environment/ament_prefix_path.sh
+[3.426s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/environment/ament_prefix_path.dsv
+[3.426s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/environment/path.sh
+[3.426s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/environment/path.dsv
+[3.426s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/local_setup.bash
+[3.426s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/local_setup.sh
+[3.427s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/local_setup.zsh
+[3.427s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/local_setup.dsv
+[3.427s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/package.dsv
+[3.781s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/ament_index/resource_index/packages/booster_msgs
+[3.782s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/rosidl_cmake-extras.cmake
+[3.782s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[3.782s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[3.782s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[3.782s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[3.783s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[3.787s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[3.789s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/booster_msgsConfig.cmake
+[3.790s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/booster_msgsConfig-version.cmake
+[3.795s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/package.xml
+[3.797s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/lib/libbooster_msgs__rosidl_generator_c.so
+[3.799s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/lib/libbooster_msgs__rosidl_typesupport_fastrtps_c.so
+[3.799s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/lib/libbooster_msgs__rosidl_typesupport_introspection_c.so
+[3.799s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/lib/libbooster_msgs__rosidl_typesupport_c.so
+[3.799s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/lib/libbooster_msgs__rosidl_typesupport_fastrtps_cpp.so
+[3.799s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/lib/libbooster_msgs__rosidl_typesupport_introspection_cpp.so
+[3.799s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/lib/libbooster_msgs__rosidl_typesupport_cpp.so
+[3.901s] Listing '/home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs'...
+[3.901s] Listing '/home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages/booster_msgs/msg'...
+[3.928s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/lib/libbooster_msgs__rosidl_generator_py.so
+[3.938s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/export_booster_msgs__rosidl_generator_cExport.cmake
+[3.939s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/export_booster_msgs__rosidl_generator_cExport-noconfig.cmake
+[3.947s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/export_booster_msgs__rosidl_typesupport_fastrtps_cExport.cmake
+[3.949s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/export_booster_msgs__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[3.950s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/booster_msgs__rosidl_typesupport_introspection_cExport.cmake
+[3.950s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/booster_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[3.953s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/booster_msgs__rosidl_typesupport_cExport.cmake
+[3.953s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/booster_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[3.953s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/export_booster_msgs__rosidl_generator_cppExport.cmake
+[3.954s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/export_booster_msgs__rosidl_typesupport_fastrtps_cppExport.cmake
+[3.954s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/export_booster_msgs__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[3.956s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/booster_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[3.956s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/booster_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[3.956s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/booster_msgs__rosidl_typesupport_cppExport.cmake
+[3.958s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/booster_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[3.959s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/export_booster_msgs__rosidl_generator_pyExport.cmake
+[3.959s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake/export_booster_msgs__rosidl_generator_pyExport-noconfig.cmake
+[4.094s] Invoked command in '/home/booster/Workspace/robocup_demo/build/booster_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/booster/Workspace/robocup_demo/build/booster_msgs

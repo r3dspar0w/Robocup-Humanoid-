@@ -1,0 +1,14 @@
+[0.395s] Invoking command in '/home/booster/Workspace/robocup_demo/build/game_controller': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/game_controller_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/game_controller_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/game_controller_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/game_controller -- -j5 -l5
+[0.677s] [35m[1mConsolidate compiler generated dependencies of target game_controller_node[0m
+[0.808s] [ 33%] [32mBuilding CXX object CMakeFiles/game_controller_node.dir/src/game_controller_node.cpp.o[0m
+[16.444s] [01m[K/home/booster/Workspace/robocup_demo/src/game_controller/src/game_controller_node.cpp:[m[K In member function ‘[01m[Kvoid GameControllerNode::handle_packet(RoboCupGameControlData&, game_controller_interface::msg::GameControlData&)[m[K’:
+[16.445s] [01m[K/home/booster/Workspace/robocup_demo/src/game_controller/src/game_controller_node.cpp:302:2:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K}[m[K’ at end of input
+[16.445s]   302 | }
+[16.445s]       |  [01;31m[K^[m[K
+[16.445s] [01m[K/home/booster/Workspace/robocup_demo/src/game_controller/src/game_controller_node.cpp:143:1:[m[K [01;36m[Knote: [m[Kto match this ‘[01m[K{[m[K’
+[16.446s]   143 | [01;36m[K{[m[K
+[16.446s]       | [01;36m[K^[m[K
+[21.979s] gmake[2]: *** [CMakeFiles/game_controller_node.dir/build.make:90: CMakeFiles/game_controller_node.dir/src/game_controller_node.cpp.o] Error 1
+[21.979s] gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/game_controller_node.dir/all] Error 2
+[21.979s] gmake: *** [Makefile:146: all] Error 2
+[21.986s] Invoked command in '/home/booster/Workspace/robocup_demo/build/game_controller' returned '2': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/game_controller_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/game_controller_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/game_controller_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/game_controller -- -j5 -l5

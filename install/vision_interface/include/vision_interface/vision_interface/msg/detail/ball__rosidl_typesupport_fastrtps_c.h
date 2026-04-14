@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/ball__rosidl_typesupport_fastrtps_c.h

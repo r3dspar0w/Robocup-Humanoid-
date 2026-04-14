@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/booster_msgs/rosidl_typesupport_introspection_c/booster_msgs/msg/detail/rpc_req_msg__rosidl_typesupport_introspection_c.h

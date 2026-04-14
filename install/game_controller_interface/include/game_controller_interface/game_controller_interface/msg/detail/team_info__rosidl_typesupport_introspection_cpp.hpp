@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/game_controller_interface/rosidl_typesupport_introspection_cpp/game_controller_interface/msg/detail/team_info__rosidl_typesupport_introspection_cpp.hpp

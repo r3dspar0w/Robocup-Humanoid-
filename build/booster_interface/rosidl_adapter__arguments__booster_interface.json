@@ -1,0 +1,23 @@
+{
+  "package_name": "booster_interface",
+  "non_idl_tuples": [
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/BoosterApiReqMsg.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/BoosterApiRespMsg.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/ButtonEventMsg.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/MotorState.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/MotorCmd.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/LowCmd.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/ImuState.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/LowState.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/RawBytesMsg.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/RawBytesStamped.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/Odometer.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/FallDownState.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/RemoteControllerState.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/HandCommand.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/HandDdsMsg.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:msg/HandParam.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:srv/RpcService.srv",
+    "/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface:srv/AgentService.srv"
+  ]
+}

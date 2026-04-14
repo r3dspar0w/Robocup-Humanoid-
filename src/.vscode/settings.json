@@ -1,0 +1,18 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/splackie-ros2/piper_ws/src",
+        "/home/splackie-ros2/piper_ws/install",
+        "/home/splackie-ros2/piper_ws/install/piper_msgs/local/lib/python3.10/dist-packages",
+        "/home/splackie-ros2/piper_ws/install/piper/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/splackie-ros2/piper_ws/src",
+        "/home/splackie-ros2/piper_ws/install",
+        "/home/splackie-ros2/piper_ws/install/piper_msgs/local/lib/python3.10/dist-packages",
+        "/home/splackie-ros2/piper_ws/install/piper/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}

@@ -1,0 +1,262 @@
+[0.068s] Invoking command in '/home/booster/Workspace/robocup_demo/build/brain': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/home/booster/Workspace/robocup_demo/install/game_controller_interface:/home/booster/Workspace/robocup_demo/install/booster_msgs:/home/booster/Workspace/robocup_demo/install/booster_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/home/booster/Workspace/robocup_demo/install/game_controller_interface:/home/booster/Workspace/robocup_demo/install/booster_msgs:/home/booster/Workspace/robocup_demo/install/booster_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/home/booster/Workspace/robocup_demo/install/game_controller_interface/lib:/home/booster/Workspace/robocup_demo/install/booster_msgs/lib:/home/booster/Workspace/robocup_demo/install/booster_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/booster_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/booster/Workspace/robocup_demo/src/brain -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/booster/Workspace/robocup_demo/install/brain
+[0.340s] -- The C compiler identification is GNU 11.4.0
+[0.676s] -- The CXX compiler identification is GNU 11.4.0
+[0.722s] -- Detecting C compiler ABI info
+[0.989s] -- Detecting C compiler ABI info - done
+[1.008s] -- Check for working C compiler: /usr/bin/cc - skipped
+[1.013s] -- Detecting C compile features
+[1.013s] -- Detecting C compile features - done
+[1.032s] -- Detecting CXX compiler ABI info
+[1.445s] -- Detecting CXX compiler ABI info - done
+[1.461s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[1.463s] -- Detecting CXX compile features
+[1.467s] -- Detecting CXX compile features - done
+[1.483s] -- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+[2.421s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[2.675s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[2.752s] -- Found rclcpp: 16.0.12 (/opt/ros/humble/share/rclcpp/cmake)
+[2.853s] -- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[2.865s] -- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[2.895s] -- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[2.930s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.977s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[3.073s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[3.080s] -- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[3.568s] -- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[3.689s] -- Found FastRTPS: /opt/ros/humble/include  
+[3.822s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[3.850s] -- Looking for pthread.h
+[4.101s] -- Looking for pthread.h - found
+[4.108s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[4.394s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[4.398s] -- Found Threads: TRUE  
+[4.580s] -- Found sensor_msgs: 4.8.0 (/opt/ros/humble/share/sensor_msgs/cmake)
+[4.716s] -- Found nav_msgs: 4.8.0 (/opt/ros/humble/share/nav_msgs/cmake)
+[4.759s] -- Found diagnostic_msgs: 4.8.0 (/opt/ros/humble/share/diagnostic_msgs/cmake)
+[4.813s] -- Found behaviortree_cpp: 4.8.3 (/opt/ros/humble/share/behaviortree_cpp/cmake)
+[4.832s] -- Found visualization_msgs: 4.8.0 (/opt/ros/humble/share/visualization_msgs/cmake)
+[4.880s] -- Found booster_interface: 0.0.0 (/home/booster/Workspace/robocup_demo/install/booster_interface/share/booster_interface/cmake)
+[4.907s] -- Found game_controller_interface: 1.0.0 (/home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake)
+[4.929s] -- Found vision_interface: 1.0.0 (/home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake)
+[4.965s] -- Found booster_msgs: 0.0.0 (/home/booster/Workspace/robocup_demo/install/booster_msgs/share/booster_msgs/cmake)
+[4.986s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[5.014s] -- Found OpenCV: /usr (found version "4.8.0") 
+[5.026s] -- Found tf2: 0.25.13 (/opt/ros/humble/share/tf2/cmake)
+[5.048s] -- Found tf2_ros: 0.25.13 (/opt/ros/humble/share/tf2_ros/cmake)
+[5.267s] -- Found tf2_geometry_msgs: 0.25.13 (/opt/ros/humble/share/tf2_geometry_msgs/cmake)
+[5.295s] -- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)
+[5.300s] -- Found Eigen3: TRUE (found version "3.4.0") 
+[5.301s] -- Ensuring Eigen3 include directory is part of orocos-kdl CMake target
+[6.473s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[8.314s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[9.098s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[9.250s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[9.259s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[9.426s] -- Found PythonLibs: /usr/lib/aarch64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[9.427s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[9.427s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[9.427s] -- Using PYTHON_LIBRARIES: /usr/lib/aarch64-linux-gnu/libpython3.10.so
+[9.568s] -- Found PythonExtra: .so  
+[10.551s] -- Using numpy include directory: /home/booster/.local/lib/python3.10/site-packages/numpy/core/include
+[10.618s] -- Found ament_lint_auto: 0.12.12 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[10.718s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[10.746s] -- Configured cppcheck include dirs: $<BUILD_INTERFACE:/home/booster/Workspace/robocup_demo/src/brain/include>
+[10.748s] -- Configured cppcheck exclude dirs and/or files: 
+[10.754s] -- Added test 'flake8' to check Python code syntax and style conventions
+[10.760s] -- Added test 'lint_cmake' to check CMake code style
+[10.764s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[10.772s] -- Added test 'uncrustify' to check C / C++ code style
+[10.774s] -- Configured uncrustify additional arguments: 
+[10.786s] -- Added test 'xmllint' to check XML markup files
+[10.801s] -- Configuring done
+[10.997s] -- Generating done
+[11.049s] -- Build files have been written to: /home/booster/Workspace/robocup_demo/build/brain
+[11.185s] Invoked command in '/home/booster/Workspace/robocup_demo/build/brain' returned '0': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/home/booster/Workspace/robocup_demo/install/game_controller_interface:/home/booster/Workspace/robocup_demo/install/booster_msgs:/home/booster/Workspace/robocup_demo/install/booster_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/home/booster/Workspace/robocup_demo/install/game_controller_interface:/home/booster/Workspace/robocup_demo/install/booster_msgs:/home/booster/Workspace/robocup_demo/install/booster_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/home/booster/Workspace/robocup_demo/install/game_controller_interface/lib:/home/booster/Workspace/robocup_demo/install/booster_msgs/lib:/home/booster/Workspace/robocup_demo/install/booster_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/booster_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/booster/Workspace/robocup_demo/src/brain -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/booster/Workspace/robocup_demo/install/brain
+[11.198s] Invoking command in '/home/booster/Workspace/robocup_demo/build/brain': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/home/booster/Workspace/robocup_demo/install/game_controller_interface:/home/booster/Workspace/robocup_demo/install/booster_msgs:/home/booster/Workspace/robocup_demo/install/booster_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/home/booster/Workspace/robocup_demo/install/game_controller_interface:/home/booster/Workspace/robocup_demo/install/booster_msgs:/home/booster/Workspace/robocup_demo/install/booster_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/home/booster/Workspace/robocup_demo/install/game_controller_interface/lib:/home/booster/Workspace/robocup_demo/install/booster_msgs/lib:/home/booster/Workspace/robocup_demo/install/booster_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/booster_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/brain -- -j5 -l5
+[11.551s] [  2%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[13.234s] [  2%] Built target brain__cpp
+[13.419s] [  2%] Built target ament_cmake_python_symlink_brain
+[13.494s] [  4%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[14.794s] [  7%] [32mBuilding CXX object CMakeFiles/brain__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/brain/msg/detail/kick__type_support.cpp.o[0m
+[15.905s] [  9%] [32m[1mLinking CXX shared library libbrain__rosidl_typesupport_introspection_cpp.so[0m
+[16.068s] [  9%] Built target brain__rosidl_typesupport_introspection_cpp
+[16.762s] running egg_info
+[16.770s] creating brain.egg-info
+[16.771s] writing brain.egg-info/PKG-INFO
+[16.772s] writing dependency_links to brain.egg-info/dependency_links.txt
+[16.772s] writing top-level names to brain.egg-info/top_level.txt
+[16.774s] writing manifest file 'brain.egg-info/SOURCES.txt'
+[16.787s] reading manifest file 'brain.egg-info/SOURCES.txt'
+[16.788s] writing manifest file 'brain.egg-info/SOURCES.txt'
+[16.918s] [  9%] Built target ament_cmake_python_build_brain_egg
+[16.976s] [ 11%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[17.691s] [ 14%] [32mBuilding CXX object CMakeFiles/brain__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/brain/msg/detail/dds_fastrtps/kick__type_support.cpp.o[0m
+[18.419s] [ 16%] [32m[1mLinking CXX shared library libbrain__rosidl_typesupport_fastrtps_cpp.so[0m
+[18.591s] [ 16%] Built target brain__rosidl_typesupport_fastrtps_cpp
+[18.612s] [ 19%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[19.190s] [ 21%] [32mBuilding CXX object CMakeFiles/brain__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/brain/msg/kick__type_support.cpp.o[0m
+[20.099s] [ 23%] [32m[1mLinking CXX shared library libbrain__rosidl_typesupport_cpp.so[0m
+[20.221s] [ 23%] Built target brain__rosidl_typesupport_cpp
+[20.260s] [ 26%] [34m[1mGenerating C code for ROS interfaces[0m
+[21.147s] [ 28%] [32mBuilding C object CMakeFiles/brain__rosidl_generator_c.dir/rosidl_generator_c/brain/msg/detail/kick__functions.c.o[0m
+[21.302s] [ 30%] [32m[1mLinking C shared library libbrain__rosidl_generator_c.so[0m
+[21.372s] [ 30%] Built target brain__rosidl_generator_c
+[21.413s] [ 33%] [32mBuilding CXX object CMakeFiles/brain_node.dir/src/brain.cpp.o[0m
+[220.983s] [ 35%] [32mBuilding CXX object CMakeFiles/brain_node.dir/src/brain_communication.cpp.o[0m
+[265.982s] [ 38%] [32mBuilding CXX object CMakeFiles/brain_node.dir/src/brain_config.cpp.o[0m
+[285.179s] [ 40%] [32mBuilding CXX object CMakeFiles/brain_node.dir/src/brain_data.cpp.o[0m
+[303.994s] [ 42%] [32mBuilding CXX object CMakeFiles/brain_node.dir/src/brain_log.cpp.o[0m
+[347.898s] [ 45%] [32mBuilding CXX object CMakeFiles/brain_node.dir/src/brain_tree.cpp.o[0m
+[406.815s] [ 47%] [32mBuilding CXX object CMakeFiles/brain_node.dir/src/locator.cpp.o[0m
+[467.170s] [ 50%] [32mBuilding CXX object CMakeFiles/brain_node.dir/src/main.cpp.o[0m
+[558.171s] [ 52%] [32mBuilding CXX object CMakeFiles/brain_node.dir/src/robot_client.cpp.o[0m
+[612.151s] [ 54%] [32mBuilding CXX object CMakeFiles/brain_node.dir/src/visualization_publisher.cpp.o[0m
+[636.063s] [ 57%] [32m[1mLinking CXX executable brain_node[0m
+[651.923s] [ 57%] Built target brain_node
+[651.945s] [ 59%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[652.895s] [ 61%] [32mBuilding CXX object CMakeFiles/brain__rosidl_typesupport_c.dir/rosidl_typesupport_c/brain/msg/kick__type_support.cpp.o[0m
+[652.990s] [ 64%] [32m[1mLinking CXX shared library libbrain__rosidl_typesupport_c.so[0m
+[653.076s] [ 64%] Built target brain__rosidl_typesupport_c
+[653.099s] [ 66%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[653.708s] [ 69%] [32mBuilding C object CMakeFiles/brain__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/brain/msg/detail/kick__type_support.c.o[0m
+[653.795s] [ 71%] [32m[1mLinking C shared library libbrain__rosidl_typesupport_introspection_c.so[0m
+[653.855s] [ 71%] Built target brain__rosidl_typesupport_introspection_c
+[653.874s] [ 73%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[654.430s] [ 76%] [32mBuilding CXX object CMakeFiles/brain__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/brain/msg/detail/kick__type_support_c.cpp.o[0m
+[655.106s] [ 78%] [32m[1mLinking CXX shared library libbrain__rosidl_typesupport_fastrtps_c.so[0m
+[655.350s] [ 78%] Built target brain__rosidl_typesupport_fastrtps_c
+[655.460s] [ 78%] Built target brain
+[655.533s] [ 80%] [34m[1mGenerating Python code for ROS interfaces[0m
+[656.572s] [ 80%] Built target brain__py
+[656.620s] [ 83%] [32mBuilding C object CMakeFiles/brain__rosidl_generator_py.dir/rosidl_generator_py/brain/msg/_kick_s.c.o[0m
+[656.892s] [ 85%] [32m[1mLinking C shared library rosidl_generator_py/brain/libbrain__rosidl_generator_py.so[0m
+[657.005s] [ 85%] Built target brain__rosidl_generator_py
+[657.086s] [ 88%] [32mBuilding C object CMakeFiles/brain__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/brain/_brain_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[657.439s] [ 90%] [32m[1mLinking C shared library rosidl_generator_py/brain/brain_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so[0m
+[657.533s] [ 90%] Built target brain__rosidl_typesupport_fastrtps_c__pyext
+[657.584s] [ 92%] [32mBuilding C object CMakeFiles/brain__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/brain/_brain_s.ep.rosidl_typesupport_c.c.o[0m
+[657.898s] [ 95%] [32m[1mLinking C shared library rosidl_generator_py/brain/brain_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so[0m
+[658.003s] [ 95%] Built target brain__rosidl_typesupport_c__pyext
+[658.046s] [ 97%] [32mBuilding C object CMakeFiles/brain__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/brain/_brain_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[658.268s] [100%] [32m[1mLinking C shared library rosidl_generator_py/brain/brain_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so[0m
+[658.344s] [100%] Built target brain__rosidl_typesupport_introspection_c__pyext
+[658.383s] Invoked command in '/home/booster/Workspace/robocup_demo/build/brain' returned '0': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/home/booster/Workspace/robocup_demo/install/game_controller_interface:/home/booster/Workspace/robocup_demo/install/booster_msgs:/home/booster/Workspace/robocup_demo/install/booster_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/home/booster/Workspace/robocup_demo/install/game_controller_interface:/home/booster/Workspace/robocup_demo/install/booster_msgs:/home/booster/Workspace/robocup_demo/install/booster_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/home/booster/Workspace/robocup_demo/install/game_controller_interface/lib:/home/booster/Workspace/robocup_demo/install/booster_msgs/lib:/home/booster/Workspace/robocup_demo/install/booster_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/booster_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/brain -- -j5 -l5
+[658.384s] Invoking command in '/home/booster/Workspace/robocup_demo/build/brain': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/home/booster/Workspace/robocup_demo/install/game_controller_interface:/home/booster/Workspace/robocup_demo/install/booster_msgs:/home/booster/Workspace/robocup_demo/install/booster_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/home/booster/Workspace/robocup_demo/install/game_controller_interface:/home/booster/Workspace/robocup_demo/install/booster_msgs:/home/booster/Workspace/robocup_demo/install/booster_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/home/booster/Workspace/robocup_demo/install/game_controller_interface/lib:/home/booster/Workspace/robocup_demo/install/booster_msgs/lib:/home/booster/Workspace/robocup_demo/install/booster_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/booster_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/booster/Workspace/robocup_demo/build/brain
+[658.408s] -- Install configuration: ""
+[658.409s] -- Execute custom install script
+[658.411s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/ament_index/resource_index/rosidl_interfaces/brain
+[658.449s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/detail/kick__functions.h
+[658.482s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/detail/kick__struct.h
+[658.512s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/detail/kick__type_support.h
+[658.532s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/kick.h
+[658.593s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/rosidl_generator_c__visibility_control.h
+[658.635s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/environment/library_path.sh
+[658.670s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/environment/library_path.dsv
+[658.706s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/detail/kick__rosidl_typesupport_fastrtps_c.h
+[658.768s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[658.816s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/detail/kick__builder.hpp
+[658.847s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/detail/kick__struct.hpp
+[658.880s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/detail/kick__traits.hpp
+[658.910s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/detail/kick__type_support.hpp
+[658.961s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/kick.hpp
+[659.000s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/rosidl_generator_cpp__visibility_control.hpp
+[659.074s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/detail/kick__rosidl_typesupport_fastrtps_cpp.hpp
+[659.146s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[659.187s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/detail/kick__rosidl_typesupport_introspection_c.h
+[659.273s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[659.325s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/include/brain/brain/msg/detail/kick__rosidl_typesupport_introspection_cpp.hpp
+[659.371s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/environment/pythonpath.sh
+[659.421s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/environment/pythonpath.dsv
+[659.470s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain-0.0.0-py3.10.egg-info/PKG-INFO
+[659.529s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain-0.0.0-py3.10.egg-info/SOURCES.txt
+[659.554s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain-0.0.0-py3.10.egg-info/dependency_links.txt
+[659.585s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain-0.0.0-py3.10.egg-info/top_level.txt
+[659.627s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/__init__.py
+[659.677s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/_brain_s.ep.rosidl_typesupport_c.c
+[659.719s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/_brain_s.ep.rosidl_typesupport_fastrtps_c.c
+[659.750s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/_brain_s.ep.rosidl_typesupport_introspection_c.c
+[659.786s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/brain_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so
+[659.816s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/brain_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so
+[659.896s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/brain_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so
+[659.936s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/libbrain__rosidl_generator_py.so
+[659.971s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/msg/__init__.py
+[660.007s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/msg/_kick.py
+[660.039s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/msg/_kick_s.c
+[660.074s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/brain_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so
+[660.077s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/brain_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so
+[660.077s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/brain_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so
+[660.077s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/msg/Kick.idl
+[660.101s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/msg/Kick.msg
+[660.128s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/lib/brain/brain_node
+[660.164s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/launch/launch.py
+[660.200s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/config/config.yaml
+[660.241s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/behavior_trees/game.xml
+[660.273s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/behavior_trees/subtrees/subtree_auto_standup_and_locate.xml
+[660.303s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/behavior_trees/subtrees/subtree_cam_find_and_track_ball.xml
+[660.350s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/behavior_trees/subtrees/subtree_find_ball.xml
+[660.383s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/behavior_trees/subtrees/subtree_goal_keeper_freekick.xml
+[660.410s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/behavior_trees/subtrees/subtree_goal_keeper_play.xml
+[660.446s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/behavior_trees/subtrees/subtree_locate.xml
+[660.530s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/behavior_trees/subtrees/subtree_striker_freekick.xml
+[660.566s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/behavior_trees/subtrees/subtree_striker_play.xml
+[660.607s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/ament_index/resource_index/package_run_dependencies/brain
+[660.645s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/ament_index/resource_index/parent_prefix_path/brain
+[660.665s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/environment/ament_prefix_path.sh
+[660.693s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/environment/ament_prefix_path.dsv
+[660.733s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/environment/path.sh
+[660.772s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/environment/path.dsv
+[660.802s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/local_setup.bash
+[660.852s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/local_setup.sh
+[660.888s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/local_setup.zsh
+[660.925s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/local_setup.dsv
+[660.961s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/package.dsv
+[661.013s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/ament_index/resource_index/packages/brain
+[661.073s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/rosidl_cmake-extras.cmake
+[661.105s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/ament_cmake_export_dependencies-extras.cmake
+[661.151s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/ament_cmake_export_include_directories-extras.cmake
+[661.175s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/ament_cmake_export_libraries-extras.cmake
+[661.216s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/ament_cmake_export_targets-extras.cmake
+[661.263s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[661.287s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[661.309s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/brainConfig.cmake
+[661.331s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/brainConfig-version.cmake
+[661.362s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/brain/share/brain/package.xml
+[661.383s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_generator_c.so
+[661.383s] -- Set runtime path of "/home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_generator_c.so" to ""
+[661.383s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_typesupport_fastrtps_c.so
+[661.383s] -- Set runtime path of "/home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_typesupport_fastrtps_c.so" to ""
+[661.384s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_typesupport_fastrtps_cpp.so
+[661.384s] -- Set runtime path of "/home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_typesupport_fastrtps_cpp.so" to ""
+[661.385s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_typesupport_introspection_c.so
+[661.385s] -- Set runtime path of "/home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_typesupport_introspection_c.so" to ""
+[661.385s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_typesupport_c.so
+[661.385s] -- Set runtime path of "/home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_typesupport_c.so" to ""
+[661.385s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_typesupport_introspection_cpp.so
+[661.386s] -- Set runtime path of "/home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_typesupport_introspection_cpp.so" to ""
+[661.386s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_typesupport_cpp.so
+[661.386s] -- Set runtime path of "/home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_typesupport_cpp.so" to ""
+[661.459s] Listing '/home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain'...
+[661.459s] Compiling '/home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/__init__.py'...
+[661.459s] Listing '/home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/msg'...
+[661.459s] Compiling '/home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/msg/__init__.py'...
+[661.460s] Compiling '/home/booster/Workspace/robocup_demo/install/brain/local/lib/python3.10/dist-packages/brain/msg/_kick.py'...
+[661.477s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_generator_py.so
+[661.489s] -- Set runtime path of "/home/booster/Workspace/robocup_demo/install/brain/lib/libbrain__rosidl_generator_py.so" to ""
+[661.489s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/export_brain__rosidl_generator_cExport.cmake
+[661.489s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/export_brain__rosidl_generator_cExport-noconfig.cmake
+[661.489s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/export_brain__rosidl_typesupport_fastrtps_cExport.cmake
+[661.489s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/export_brain__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[661.489s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/export_brain__rosidl_generator_cppExport.cmake
+[661.489s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/export_brain__rosidl_typesupport_fastrtps_cppExport.cmake
+[661.490s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/export_brain__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[661.490s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/brain__rosidl_typesupport_introspection_cExport.cmake
+[661.492s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/brain__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[661.492s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/brain__rosidl_typesupport_cExport.cmake
+[661.492s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/brain__rosidl_typesupport_cExport-noconfig.cmake
+[661.492s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/brain__rosidl_typesupport_introspection_cppExport.cmake
+[661.493s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/brain__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[661.493s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/brain__rosidl_typesupport_cppExport.cmake
+[661.493s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/brain__rosidl_typesupport_cppExport-noconfig.cmake
+[661.493s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/export_brain__rosidl_generator_pyExport.cmake
+[661.493s] -- Installing: /home/booster/Workspace/robocup_demo/install/brain/share/brain/cmake/export_brain__rosidl_generator_pyExport-noconfig.cmake
+[661.493s] Invoked command in '/home/booster/Workspace/robocup_demo/build/brain' returned '0': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/home/booster/Workspace/robocup_demo/install/game_controller_interface:/home/booster/Workspace/robocup_demo/install/booster_msgs:/home/booster/Workspace/robocup_demo/install/booster_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/home/booster/Workspace/robocup_demo/install/game_controller_interface:/home/booster/Workspace/robocup_demo/install/booster_msgs:/home/booster/Workspace/robocup_demo/install/booster_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/home/booster/Workspace/robocup_demo/install/game_controller_interface/lib:/home/booster/Workspace/robocup_demo/install/booster_msgs/lib:/home/booster/Workspace/robocup_demo/install/booster_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/booster_msgs/local/lib/python3.10/dist-packages:/home/booster/Workspace/robocup_demo/install/booster_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/booster/Workspace/robocup_demo/build/brain

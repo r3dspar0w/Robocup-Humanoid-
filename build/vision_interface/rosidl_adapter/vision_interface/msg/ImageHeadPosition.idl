@@ -1,0 +1,19 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from vision_interface/msg/ImageHeadPosition.msg
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/Pose.idl"
+#include "sensor_msgs/msg/Image.idl"
+#include "std_msgs/msg/Header.idl"
+
+module vision_interface {
+  module msg {
+    struct ImageHeadPosition {
+      std_msgs::msg::Header header;
+
+      geometry_msgs::msg::Pose position;
+
+      sensor_msgs::msg::Image image;
+    };
+  };
+};

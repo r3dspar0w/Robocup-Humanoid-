@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "brain__py",
+		"source" : "/home/booster/Workspace/robocup_demo/build/brain/brain__py"
+	}
+}

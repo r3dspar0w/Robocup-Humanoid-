@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/booster_msgs/rosidl_generator_cpp/booster_msgs/msg/rosidl_generator_cpp__visibility_control.hpp

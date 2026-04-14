@@ -1,0 +1,154 @@
+[0.129s] Invoking command in '/home/booster/Workspace/robocup_demo/build/game_controller_interface': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/game_controller_interface -- -j5 -l5
+[0.468s] [  2%] Built target game_controller_interface__cpp
+[0.612s] [  2%] Built target ament_cmake_python_symlink_game_controller_interface
+[0.718s] [ 12%] Built target game_controller_interface__rosidl_typesupport_introspection_cpp
+[2.882s] running egg_info
+[2.886s] writing game_controller_interface.egg-info/PKG-INFO
+[2.887s] writing dependency_links to game_controller_interface.egg-info/dependency_links.txt
+[2.888s] writing top-level names to game_controller_interface.egg-info/top_level.txt
+[2.897s] reading manifest file 'game_controller_interface.egg-info/SOURCES.txt'
+[2.900s] writing manifest file 'game_controller_interface.egg-info/SOURCES.txt'
+[3.276s] [ 12%] Built target ament_cmake_python_build_game_controller_interface_egg
+[3.412s] [ 23%] Built target game_controller_interface__rosidl_typesupport_fastrtps_cpp
+[3.513s] [ 34%] Built target game_controller_interface__rosidl_typesupport_cpp
+[3.627s] [ 44%] Built target game_controller_interface__rosidl_generator_c
+[3.838s] [ 55%] Built target game_controller_interface__rosidl_typesupport_fastrtps_c
+[3.932s] [ 65%] Built target game_controller_interface__rosidl_typesupport_c
+[4.061s] [ 76%] Built target game_controller_interface__rosidl_typesupport_introspection_c
+[4.196s] [ 76%] Built target game_controller_interface
+[4.508s] [ 78%] Built target game_controller_interface__py
+[4.760s] [ 87%] Built target game_controller_interface__rosidl_generator_py
+[4.790s] [ 91%] Built target game_controller_interface__rosidl_typesupport_fastrtps_c__pyext
+[4.979s] [ 95%] Built target game_controller_interface__rosidl_typesupport_c__pyext
+[5.077s] [100%] Built target game_controller_interface__rosidl_typesupport_introspection_c__pyext
+[5.114s] Invoked command in '/home/booster/Workspace/robocup_demo/build/game_controller_interface' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/game_controller_interface -- -j5 -l5
+[5.118s] Invoking command in '/home/booster/Workspace/robocup_demo/build/game_controller_interface': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/booster/Workspace/robocup_demo/build/game_controller_interface
+[5.158s] -- Install configuration: ""
+[5.194s] -- Execute custom install script
+[5.195s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/ament_index/resource_index/rosidl_interfaces/game_controller_interface
+[5.196s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/game_control_data__functions.h
+[5.197s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/game_control_data__struct.h
+[5.197s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/game_control_data__type_support.h
+[5.197s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/robot_info__functions.h
+[5.198s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/robot_info__struct.h
+[5.198s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/robot_info__type_support.h
+[5.198s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/team_info__functions.h
+[5.199s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/team_info__struct.h
+[5.199s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/team_info__type_support.h
+[5.200s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/game_control_data.h
+[5.200s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/robot_info.h
+[5.204s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/rosidl_generator_c__visibility_control.h
+[5.204s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/team_info.h
+[5.211s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/environment/library_path.sh
+[5.213s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/environment/library_path.dsv
+[5.216s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/game_control_data__rosidl_typesupport_fastrtps_c.h
+[5.216s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/robot_info__rosidl_typesupport_fastrtps_c.h
+[5.217s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/team_info__rosidl_typesupport_fastrtps_c.h
+[5.217s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[5.218s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/game_control_data__builder.hpp
+[5.219s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/game_control_data__struct.hpp
+[5.219s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/game_control_data__traits.hpp
+[5.220s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/game_control_data__type_support.hpp
+[5.220s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/robot_info__builder.hpp
+[5.220s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/robot_info__struct.hpp
+[5.221s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/robot_info__traits.hpp
+[5.224s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/robot_info__type_support.hpp
+[5.224s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/team_info__builder.hpp
+[5.225s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/team_info__struct.hpp
+[5.225s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/team_info__traits.hpp
+[5.226s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/team_info__type_support.hpp
+[5.226s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/game_control_data.hpp
+[5.227s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/robot_info.hpp
+[5.227s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/rosidl_generator_cpp__visibility_control.hpp
+[5.228s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/team_info.hpp
+[5.229s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/game_control_data__rosidl_typesupport_fastrtps_cpp.hpp
+[5.229s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/robot_info__rosidl_typesupport_fastrtps_cpp.hpp
+[5.229s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/team_info__rosidl_typesupport_fastrtps_cpp.hpp
+[5.230s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[5.231s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/game_control_data__rosidl_typesupport_introspection_c.h
+[5.231s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/robot_info__rosidl_typesupport_introspection_c.h
+[5.232s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/team_info__rosidl_typesupport_introspection_c.h
+[5.232s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[5.234s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/game_control_data__rosidl_typesupport_introspection_cpp.hpp
+[5.236s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/robot_info__rosidl_typesupport_introspection_cpp.hpp
+[5.236s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/include/game_controller_interface/game_controller_interface/msg/detail/team_info__rosidl_typesupport_introspection_cpp.hpp
+[5.237s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/environment/pythonpath.sh
+[5.237s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/environment/pythonpath.dsv
+[5.246s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface-1.0.0-py3.10.egg-info/PKG-INFO
+[5.246s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface-1.0.0-py3.10.egg-info/SOURCES.txt
+[5.247s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface-1.0.0-py3.10.egg-info/dependency_links.txt
+[5.248s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface-1.0.0-py3.10.egg-info/top_level.txt
+[5.250s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/__init__.py
+[5.250s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/_game_controller_interface_s.ep.rosidl_typesupport_c.c
+[5.250s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/_game_controller_interface_s.ep.rosidl_typesupport_fastrtps_c.c
+[5.251s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/_game_controller_interface_s.ep.rosidl_typesupport_introspection_c.c
+[5.251s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/game_controller_interface_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so
+[5.252s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/game_controller_interface_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so
+[5.252s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/game_controller_interface_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so
+[5.252s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/libgame_controller_interface__rosidl_generator_py.so
+[5.253s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/msg/__init__.py
+[5.254s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/msg/_game_control_data.py
+[5.254s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/msg/_game_control_data_s.c
+[5.258s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/msg/_robot_info.py
+[5.270s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/msg/_robot_info_s.c
+[5.271s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/msg/_team_info.py
+[5.271s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/msg/_team_info_s.c
+[5.282s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/game_controller_interface_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so
+[5.283s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/game_controller_interface_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so
+[5.284s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/game_controller_interface_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so
+[5.285s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/msg/GameControlData.idl
+[5.286s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/msg/RobotInfo.idl
+[5.287s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/msg/TeamInfo.idl
+[5.288s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/msg/GameControlData.msg
+[5.290s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/msg/RobotInfo.msg
+[5.291s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/msg/TeamInfo.msg
+[5.292s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/ament_index/resource_index/package_run_dependencies/game_controller_interface
+[5.292s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/ament_index/resource_index/parent_prefix_path/game_controller_interface
+[5.293s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/environment/ament_prefix_path.sh
+[5.294s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/environment/ament_prefix_path.dsv
+[5.294s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/environment/path.sh
+[5.294s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/environment/path.dsv
+[5.295s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/local_setup.bash
+[5.295s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/local_setup.sh
+[5.305s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/local_setup.zsh
+[5.316s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/local_setup.dsv
+[5.316s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/package.dsv
+[5.387s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/ament_index/resource_index/packages/game_controller_interface
+[5.388s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/rosidl_cmake-extras.cmake
+[5.388s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/ament_cmake_export_include_directories-extras.cmake
+[5.388s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/ament_cmake_export_libraries-extras.cmake
+[5.389s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/ament_cmake_export_targets-extras.cmake
+[5.389s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[5.391s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/ament_cmake_export_dependencies-extras.cmake
+[5.391s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[5.392s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/game_controller_interfaceConfig.cmake
+[5.392s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/game_controller_interfaceConfig-version.cmake
+[5.392s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/package.xml
+[5.392s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/lib/libgame_controller_interface__rosidl_generator_c.so
+[5.393s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/lib/libgame_controller_interface__rosidl_typesupport_fastrtps_c.so
+[5.393s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/lib/libgame_controller_interface__rosidl_typesupport_fastrtps_cpp.so
+[5.394s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/lib/libgame_controller_interface__rosidl_typesupport_introspection_c.so
+[5.394s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/lib/libgame_controller_interface__rosidl_typesupport_c.so
+[5.395s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/lib/libgame_controller_interface__rosidl_typesupport_introspection_cpp.so
+[5.396s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/lib/libgame_controller_interface__rosidl_typesupport_cpp.so
+[5.481s] Listing '/home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface'...
+[5.482s] Listing '/home/booster/Workspace/robocup_demo/install/game_controller_interface/local/lib/python3.10/dist-packages/game_controller_interface/msg'...
+[5.501s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/lib/libgame_controller_interface__rosidl_generator_py.so
+[5.502s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/export_game_controller_interface__rosidl_generator_cExport.cmake
+[5.502s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/export_game_controller_interface__rosidl_generator_cExport-noconfig.cmake
+[5.502s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/export_game_controller_interface__rosidl_typesupport_fastrtps_cExport.cmake
+[5.502s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/export_game_controller_interface__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[5.502s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/export_game_controller_interface__rosidl_generator_cppExport.cmake
+[5.502s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/export_game_controller_interface__rosidl_typesupport_fastrtps_cppExport.cmake
+[5.502s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/export_game_controller_interface__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[5.502s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/game_controller_interface__rosidl_typesupport_introspection_cExport.cmake
+[5.502s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/game_controller_interface__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[5.502s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/game_controller_interface__rosidl_typesupport_cExport.cmake
+[5.503s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/game_controller_interface__rosidl_typesupport_cExport-noconfig.cmake
+[5.503s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/game_controller_interface__rosidl_typesupport_introspection_cppExport.cmake
+[5.503s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/game_controller_interface__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[5.503s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/game_controller_interface__rosidl_typesupport_cppExport.cmake
+[5.503s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/game_controller_interface__rosidl_typesupport_cppExport-noconfig.cmake
+[5.503s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/export_game_controller_interface__rosidl_generator_pyExport.cmake
+[5.503s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/game_controller_interface/share/game_controller_interface/cmake/export_game_controller_interface__rosidl_generator_pyExport-noconfig.cmake
+[5.512s] Invoked command in '/home/booster/Workspace/robocup_demo/build/game_controller_interface' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/booster/Workspace/robocup_demo/build/game_controller_interface

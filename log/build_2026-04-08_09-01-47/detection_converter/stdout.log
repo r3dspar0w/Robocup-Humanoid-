@@ -1,0 +1,35 @@
+Built target ament_cmake_python_symlink_detection_converter
+running egg_info
+writing detection_converter.egg-info/PKG-INFO
+writing dependency_links to detection_converter.egg-info/dependency_links.txt
+writing top-level names to detection_converter.egg-info/top_level.txt
+reading manifest file 'detection_converter.egg-info/SOURCES.txt'
+writing manifest file 'detection_converter.egg-info/SOURCES.txt'
+Built target ament_cmake_python_build_detection_converter_egg
+-- Install configuration: ""
+-- Execute custom install script
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/detection_converter/environment/pythonpath.sh
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/detection_converter/environment/pythonpath.dsv
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/local/lib/python3.10/dist-packages/detection_converter-1.0.0-py3.10.egg-info/PKG-INFO
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/local/lib/python3.10/dist-packages/detection_converter-1.0.0-py3.10.egg-info/SOURCES.txt
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/local/lib/python3.10/dist-packages/detection_converter-1.0.0-py3.10.egg-info/dependency_links.txt
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/local/lib/python3.10/dist-packages/detection_converter-1.0.0-py3.10.egg-info/top_level.txt
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/local/lib/python3.10/dist-packages/detection_converter/__init__.py
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/lib/detection_converter/detection_converter_node.py
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/detection_converter//launch/detection_converter.launch.py
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/ament_index/resource_index/package_run_dependencies/detection_converter
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/ament_index/resource_index/parent_prefix_path/detection_converter
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/detection_converter/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/detection_converter/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/detection_converter/environment/path.sh
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/detection_converter/environment/path.dsv
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/detection_converter/local_setup.bash
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/detection_converter/local_setup.sh
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/detection_converter/local_setup.zsh
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/detection_converter/local_setup.dsv
+-- Symlinking: /home/booster/Workspace/robocup_demo/install/detection_converter/share/detection_converter/package.dsv
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/ament_index/resource_index/packages/detection_converter
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/detection_converter/cmake/detection_converterConfig.cmake
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/detection_converter/cmake/detection_converterConfig-version.cmake
+-- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/detection_converter/share/detection_converter/package.xml
+Listing '/home/booster/Workspace/robocup_demo/install/detection_converter/local/lib/python3.10/dist-packages/detection_converter'...

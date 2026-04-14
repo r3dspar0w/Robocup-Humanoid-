@@ -1,0 +1,4 @@
+source;share/game_controller_interface/local_setup.bash
+source;share/game_controller_interface/local_setup.dsv
+source;share/game_controller_interface/local_setup.sh
+source;share/game_controller_interface/local_setup.zsh

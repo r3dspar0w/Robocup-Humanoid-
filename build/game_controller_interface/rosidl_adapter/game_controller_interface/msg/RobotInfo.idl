@@ -1,0 +1,36 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from game_controller_interface/msg/RobotInfo.msg
+// generated code does not contain a copyright notice
+
+
+module game_controller_interface {
+  module msg {
+    @verbatim (language="comment", text=
+      "following include/RoboCupGameControllData.h's RoboCupGameControlData structure")
+    struct RobotInfo {
+      @verbatim (language="comment", text=
+        "penalty state of the player")
+      uint8 penalty;
+
+      @verbatim (language="comment", text=
+        "estimate of time till unpenalised")
+      uint8 secs_till_unpenalised;
+
+      @verbatim (language="comment", text=
+        "number of warnings")
+      uint8 number_of_warnings;
+
+      @verbatim (language="comment", text=
+        "number of yellow cards")
+      uint8 yellow_card_count;
+
+      @verbatim (language="comment", text=
+        "number of red cards")
+      uint8 red_card_count;
+
+      @verbatim (language="comment", text=
+        "flags if robot is goal keeper")
+      boolean goal_keeper;
+    };
+  };
+};

@@ -1,0 +1,47 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from game_controller_interface/msg/TeamInfo.msg
+// generated code does not contain a copyright notice
+
+#include "game_controller_interface/msg/RobotInfo.idl"
+
+module game_controller_interface {
+  module msg {
+    @verbatim (language="comment", text=
+      "following include/RoboCupGameControllData.h's RoboCupGameControlData structure")
+    struct TeamInfo {
+      @verbatim (language="comment", text=
+        "unique team number")
+      uint8 team_number;
+
+      @verbatim (language="comment", text=
+        "colour of the team")
+      uint8 field_player_colour;
+
+      @verbatim (language="comment", text=
+        "team's score")
+      uint8 score;
+
+      @verbatim (language="comment", text=
+        "penalty shot counter")
+      uint8 penalty_shot;
+
+      @verbatim (language="comment", text=
+        "bits represent penalty shot success")
+      uint16 single_shots;
+
+      @verbatim (language="comment", text=
+        "sequence number of the coach's message")
+      uint8 coach_sequence;
+
+      @verbatim (language="comment", text=
+        "the coach's message to the team (length=253)")
+      sequence<uint8> coach_message;
+
+      game_controller_interface::msg::RobotInfo coach;
+
+      @verbatim (language="comment", text=
+        "the team's players (length=11)")
+      sequence<game_controller_interface::msg::RobotInfo> players;
+    };
+  };
+};

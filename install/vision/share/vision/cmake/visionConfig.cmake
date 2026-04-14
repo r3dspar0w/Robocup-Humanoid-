@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/vision/ament_cmake_core/visionConfig.cmake

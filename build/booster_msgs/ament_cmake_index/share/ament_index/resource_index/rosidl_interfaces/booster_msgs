@@ -1,0 +1,6 @@
+msg/BinaryData.idl
+msg/BinaryData.msg
+msg/RpcReqMsg.idl
+msg/RpcReqMsg.msg
+msg/RpcRespMsg.idl
+msg/RpcRespMsg.msg

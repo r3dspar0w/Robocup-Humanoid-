@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/booster_interface/rosidl_typesupport_fastrtps_c/booster_interface/srv/detail/agent_service__rosidl_typesupport_fastrtps_c.h

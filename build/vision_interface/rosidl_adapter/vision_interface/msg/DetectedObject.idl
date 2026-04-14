@@ -1,0 +1,36 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from vision_interface/msg/DetectedObject.msg
+// generated code does not contain a copyright notice
+
+
+module vision_interface {
+  module msg {
+    struct DetectedObject {
+      string label;
+
+      string color;
+
+      double confidence;
+
+      int64 xmin;
+
+      int64 ymin;
+
+      int64 xmax;
+
+      int64 ymax;
+
+      sequence<float> target_uv;
+
+      sequence<float> received_pos;
+
+      sequence<float> position;
+
+      sequence<float> position_projection;
+
+      sequence<float> position_cam;
+
+      int32 position_confidence;
+    };
+  };
+};

@@ -1,0 +1,15 @@
+{
+  "package_name": "vision_interface",
+  "non_idl_tuples": [
+    "/home/booster/Workspace/robocup_demo/src/interface/vision_interface:msg/DetectedObject.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/vision_interface:msg/Detections.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/vision_interface:msg/LineSegments.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/vision_interface:msg/CalParam.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/vision_interface:msg/DetectionsTrack.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/vision_interface:msg/SegmentationPoint.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/vision_interface:msg/SegmentationLine.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/vision_interface:msg/SegmentationResult.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/vision_interface:msg/ImageHeadPosition.msg",
+    "/home/booster/Workspace/robocup_demo/src/interface/vision_interface:msg/Ball.msg"
+  ]
+}

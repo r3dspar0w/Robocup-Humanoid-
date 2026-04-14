@@ -1,0 +1,28 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from vision_interface/msg/SegmentationLine.msg
+// generated code does not contain a copyright notice
+
+
+module vision_interface {
+  module msg {
+    struct SegmentationLine {
+      string label;
+
+      double x1;
+
+      double y1;
+
+      double x2;
+
+      double y2;
+
+      double u1;
+
+      double v1;
+
+      double u2;
+
+      double v2;
+    };
+  };
+};

@@ -1,0 +1,24 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from booster_interface/msg/MotorCmd.msg
+// generated code does not contain a copyright notice
+
+
+module booster_interface {
+  module msg {
+    struct MotorCmd {
+      int8 mode;
+
+      float q;
+
+      float dq;
+
+      float tau;
+
+      float kp;
+
+      float kd;
+
+      float weight;
+    };
+  };
+};

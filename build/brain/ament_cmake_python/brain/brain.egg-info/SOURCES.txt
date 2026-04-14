@@ -1,0 +1,8 @@
+setup.py
+brain/__init__.py
+brain.egg-info/PKG-INFO
+brain.egg-info/SOURCES.txt
+brain.egg-info/dependency_links.txt
+brain.egg-info/top_level.txt
+brain/msg/__init__.py
+brain/msg/_kick.py

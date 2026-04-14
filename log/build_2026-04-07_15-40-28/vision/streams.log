@@ -1,0 +1,283 @@
+[0.059s] Invoking command in '/home/booster/Workspace/robocup_demo/build/vision': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/booster/Workspace/robocup_demo/src/vision -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/booster/Workspace/robocup_demo/install/vision
+[0.365s] -- The C compiler identification is GNU 11.4.0
+[0.518s] -- The CXX compiler identification is GNU 11.4.0
+[0.546s] -- Detecting C compiler ABI info
+[0.829s] -- Detecting C compiler ABI info - done
+[0.846s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.847s] -- Detecting C compile features
+[0.849s] -- Detecting C compile features - done
+[0.860s] -- Detecting CXX compiler ABI info
+[1.115s] -- Detecting CXX compiler ABI info - done
+[1.165s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[1.167s] -- Detecting CXX compile features
+[1.169s] -- Detecting CXX compile features - done
+[1.173s] -- Building with CUDA/TensorRT support
+[1.184s] -- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+[1.764s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[2.015s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[2.077s] -- Found rclcpp: 16.0.12 (/opt/ros/humble/share/rclcpp/cmake)
+[2.174s] -- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[2.184s] -- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[2.204s] -- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[2.228s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.274s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.415s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[2.422s] -- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[2.808s] -- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[2.895s] -- Found FastRTPS: /opt/ros/humble/include  
+[3.029s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[3.058s] -- Looking for pthread.h
+[3.273s] -- Looking for pthread.h - found
+[3.277s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[3.621s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[3.626s] -- Found Threads: TRUE  
+[3.790s] -- Found sensor_msgs: 4.8.0 (/opt/ros/humble/share/sensor_msgs/cmake)
+[3.860s] -- Found image_transport: 3.1.11 (/opt/ros/humble/share/image_transport/cmake)
+[3.955s] -- Found tf2: 0.25.13 (/opt/ros/humble/share/tf2/cmake)
+[3.977s] -- Found vision_interface: 1.0.0 (/home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake)
+[4.062s] -- Found OpenCV: /usr (found suitable version "4.8.0", minimum required is "4.5") 
+[4.139s] -- Checking for module 'eigen3'
+[4.225s] --   Found eigen3, version 3.4.0
+[4.514s] -- Found Eigen: /usr/include/eigen3 (Required is at least version "3.1") 
+[4.514s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[4.630s] -- Found Boost: /usr/lib/aarch64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found suitable version "1.74.0", minimum required is "1.65.0") found components: system filesystem date_time iostreams serialization 
+[4.690s] -- Checking for module 'flann'
+[4.760s] --   Found flann, version 1.9.1
+[5.011s] -- Found FLANN: /usr/lib/aarch64-linux-gnu/libflann_cpp.so  
+[5.012s] -- FLANN found (include: /usr/include, lib: /usr/lib/aarch64-linux-gnu/libflann_cpp.so)
+[5.091s] -- Found GLEW: /usr/lib/aarch64-linux-gnu/libGLEW.so  
+[5.121s] -- Found OpenGL: /usr/lib/aarch64-linux-gnu/libOpenGL.so  found components: OpenGL GLX 
+[5.818s] -- Found MPI_C: /usr/lib/aarch64-linux-gnu/libmpi.so (found version "3.1") 
+[5.821s] -- Found MPI: TRUE (found version "3.1") found components: C 
+[5.828s] -- Found JsonCpp: /usr/lib/aarch64-linux-gnu/libjsoncpp.so (found suitable version "1.9.5", minimum required is "0.7.0") 
+[5.860s] -- Found ZLIB: /usr/lib/aarch64-linux-gnu/libz.so (found version "1.2.11") 
+[5.904s] -- Found PNG: /usr/lib/aarch64-linux-gnu/libpng.so (found version "1.6.37") 
+[5.974s] -- Found Eigen3: /usr/include/eigen3 (found version "3.4.0") 
+[6.426s] -- Found X11: /usr/include   
+[6.427s] -- Looking for XOpenDisplay in /usr/lib/aarch64-linux-gnu/libX11.so;/usr/lib/aarch64-linux-gnu/libXext.so
+[6.740s] -- Looking for XOpenDisplay in /usr/lib/aarch64-linux-gnu/libX11.so;/usr/lib/aarch64-linux-gnu/libXext.so - found
+[6.740s] -- Looking for gethostbyname
+[6.966s] -- Looking for gethostbyname - found
+[6.966s] -- Looking for connect
+[7.149s] -- Looking for connect - found
+[7.150s] -- Looking for remove
+[7.420s] -- Looking for remove - found
+[7.421s] -- Looking for shmat
+[7.709s] -- Looking for shmat - found
+[7.711s] -- Looking for IceConnectionNumber in ICE
+[7.888s] -- Looking for IceConnectionNumber in ICE - found
+[8.324s] -- Found EXPAT: /usr/lib/aarch64-linux-gnu/libexpat.so (found version "2.4.7") 
+[8.339s] -- Found double-conversion: /usr/lib/aarch64-linux-gnu/libdouble-conversion.so  
+[8.353s] -- Found LZ4: /usr/lib/aarch64-linux-gnu/liblz4.so (found version "1.9.3") 
+[8.362s] -- Found LZMA: /usr/lib/aarch64-linux-gnu/liblzma.so (found version "5.2.5") 
+[8.491s] -- Found JPEG: /usr/lib/aarch64-linux-gnu/libjpeg.so (found version "80") 
+[8.523s] -- Found TIFF: /usr/lib/aarch64-linux-gnu/libtiff.so (found version "4.3.0")  
+[8.533s] -- Found Freetype: /usr/lib/aarch64-linux-gnu/libfreetype.so (found version "2.11.1") 
+[8.556s] -- Found utf8cpp: /usr/include/utf8cpp  
+[8.914s] -- Checking for module 'libusb-1.0'
+[8.994s] --   Found libusb-1.0, version 1.0.25
+[9.227s] -- Found libusb: /usr/lib/aarch64-linux-gnu/libusb-1.0.so  
+[9.238s] -- Found OpenNI: /usr/lib/libOpenNI.so;libusb::libusb (found version "1.5.4.0") 
+[9.238s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[9.499s] -- Found OpenNI2: /usr/lib/aarch64-linux-gnu/libOpenNI2.so;libusb::libusb (found version "2.2.0.33") 
+[9.500s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/aarch64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[9.501s] [0m** WARNING ** io features related to pcap will be disabled[0m
+[9.955s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[9.975s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[9.993s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/aarch64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[10.484s] -- Found Qhull version 8.0.2
+[11.007s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[11.616s] -- looking for PCL_COMMON
+[11.625s] -- Found PCL_COMMON: /usr/lib/aarch64-linux-gnu/libpcl_common.so  
+[11.625s] -- looking for PCL_KDTREE
+[11.630s] -- Found PCL_KDTREE: /usr/lib/aarch64-linux-gnu/libpcl_kdtree.so  
+[11.631s] -- looking for PCL_OCTREE
+[11.638s] -- Found PCL_OCTREE: /usr/lib/aarch64-linux-gnu/libpcl_octree.so  
+[11.638s] -- looking for PCL_SEARCH
+[11.644s] -- Found PCL_SEARCH: /usr/lib/aarch64-linux-gnu/libpcl_search.so  
+[11.646s] -- looking for PCL_SAMPLE_CONSENSUS
+[11.650s] -- Found PCL_SAMPLE_CONSENSUS: /usr/lib/aarch64-linux-gnu/libpcl_sample_consensus.so  
+[11.651s] -- looking for PCL_FILTERS
+[11.657s] -- Found PCL_FILTERS: /usr/lib/aarch64-linux-gnu/libpcl_filters.so  
+[11.658s] -- looking for PCL_2D
+[11.658s] -- Found PCL_2D: /usr/include/pcl-1.12  
+[11.658s] -- looking for PCL_GEOMETRY
+[11.658s] -- Found PCL_GEOMETRY: /usr/include/pcl-1.12  
+[11.658s] -- looking for PCL_IO
+[11.662s] -- Found PCL_IO: /usr/lib/aarch64-linux-gnu/libpcl_io.so  
+[11.662s] -- looking for PCL_FEATURES
+[11.670s] -- Found PCL_FEATURES: /usr/lib/aarch64-linux-gnu/libpcl_features.so  
+[11.671s] -- looking for PCL_ML
+[11.690s] -- Found PCL_ML: /usr/lib/aarch64-linux-gnu/libpcl_ml.so  
+[11.691s] -- looking for PCL_SEGMENTATION
+[11.701s] -- Found PCL_SEGMENTATION: /usr/lib/aarch64-linux-gnu/libpcl_segmentation.so  
+[11.706s] -- looking for PCL_VISUALIZATION
+[11.714s] -- Found PCL_VISUALIZATION: /usr/lib/aarch64-linux-gnu/libpcl_visualization.so  
+[11.714s] -- looking for PCL_SURFACE
+[11.725s] -- Found PCL_SURFACE: /usr/lib/aarch64-linux-gnu/libpcl_surface.so  
+[11.725s] -- looking for PCL_REGISTRATION
+[11.729s] -- Found PCL_REGISTRATION: /usr/lib/aarch64-linux-gnu/libpcl_registration.so  
+[11.730s] -- looking for PCL_KEYPOINTS
+[11.732s] -- Found PCL_KEYPOINTS: /usr/lib/aarch64-linux-gnu/libpcl_keypoints.so  
+[11.733s] -- looking for PCL_TRACKING
+[11.739s] -- Found PCL_TRACKING: /usr/lib/aarch64-linux-gnu/libpcl_tracking.so  
+[11.740s] -- looking for PCL_RECOGNITION
+[11.745s] -- Found PCL_RECOGNITION: /usr/lib/aarch64-linux-gnu/libpcl_recognition.so  
+[11.748s] -- looking for PCL_STEREO
+[11.751s] -- Found PCL_STEREO: /usr/lib/aarch64-linux-gnu/libpcl_stereo.so  
+[11.752s] -- looking for PCL_APPS
+[11.754s] -- Found PCL_APPS: /usr/lib/aarch64-linux-gnu/libpcl_apps.so  
+[11.756s] -- looking for PCL_IN_HAND_SCANNER
+[11.757s] -- Found PCL_IN_HAND_SCANNER: /usr/include/pcl-1.12  
+[11.758s] -- looking for PCL_MODELER
+[11.760s] -- Found PCL_MODELER: /usr/include/pcl-1.12  
+[11.760s] -- looking for PCL_POINT_CLOUD_EDITOR
+[11.763s] -- Found PCL_POINT_CLOUD_EDITOR: /usr/include/pcl-1.12  
+[11.764s] -- looking for PCL_OUTOFCORE
+[11.773s] -- Found PCL_OUTOFCORE: /usr/lib/aarch64-linux-gnu/libpcl_outofcore.so  
+[11.774s] -- looking for PCL_PEOPLE
+[11.775s] -- Found PCL_PEOPLE: /usr/lib/aarch64-linux-gnu/libpcl_people.so  
+[11.777s] -- Found PCL: pcl_common;pcl_kdtree;pcl_octree;pcl_search;pcl_sample_consensus;pcl_filters;pcl_io;pcl_features;pcl_ml;pcl_segmentation;pcl_visualization;pcl_surface;pcl_registration;pcl_keypoints;pcl_tracking;pcl_recognition;pcl_stereo;pcl_apps;pcl_outofcore;pcl_people;Boost::system;Boost::filesystem;Boost::date_time;Boost::iostreams;Boost::serialization;/usr/lib/libOpenNI.so;libusb::libusb;/usr/lib/aarch64-linux-gnu/libOpenNI2.so;libusb::libusb;VTK::ChartsCore;VTK::CommonColor;VTK::CommonComputationalGeometry;VTK::CommonCore;VTK::CommonDataModel;VTK::CommonExecutionModel;VTK::CommonMath;VTK::CommonMisc;VTK::CommonTransforms;VTK::FiltersCore;VTK::FiltersExtraction;VTK::FiltersGeneral;VTK::FiltersGeometry;VTK::FiltersModeling;VTK::FiltersSources;VTK::ImagingCore;VTK::ImagingSources;VTK::InteractionImage;VTK::InteractionStyle;VTK::InteractionWidgets;VTK::IOCore;VTK::IOGeometry;VTK::IOImage;VTK::IOLegacy;VTK::IOPLY;VTK::RenderingAnnotation;VTK::RenderingCore;VTK::RenderingContext2D;VTK::RenderingLOD;VTK::RenderingFreeType;VTK::ViewsCore;VTK::ViewsContext2D;VTK::RenderingOpenGL2;VTK::GUISupportQt;FLANN::FLANN;QHULL::QHULL  
+[14.726s] -- The CUDA compiler identification is NVIDIA 12.6.68
+[14.753s] -- Detecting CUDA compiler ABI info
+[17.639s] -- Detecting CUDA compiler ABI info - done
+[17.715s] -- Check for working CUDA compiler: /usr/local/cuda/bin/nvcc - skipped
+[17.717s] -- Detecting CUDA compile features
+[17.719s] -- Detecting CUDA compile features - done
+[17.748s] -- Builing Calibration
+[17.828s] -- Found CUDAToolkit: /usr/local/cuda/include (found suitable version "12.6.68", minimum required is "12.2.140") 
+[18.053s] -- Found required Ceres dependency: Eigen version 3.4.0 in /usr/share/eigen3/cmake
+[18.068s] -- Found required Ceres dependency: glog
+[18.074s] -- Found required Ceres dependency: gflags
+[18.076s] -- Found Ceres version: 2.2.0 installed in: /home/booster/Workspace/robocup_demo/src/vision/thirdparty with components: [EigenSparse, SparseLinearAlgebraLibrary, LAPACK, SchurSpecializations]
+[18.311s] -- Configuring done
+[18.357s] [33mCMake Warning (dev) at src/calibration/CMakeLists.txt:15 (add_library):
+[18.358s]   Policy CMP0115 is not set: Source file extensions must be explicit.  Run
+[18.358s]   "cmake --help-policy CMP0115" for policy details.  Use the cmake_policy
+[18.359s]   command to set the policy and suppress this warning.
+[18.360s] 
+[18.360s]   File:
+[18.360s] 
+[18.360s]     /home/booster/Workspace/robocup_demo/src/vision/src/calibration/board_detector.cpp
+[18.360s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[18.361s] [0m
+[18.526s] [33mCMake Warning (dev) in src/model/trt/CMakeLists.txt:
+[18.526s]   Policy CMP0104 is not set: CMAKE_CUDA_ARCHITECTURES now detected for NVCC,
+[18.526s]   empty CUDA_ARCHITECTURES not allowed.  Run "cmake --help-policy CMP0104"
+[18.526s]   for policy details.  Use the cmake_policy command to set the policy and
+[18.527s]   suppress this warning.
+[18.527s] 
+[18.527s]   CUDA_ARCHITECTURES is empty for target "yolov8_trt".
+[18.527s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[18.527s] [0m
+[18.643s] -- Generating done
+[18.699s] [33mCMake Warning (dev) in src/model/trt/CMakeLists.txt:
+[18.699s]   Policy CMP0104 is not set: CMAKE_CUDA_ARCHITECTURES now detected for NVCC,
+[18.700s]   empty CUDA_ARCHITECTURES not allowed.  Run "cmake --help-policy CMP0104"
+[18.700s]   for policy details.  Use the cmake_policy command to set the policy and
+[18.700s]   suppress this warning.
+[18.700s] 
+[18.701s]   CUDA_ARCHITECTURES is empty for target "yolov8_trt".
+[18.701s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[18.701s] [0m
+[18.707s] -- Build files have been written to: /home/booster/Workspace/robocup_demo/build/vision
+[18.797s] Invoked command in '/home/booster/Workspace/robocup_demo/build/vision' returned '0': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/booster/Workspace/robocup_demo/src/vision -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/booster/Workspace/robocup_demo/install/vision
+[18.801s] Invoking command in '/home/booster/Workspace/robocup_demo/build/vision': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/vision -- -j5 -l5
+[18.964s] [  3%] [32mBuilding CXX object src/model/trt/CMakeFiles/yolov8_trt.dir/block.cpp.o[0m
+[20.126s] [  6%] [32mBuilding CXX object src/model/trt/CMakeFiles/yolov8_trt.dir/model.cpp.o[0m
+[21.179s] [  9%] [32mBuilding CXX object src/model/trt/CMakeFiles/yolov8_trt.dir/postprocess.cpp.o[0m
+[21.251s] [ 12%] [32mBuilding CUDA object src/model/trt/CMakeFiles/yolov8_trt.dir/postprocess.cu.o[0m
+[39.693s] [ 15%] [32mBuilding CUDA object src/model/trt/CMakeFiles/yolov8_trt.dir/preprocess.cu.o[0m
+[58.467s] [ 18%] [32mBuilding CUDA object src/model/trt/CMakeFiles/yolov8_trt.dir/yololayer.cu.o[0m
+[63.684s] [ 21%] [32mBuilding CXX object src/model/trt/CMakeFiles/yolov8_trt.dir/impl.cpp.o[0m
+[72.714s] [ 24%] [32mBuilding CXX object src/model/trt/CMakeFiles/yolov8_trt.dir/calibrator.cpp.o[0m
+[76.228s] [ 27%] [32m[1mLinking CXX shared library libyolov8_trt.so[0m
+[76.598s] [ 27%] Built target yolov8_trt
+[76.646s] [ 30%] [32mBuilding CXX object src/base/CMakeFiles/booster_vision_base.dir/intrin.cpp.o[0m
+[84.050s] [ 33%] [32mBuilding CXX object src/base/CMakeFiles/booster_vision_base.dir/pose.cpp.o[0m
+[92.313s] [ 36%] [32mBuilding CXX object src/base/CMakeFiles/booster_vision_base.dir/pointcloud_process.cpp.o[0m
+[118.002s] [ 39%] [32mBuilding CXX object src/base/CMakeFiles/booster_vision_base.dir/data_syncer.cpp.o[0m
+[132.855s] [ 42%] [32m[1mLinking CXX shared library libbooster_vision_base.so[0m
+[136.708s] [ 42%] Built target booster_vision_base
+[136.778s] [ 45%] [32mBuilding CXX object src/model/trt/CMakeFiles/yolov8_seg.dir/yolov8_seg.cpp.o[0m
+[142.047s] [ 48%] [32m[1mLinking CXX executable yolov8_seg[0m
+[142.315s] [ 48%] Built target yolov8_seg
+[142.370s] [ 51%] [32mBuilding CXX object src/calibration/CMakeFiles/booster_vision_calibration.dir/calibration.cpp.o[0m
+[158.360s] [ 54%] [32mBuilding CXX object src/calibration/CMakeFiles/booster_vision_calibration.dir/board_detector.cpp.o[0m
+[165.391s] [ 57%] [32m[1mLinking CXX shared library libbooster_vision_calibration.so[0m
+[167.244s] [ 57%] Built target booster_vision_calibration
+[167.298s] [ 60%] [32mBuilding CXX object src/model/trt/CMakeFiles/yolov8_det.dir/yolov8_det.cpp.o[0m
+[174.553s] [ 63%] [32m[1mLinking CXX executable yolov8_det[0m
+[174.901s] [ 63%] Built target yolov8_det
+[174.944s] [ 66%] [32mBuilding CXX object src/model/CMakeFiles/yolov8_model.dir/detector.cc.o[0m
+[181.465s] [ 69%] [32mBuilding CXX object src/model/CMakeFiles/yolov8_model.dir/segmentor.cc.o[0m
+[188.536s] [ 72%] [32m[1mLinking CXX shared library libyolov8_model.so[0m
+[188.792s] [ 72%] Built target yolov8_model
+[188.829s] [ 75%] [32mBuilding CXX object src/pose_estimator/CMakeFiles/booster_vision_pose_estimator.dir/pose_estimator.cpp.o[0m
+[204.068s] [ 78%] [32m[1mLinking CXX shared library libbooster_vision_pose_estimator.so[0m
+[205.618s] [ 78%] Built target booster_vision_pose_estimator
+[205.705s] [ 81%] [32mBuilding CXX object src/CMakeFiles/vision_node.dir/main.cpp.o[0m
+[222.017s] [ 84%] [32mBuilding CXX object src/CMakeFiles/vision_node.dir/vision_node.cpp.o[0m
+[298.193s] [ 87%] [32mBuilding CXX object src/CMakeFiles/vision_node.dir/img_bridge.cpp.o[0m
+[308.432s] [ 90%] [32m[1mLinking CXX executable vision_node[0m
+[317.713s] [ 90%] Built target vision_node
+[317.815s] [ 93%] [32mBuilding CXX object src/calibration/CMakeFiles/calibration_node.dir/calibration_node.cpp.o[0m
+[369.055s] [ 96%] [32mBuilding CXX object src/calibration/CMakeFiles/calibration_node.dir/__/img_bridge.cpp.o[0m
+[379.578s] [100%] [32m[1mLinking CXX executable calibration_node[0m
+[385.502s] [100%] Built target calibration_node
+[385.532s] Invoked command in '/home/booster/Workspace/robocup_demo/build/vision' returned '0': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/vision -- -j5 -l5
+[385.534s] Invoking command in '/home/booster/Workspace/robocup_demo/build/vision': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/booster/Workspace/robocup_demo/build/vision
+[385.558s] -- Install configuration: ""
+[385.559s] -- Execute custom install script
+[385.564s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/lib/libbooster_vision_base.so
+[385.589s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/lib/libyolov8_trt.so
+[385.607s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/lib/vision/yolov8_det
+[385.634s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/lib/vision/yolov8_seg
+[385.660s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/lib/libyolov8_model.so
+[385.690s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/lib/libbooster_vision_pose_estimator.so
+[385.715s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/lib/vision/calibration_node
+[385.742s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/lib/libbooster_vision_calibration.so
+[385.768s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/lib/vision/vision_node
+[385.810s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/launch/launch.py
+[385.829s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/config/field.yaml
+[385.849s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/config/vision.yaml
+[385.870s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/backup_bad_engines/best_orin.engine
+[385.892s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/backup_bad_local_models/best_digua_10.3.engine
+[385.909s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/backup_bad_local_models/best_digua_1223_10.3.engine
+[385.930s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/backup_bad_local_models/best_digua_second_10.3.engine
+[385.947s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/backup_bad_local_models/sim_data_det_0126.onnx
+[385.964s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/backup_bad_local_models/sim_data_seg_0126.onnx
+[385.981s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/best_orin.engine
+[385.998s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/best_orin_10.3.engine
+[386.015s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/best_seg_orin.engine
+[386.032s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/best_seg_orin_10.3.engine
+[386.050s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/model/k1_realsense_10.3.engine
+[386.068s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/ament_index/resource_index/package_run_dependencies/vision
+[386.085s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/ament_index/resource_index/parent_prefix_path/vision
+[386.103s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/environment/ament_prefix_path.sh
+[386.120s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/environment/ament_prefix_path.dsv
+[386.138s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/environment/path.sh
+[386.156s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/environment/path.dsv
+[386.173s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/local_setup.bash
+[386.190s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/local_setup.sh
+[386.207s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/local_setup.zsh
+[386.225s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/local_setup.dsv
+[386.242s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/package.dsv
+[386.261s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/ament_index/resource_index/packages/vision
+[386.279s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/cmake/ament_cmake_export_include_directories-extras.cmake
+[386.296s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/cmake/visionConfig.cmake
+[386.312s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/cmake/visionConfig-version.cmake
+[386.330s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision/share/vision/package.xml
+[386.348s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision/lib
+[386.348s] -- Installing: /home/booster/Workspace/robocup_demo/install/vision/lib/install
+[386.351s] -- Installing: /home/booster/Workspace/robocup_demo/install/vision/lib/libceres.so.2.2.0
+[386.380s] -- Installing: /home/booster/Workspace/robocup_demo/install/vision/lib/log
+[386.381s] -- Installing: /home/booster/Workspace/robocup_demo/install/vision/lib/log/build_2026-04-02_11-00-54
+[386.381s] -- Installing: /home/booster/Workspace/robocup_demo/install/vision/lib/log/latest_build
+[386.381s] -- Installing: /home/booster/Workspace/robocup_demo/install/vision/lib/log/latest
+[386.381s] -- Installing: /home/booster/Workspace/robocup_demo/install/vision/lib/cmake
+[386.382s] -- Installing: /home/booster/Workspace/robocup_demo/install/vision/lib/cmake/Ceres
+[386.382s] -- Installing: /home/booster/Workspace/robocup_demo/install/vision/lib/libceres.so.4
+[386.382s] -- Installing: /home/booster/Workspace/robocup_demo/install/vision/lib/build
+[386.382s] -- Installing: /home/booster/Workspace/robocup_demo/install/vision/lib/libceres.so
+[386.398s] Invoked command in '/home/booster/Workspace/robocup_demo/build/vision' returned '0': AMENT_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface:/opt/ros/humble LD_LIBRARY_PATH=/home/booster/Workspace/robocup_demo/install/vision_interface/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib:/usr/local/cuda/lib64 PYTHONPATH=/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/booster/Workspace/robocup_demo/build/vision

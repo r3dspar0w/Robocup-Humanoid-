@@ -1,0 +1,21 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/game_controller_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/game_controller_interface/msg/detail/game_control_data__type_support.c.o"
+  "CMakeFiles/game_controller_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/game_controller_interface/msg/detail/game_control_data__type_support.c.o.d"
+  "CMakeFiles/game_controller_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/game_controller_interface/msg/detail/robot_info__type_support.c.o"
+  "CMakeFiles/game_controller_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/game_controller_interface/msg/detail/robot_info__type_support.c.o.d"
+  "CMakeFiles/game_controller_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/game_controller_interface/msg/detail/team_info__type_support.c.o"
+  "CMakeFiles/game_controller_interface__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/game_controller_interface/msg/detail/team_info__type_support.c.o.d"
+  "libgame_controller_interface__rosidl_typesupport_introspection_c.pdb"
+  "libgame_controller_interface__rosidl_typesupport_introspection_c.so"
+  "rosidl_typesupport_introspection_c/game_controller_interface/msg/detail/game_control_data__rosidl_typesupport_introspection_c.h"
+  "rosidl_typesupport_introspection_c/game_controller_interface/msg/detail/game_control_data__type_support.c"
+  "rosidl_typesupport_introspection_c/game_controller_interface/msg/detail/robot_info__rosidl_typesupport_introspection_c.h"
+  "rosidl_typesupport_introspection_c/game_controller_interface/msg/detail/robot_info__type_support.c"
+  "rosidl_typesupport_introspection_c/game_controller_interface/msg/detail/team_info__rosidl_typesupport_introspection_c.h"
+  "rosidl_typesupport_introspection_c/game_controller_interface/msg/detail/team_info__type_support.c"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang C)
+  include(CMakeFiles/game_controller_interface__rosidl_typesupport_introspection_c.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

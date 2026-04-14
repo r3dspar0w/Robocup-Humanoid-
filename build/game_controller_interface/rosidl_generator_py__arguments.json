@@ -1,0 +1,28 @@
+{
+  "package_name": "game_controller_interface",
+  "output_dir": "/home/booster/Workspace/robocup_demo/build/game_controller_interface/rosidl_generator_py/game_controller_interface",
+  "template_dir": "/opt/ros/humble/share/rosidl_generator_py/cmake/../resource",
+  "idl_tuples": [
+    "/home/booster/Workspace/robocup_demo/build/game_controller_interface/rosidl_adapter/game_controller_interface:msg/GameControlData.idl",
+    "/home/booster/Workspace/robocup_demo/build/game_controller_interface/rosidl_adapter/game_controller_interface:msg/RobotInfo.idl",
+    "/home/booster/Workspace/robocup_demo/build/game_controller_interface/rosidl_adapter/game_controller_interface:msg/TeamInfo.idl"
+  ],
+  "target_dependencies": [
+    "/opt/ros/humble/share/rosidl_generator_py/cmake/../../../lib/rosidl_generator_py/rosidl_generator_py",
+    "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_generator_py/__init__.py",
+    "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_generator_py/generate_py_impl.py",
+    "/opt/ros/humble/share/rosidl_generator_py/cmake/../resource/_action_pkg_typesupport_entry_point.c.em",
+    "/opt/ros/humble/share/rosidl_generator_py/cmake/../resource/_action.py.em",
+    "/opt/ros/humble/share/rosidl_generator_py/cmake/../resource/_idl_pkg_typesupport_entry_point.c.em",
+    "/opt/ros/humble/share/rosidl_generator_py/cmake/../resource/_idl_support.c.em",
+    "/opt/ros/humble/share/rosidl_generator_py/cmake/../resource/_idl.py.em",
+    "/opt/ros/humble/share/rosidl_generator_py/cmake/../resource/_msg_pkg_typesupport_entry_point.c.em",
+    "/opt/ros/humble/share/rosidl_generator_py/cmake/../resource/_msg_support.c.em",
+    "/opt/ros/humble/share/rosidl_generator_py/cmake/../resource/_msg.py.em",
+    "/opt/ros/humble/share/rosidl_generator_py/cmake/../resource/_srv_pkg_typesupport_entry_point.c.em",
+    "/opt/ros/humble/share/rosidl_generator_py/cmake/../resource/_srv.py.em",
+    "/home/booster/Workspace/robocup_demo/build/game_controller_interface/rosidl_adapter/game_controller_interface/msg/GameControlData.idl",
+    "/home/booster/Workspace/robocup_demo/build/game_controller_interface/rosidl_adapter/game_controller_interface/msg/RobotInfo.idl",
+    "/home/booster/Workspace/robocup_demo/build/game_controller_interface/rosidl_adapter/game_controller_interface/msg/TeamInfo.idl"
+  ]
+}

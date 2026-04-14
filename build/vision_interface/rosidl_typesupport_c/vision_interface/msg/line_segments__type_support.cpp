@@ -1,0 +1,95 @@
+// generated from rosidl_typesupport_c/resource/idl__type_support.cpp.em
+// with input from vision_interface:msg/LineSegments.idl
+// generated code does not contain a copyright notice
+
+#include "cstddef"
+#include "rosidl_runtime_c/message_type_support_struct.h"
+#include "vision_interface/msg/detail/line_segments__struct.h"
+#include "vision_interface/msg/detail/line_segments__type_support.h"
+#include "rosidl_typesupport_c/identifier.h"
+#include "rosidl_typesupport_c/message_type_support_dispatch.h"
+#include "rosidl_typesupport_c/type_support_map.h"
+#include "rosidl_typesupport_c/visibility_control.h"
+#include "rosidl_typesupport_interface/macros.h"
+
+namespace vision_interface
+{
+
+namespace msg
+{
+
+namespace rosidl_typesupport_c
+{
+
+typedef struct _LineSegments_type_support_ids_t
+{
+  const char * typesupport_identifier[2];
+} _LineSegments_type_support_ids_t;
+
+static const _LineSegments_type_support_ids_t _LineSegments_message_typesupport_ids = {
+  {
+    "rosidl_typesupport_fastrtps_c",  // ::rosidl_typesupport_fastrtps_c::typesupport_identifier,
+    "rosidl_typesupport_introspection_c",  // ::rosidl_typesupport_introspection_c::typesupport_identifier,
+  }
+};
+
+typedef struct _LineSegments_type_support_symbol_names_t
+{
+  const char * symbol_name[2];
+} _LineSegments_type_support_symbol_names_t;
+
+#define STRINGIFY_(s) #s
+#define STRINGIFY(s) STRINGIFY_(s)
+
+static const _LineSegments_type_support_symbol_names_t _LineSegments_message_typesupport_symbol_names = {
+  {
+    STRINGIFY(ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_fastrtps_c, vision_interface, msg, LineSegments)),
+    STRINGIFY(ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspection_c, vision_interface, msg, LineSegments)),
+  }
+};
+
+typedef struct _LineSegments_type_support_data_t
+{
+  void * data[2];
+} _LineSegments_type_support_data_t;
+
+static _LineSegments_type_support_data_t _LineSegments_message_typesupport_data = {
+  {
+    0,  // will store the shared library later
+    0,  // will store the shared library later
+  }
+};
+
+static const type_support_map_t _LineSegments_message_typesupport_map = {
+  2,
+  "vision_interface",
+  &_LineSegments_message_typesupport_ids.typesupport_identifier[0],
+  &_LineSegments_message_typesupport_symbol_names.symbol_name[0],
+  &_LineSegments_message_typesupport_data.data[0],
+};
+
+static const rosidl_message_type_support_t LineSegments_message_type_support_handle = {
+  rosidl_typesupport_c__typesupport_identifier,
+  reinterpret_cast<const type_support_map_t *>(&_LineSegments_message_typesupport_map),
+  rosidl_typesupport_c__get_message_typesupport_handle_function,
+};
+
+}  // namespace rosidl_typesupport_c
+
+}  // namespace msg
+
+}  // namespace vision_interface
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+const rosidl_message_type_support_t *
+ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_c, vision_interface, msg, LineSegments)() {
+  return &::vision_interface::msg::rosidl_typesupport_c::LineSegments_message_type_support_handle;
+}
+
+#ifdef __cplusplus
+}
+#endif

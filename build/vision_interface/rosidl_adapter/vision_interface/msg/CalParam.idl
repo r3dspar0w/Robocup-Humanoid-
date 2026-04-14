@@ -1,0 +1,22 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from vision_interface/msg/CalParam.msg
+// generated code does not contain a copyright notice
+
+
+module vision_interface {
+  module msg {
+    struct CalParam {
+      @verbatim (language="comment", text=
+        "degs")
+      float pitch_compensation;
+
+      @verbatim (language="comment", text=
+        "degs")
+      float yaw_compensation;
+
+      @verbatim (language="comment", text=
+        "m")
+      float z_compensation;
+    };
+  };
+};

@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_generator_c/vision_interface/msg/detail/segmentation_result__type_support.h

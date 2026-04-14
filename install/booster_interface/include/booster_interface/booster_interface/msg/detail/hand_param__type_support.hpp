@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/booster_interface/rosidl_generator_cpp/booster_interface/msg/detail/hand_param__type_support.hpp

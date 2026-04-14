@@ -1,0 +1,17 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from booster_interface/srv/RpcService.srv
+// generated code does not contain a copyright notice
+
+#include "booster_interface/msg/BoosterApiReqMsg.idl"
+#include "booster_interface/msg/BoosterApiRespMsg.idl"
+
+module booster_interface {
+  module srv {
+    struct RpcService_Request {
+      booster_interface::msg::BoosterApiReqMsg msg;
+    };
+    struct RpcService_Response {
+      booster_interface::msg::BoosterApiRespMsg msg;
+    };
+  };
+};

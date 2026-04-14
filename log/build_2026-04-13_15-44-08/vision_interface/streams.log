@@ -1,0 +1,273 @@
+[0.153s] Invoking command in '/home/booster/Workspace/robocup_demo/build/vision_interface': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/vision_interface -- -j5 -l5
+[0.552s] [  0%] Built target vision_interface__cpp
+[0.896s] [  0%] Built target ament_cmake_python_symlink_vision_interface
+[1.212s] [ 12%] Built target vision_interface__rosidl_typesupport_introspection_cpp
+[3.166s] running egg_info
+[3.173s] writing vision_interface.egg-info/PKG-INFO
+[3.173s] writing dependency_links to vision_interface.egg-info/dependency_links.txt
+[3.176s] writing top-level names to vision_interface.egg-info/top_level.txt
+[3.223s] reading manifest file 'vision_interface.egg-info/SOURCES.txt'
+[3.234s] writing manifest file 'vision_interface.egg-info/SOURCES.txt'
+[3.661s] [ 12%] Built target ament_cmake_python_build_vision_interface_egg
+[3.932s] [ 23%] Built target vision_interface__rosidl_typesupport_fastrtps_cpp
+[4.093s] [ 35%] Built target vision_interface__rosidl_typesupport_cpp
+[4.254s] [ 47%] Built target vision_interface__rosidl_generator_c
+[4.363s] [ 59%] Built target vision_interface__rosidl_typesupport_fastrtps_c
+[4.508s] [ 70%] Built target vision_interface__rosidl_typesupport_c
+[4.694s] [ 82%] Built target vision_interface__rosidl_typesupport_introspection_c
+[4.809s] [ 82%] Built target vision_interface
+[5.038s] [ 83%] Built target vision_interface__py
+[5.193s] [ 94%] Built target vision_interface__rosidl_generator_py
+[5.539s] [ 96%] Built target vision_interface__rosidl_typesupport_fastrtps_c__pyext
+[5.664s] [ 98%] Built target vision_interface__rosidl_typesupport_c__pyext
+[5.861s] [100%] Built target vision_interface__rosidl_typesupport_introspection_c__pyext
+[6.114s] Invoked command in '/home/booster/Workspace/robocup_demo/build/vision_interface' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/vision_interface -- -j5 -l5
+[6.125s] Invoking command in '/home/booster/Workspace/robocup_demo/build/vision_interface': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/booster/Workspace/robocup_demo/build/vision_interface
+[6.168s] -- Install configuration: ""
+[6.174s] -- Execute custom install script
+[6.175s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/ament_index/resource_index/rosidl_interfaces/vision_interface
+[6.176s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/ball.h
+[6.176s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/cal_param.h
+[6.177s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__functions.h
+[6.177s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__struct.h
+[6.177s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__type_support.h
+[6.177s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__functions.h
+[6.178s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__struct.h
+[6.178s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__type_support.h
+[6.178s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__functions.h
+[6.187s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__struct.h
+[6.188s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__type_support.h
+[6.189s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__functions.h
+[6.189s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__struct.h
+[6.189s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__type_support.h
+[6.189s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__functions.h
+[6.189s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__struct.h
+[6.189s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__type_support.h
+[6.189s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__functions.h
+[6.189s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__struct.h
+[6.194s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__type_support.h
+[6.194s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__functions.h
+[6.194s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__struct.h
+[6.194s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__type_support.h
+[6.195s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__functions.h
+[6.195s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__struct.h
+[6.195s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__type_support.h
+[6.195s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__functions.h
+[6.195s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__struct.h
+[6.195s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__type_support.h
+[6.195s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__functions.h
+[6.195s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__struct.h
+[6.195s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__type_support.h
+[6.195s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detected_object.h
+[6.195s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detections.h
+[6.198s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detections_track.h
+[6.202s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/image_head_position.h
+[6.206s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/line_segments.h
+[6.207s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/rosidl_generator_c__visibility_control.h
+[6.207s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/segmentation_line.h
+[6.209s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/segmentation_point.h
+[6.209s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/segmentation_result.h
+[6.209s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/library_path.sh
+[6.209s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/library_path.dsv
+[6.209s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__rosidl_typesupport_fastrtps_c.h
+[6.210s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__rosidl_typesupport_fastrtps_c.h
+[6.210s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__rosidl_typesupport_fastrtps_c.h
+[6.211s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__rosidl_typesupport_fastrtps_c.h
+[6.211s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__rosidl_typesupport_fastrtps_c.h
+[6.211s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__rosidl_typesupport_fastrtps_c.h
+[6.212s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__rosidl_typesupport_fastrtps_c.h
+[6.212s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__rosidl_typesupport_fastrtps_c.h
+[6.213s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__rosidl_typesupport_fastrtps_c.h
+[6.213s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__rosidl_typesupport_fastrtps_c.h
+[6.213s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[6.213s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/ball.hpp
+[6.213s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/cal_param.hpp
+[6.213s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__builder.hpp
+[6.213s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__struct.hpp
+[6.213s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__traits.hpp
+[6.214s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__type_support.hpp
+[6.214s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__builder.hpp
+[6.214s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__struct.hpp
+[6.214s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__traits.hpp
+[6.214s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__type_support.hpp
+[6.215s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__builder.hpp
+[6.215s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__struct.hpp
+[6.215s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__traits.hpp
+[6.221s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__type_support.hpp
+[6.222s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__builder.hpp
+[6.223s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__struct.hpp
+[6.228s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__traits.hpp
+[6.228s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__type_support.hpp
+[6.229s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__builder.hpp
+[6.229s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__struct.hpp
+[6.229s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__traits.hpp
+[6.231s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__type_support.hpp
+[6.231s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__builder.hpp
+[6.231s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__struct.hpp
+[6.231s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__traits.hpp
+[6.231s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__type_support.hpp
+[6.238s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__builder.hpp
+[6.239s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__struct.hpp
+[6.239s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__traits.hpp
+[6.239s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__type_support.hpp
+[6.240s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__builder.hpp
+[6.240s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__struct.hpp
+[6.241s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__traits.hpp
+[6.241s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__type_support.hpp
+[6.243s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__builder.hpp
+[6.243s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__struct.hpp
+[6.243s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__traits.hpp
+[6.243s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__type_support.hpp
+[6.243s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__builder.hpp
+[6.243s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__struct.hpp
+[6.245s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__traits.hpp
+[6.245s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__type_support.hpp
+[6.246s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detected_object.hpp
+[6.247s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detections.hpp
+[6.247s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detections_track.hpp
+[6.247s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/image_head_position.hpp
+[6.247s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/line_segments.hpp
+[6.247s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/rosidl_generator_cpp__visibility_control.hpp
+[6.248s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/segmentation_line.hpp
+[6.259s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/segmentation_point.hpp
+[6.267s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/segmentation_result.hpp
+[6.268s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__rosidl_typesupport_fastrtps_cpp.hpp
+[6.269s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__rosidl_typesupport_fastrtps_cpp.hpp
+[6.271s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__rosidl_typesupport_fastrtps_cpp.hpp
+[6.271s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__rosidl_typesupport_fastrtps_cpp.hpp
+[6.274s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__rosidl_typesupport_fastrtps_cpp.hpp
+[6.275s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__rosidl_typesupport_fastrtps_cpp.hpp
+[6.275s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__rosidl_typesupport_fastrtps_cpp.hpp
+[6.275s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__rosidl_typesupport_fastrtps_cpp.hpp
+[6.275s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__rosidl_typesupport_fastrtps_cpp.hpp
+[6.276s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__rosidl_typesupport_fastrtps_cpp.hpp
+[6.276s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[6.276s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__rosidl_typesupport_introspection_c.h
+[6.277s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__rosidl_typesupport_introspection_c.h
+[6.277s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__rosidl_typesupport_introspection_c.h
+[6.277s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__rosidl_typesupport_introspection_c.h
+[6.277s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__rosidl_typesupport_introspection_c.h
+[6.278s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__rosidl_typesupport_introspection_c.h
+[6.278s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__rosidl_typesupport_introspection_c.h
+[6.278s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__rosidl_typesupport_introspection_c.h
+[6.278s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__rosidl_typesupport_introspection_c.h
+[6.279s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__rosidl_typesupport_introspection_c.h
+[6.279s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[6.279s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/ball__rosidl_typesupport_introspection_cpp.hpp
+[6.279s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/cal_param__rosidl_typesupport_introspection_cpp.hpp
+[6.279s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detected_object__rosidl_typesupport_introspection_cpp.hpp
+[6.279s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections__rosidl_typesupport_introspection_cpp.hpp
+[6.279s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/detections_track__rosidl_typesupport_introspection_cpp.hpp
+[6.280s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/image_head_position__rosidl_typesupport_introspection_cpp.hpp
+[6.280s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/line_segments__rosidl_typesupport_introspection_cpp.hpp
+[6.280s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_line__rosidl_typesupport_introspection_cpp.hpp
+[6.280s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_point__rosidl_typesupport_introspection_cpp.hpp
+[6.281s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/include/vision_interface/vision_interface/msg/detail/segmentation_result__rosidl_typesupport_introspection_cpp.hpp
+[6.281s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/pythonpath.sh
+[6.281s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/pythonpath.dsv
+[6.281s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface-1.0.0-py3.10.egg-info/PKG-INFO
+[6.282s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface-1.0.0-py3.10.egg-info/SOURCES.txt
+[6.282s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface-1.0.0-py3.10.egg-info/dependency_links.txt
+[6.282s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface-1.0.0-py3.10.egg-info/top_level.txt
+[6.282s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/__init__.py
+[6.287s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/_vision_interface_s.ep.rosidl_typesupport_c.c
+[6.292s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/_vision_interface_s.ep.rosidl_typesupport_fastrtps_c.c
+[6.293s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/_vision_interface_s.ep.rosidl_typesupport_introspection_c.c
+[6.294s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/libvision_interface__rosidl_generator_py.so
+[6.297s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/__init__.py
+[6.298s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_ball.py
+[6.299s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_ball_s.c
+[6.299s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_cal_param.py
+[6.300s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_cal_param_s.c
+[6.300s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_detected_object.py
+[6.301s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_detected_object_s.c
+[6.301s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_detections.py
+[6.302s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_detections_s.c
+[6.305s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_detections_track.py
+[6.306s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_detections_track_s.c
+[6.306s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_image_head_position.py
+[6.306s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_image_head_position_s.c
+[6.306s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_line_segments.py
+[6.307s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_line_segments_s.c
+[6.307s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_segmentation_line.py
+[6.307s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_segmentation_line_s.c
+[6.307s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_segmentation_point.py
+[6.308s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_segmentation_point_s.c
+[6.308s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_segmentation_result.py
+[6.308s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg/_segmentation_result_s.c
+[6.308s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/vision_interface_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so
+[6.309s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/vision_interface_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so
+[6.309s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/vision_interface_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so
+[6.309s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/vision_interface_s__rosidl_typesupport_fastrtps_c.cpython-310-aarch64-linux-gnu.so
+[6.310s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/vision_interface_s__rosidl_typesupport_introspection_c.cpython-310-aarch64-linux-gnu.so
+[6.310s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/vision_interface_s__rosidl_typesupport_c.cpython-310-aarch64-linux-gnu.so
+[6.310s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/DetectedObject.idl
+[6.314s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/Detections.idl
+[6.314s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/LineSegments.idl
+[6.314s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/CalParam.idl
+[6.322s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/DetectionsTrack.idl
+[6.325s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/SegmentationPoint.idl
+[6.325s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/SegmentationLine.idl
+[6.325s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/SegmentationResult.idl
+[6.326s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/ImageHeadPosition.idl
+[6.326s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/Ball.idl
+[6.326s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/DetectedObject.msg
+[6.326s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/Detections.msg
+[6.326s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/LineSegments.msg
+[6.327s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/CalParam.msg
+[6.327s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/DetectionsTrack.msg
+[6.327s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/SegmentationPoint.msg
+[6.327s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/SegmentationLine.msg
+[6.327s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/SegmentationResult.msg
+[6.327s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/ImageHeadPosition.msg
+[6.328s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/msg/Ball.msg
+[6.328s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/ament_index/resource_index/package_run_dependencies/vision_interface
+[6.328s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/ament_index/resource_index/parent_prefix_path/vision_interface
+[6.328s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/ament_prefix_path.sh
+[6.328s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/ament_prefix_path.dsv
+[6.329s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/path.sh
+[6.329s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/environment/path.dsv
+[6.329s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/local_setup.bash
+[6.329s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/local_setup.sh
+[6.329s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/local_setup.zsh
+[6.329s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/local_setup.dsv
+[6.329s] -- Symlinking: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/package.dsv
+[6.359s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/ament_index/resource_index/packages/vision_interface
+[6.359s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/rosidl_cmake-extras.cmake
+[6.360s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/ament_cmake_export_dependencies-extras.cmake
+[6.360s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/ament_cmake_export_include_directories-extras.cmake
+[6.360s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/ament_cmake_export_libraries-extras.cmake
+[6.360s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/ament_cmake_export_targets-extras.cmake
+[6.360s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[6.360s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[6.361s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interfaceConfig.cmake
+[6.361s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interfaceConfig-version.cmake
+[6.361s] -- Up-to-date symlink: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/package.xml
+[6.361s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_generator_c.so
+[6.361s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_fastrtps_c.so
+[6.361s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_fastrtps_cpp.so
+[6.362s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_introspection_c.so
+[6.362s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_c.so
+[6.362s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_introspection_cpp.so
+[6.362s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_typesupport_cpp.so
+[6.473s] Listing '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface'...
+[6.473s] Listing '/home/booster/Workspace/robocup_demo/install/vision_interface/local/lib/python3.10/dist-packages/vision_interface/msg'...
+[6.502s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/lib/libvision_interface__rosidl_generator_py.so
+[6.502s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_generator_cExport.cmake
+[6.503s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_generator_cExport-noconfig.cmake
+[6.503s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_typesupport_fastrtps_cExport.cmake
+[6.503s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[6.506s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_generator_cppExport.cmake
+[6.506s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_typesupport_fastrtps_cppExport.cmake
+[6.507s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[6.507s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_introspection_cExport.cmake
+[6.507s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[6.508s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_cExport.cmake
+[6.509s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_cExport-noconfig.cmake
+[6.509s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_introspection_cppExport.cmake
+[6.509s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[6.509s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_cppExport.cmake
+[6.509s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/vision_interface__rosidl_typesupport_cppExport-noconfig.cmake
+[6.509s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_generator_pyExport.cmake
+[6.509s] -- Up-to-date: /home/booster/Workspace/robocup_demo/install/vision_interface/share/vision_interface/cmake/export_vision_interface__rosidl_generator_pyExport-noconfig.cmake
+[6.521s] Invoked command in '/home/booster/Workspace/robocup_demo/build/vision_interface' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/booster/Workspace/robocup_demo/build/vision_interface

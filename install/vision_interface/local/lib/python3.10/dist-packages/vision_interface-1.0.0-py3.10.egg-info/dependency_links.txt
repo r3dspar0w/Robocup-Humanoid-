@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/vision_interface/ament_cmake_python/vision_interface/vision_interface.egg-info/dependency_links.txt

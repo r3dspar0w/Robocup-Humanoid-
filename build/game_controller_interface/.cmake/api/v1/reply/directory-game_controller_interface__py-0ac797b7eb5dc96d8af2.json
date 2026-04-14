@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "game_controller_interface__py",
+		"source" : "/home/booster/Workspace/robocup_demo/build/game_controller_interface/game_controller_interface__py"
+	}
+}

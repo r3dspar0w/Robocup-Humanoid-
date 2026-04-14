@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/brain/rosidl_generator_py/brain/msg/_kick.py

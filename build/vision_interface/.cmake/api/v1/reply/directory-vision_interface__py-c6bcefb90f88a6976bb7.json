@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "vision_interface__py",
+		"source" : "/home/booster/Workspace/robocup_demo/build/vision_interface/vision_interface__py"
+	}
+}

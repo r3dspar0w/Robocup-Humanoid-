@@ -1,0 +1,1 @@
+/home/booster/Workspace/robocup_demo/build/game_controller_interface/ament_cmake_core/game_controller_interfaceConfig.cmake

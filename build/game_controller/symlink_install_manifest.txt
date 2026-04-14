@@ -1,0 +1,17 @@
+/home/booster/Workspace/robocup_demo/install/game_controller/share/game_controller/launch/launch.py
+/home/booster/Workspace/robocup_demo/install/game_controller/lib/game_controller/game_controller_node
+/home/booster/Workspace/robocup_demo/install/game_controller/share/ament_index/resource_index/package_run_dependencies/game_controller
+/home/booster/Workspace/robocup_demo/install/game_controller/share/ament_index/resource_index/parent_prefix_path/game_controller
+/home/booster/Workspace/robocup_demo/install/game_controller/share/game_controller/environment/ament_prefix_path.sh
+/home/booster/Workspace/robocup_demo/install/game_controller/share/game_controller/environment/ament_prefix_path.dsv
+/home/booster/Workspace/robocup_demo/install/game_controller/share/game_controller/environment/path.sh
+/home/booster/Workspace/robocup_demo/install/game_controller/share/game_controller/environment/path.dsv
+/home/booster/Workspace/robocup_demo/install/game_controller/share/game_controller/local_setup.bash
+/home/booster/Workspace/robocup_demo/install/game_controller/share/game_controller/local_setup.sh
+/home/booster/Workspace/robocup_demo/install/game_controller/share/game_controller/local_setup.zsh
+/home/booster/Workspace/robocup_demo/install/game_controller/share/game_controller/local_setup.dsv
+/home/booster/Workspace/robocup_demo/install/game_controller/share/game_controller/package.dsv
+/home/booster/Workspace/robocup_demo/install/game_controller/share/ament_index/resource_index/packages/game_controller
+/home/booster/Workspace/robocup_demo/install/game_controller/share/game_controller/cmake/game_controllerConfig.cmake
+/home/booster/Workspace/robocup_demo/install/game_controller/share/game_controller/cmake/game_controllerConfig-version.cmake
+/home/booster/Workspace/robocup_demo/install/game_controller/share/game_controller/package.xml

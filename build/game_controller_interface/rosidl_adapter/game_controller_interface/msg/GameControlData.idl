@@ -1,0 +1,74 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from game_controller_interface/msg/GameControlData.msg
+// generated code does not contain a copyright notice
+
+#include "game_controller_interface/msg/TeamInfo.idl"
+
+module game_controller_interface {
+  module msg {
+    typedef uint8 uint8__4[4];
+    typedef game_controller_interface::msg::TeamInfo game_controller_interface__msg__TeamInfo;
+    typedef game_controller_interface__msg__TeamInfo game_controller_interface__msg__TeamInfo__2[2];
+    @verbatim (language="comment", text=
+      "following include/RoboCupGameControllData.h's RoboCupGameControlData structure")
+    struct GameControlData {
+      @verbatim (language="comment", text=
+        "header to identify the structure")
+      uint8__4 header;
+
+      @verbatim (language="comment", text=
+        "version of the data structure")
+      uint16 version;
+
+      @verbatim (language="comment", text=
+        "number incremented with each packet sent (with wraparound)")
+      uint8 packet_number;
+
+      @verbatim (language="comment", text=
+        "the number of players on a team")
+      uint8 players_per_team;
+
+      @verbatim (language="comment", text=
+        "type of the game (GAME_ROUNDROBIN, GAME_PLAYOFF, GAME_DROPIN)")
+      uint8 game_type;
+
+      @verbatim (language="comment", text=
+        "state of the game (STATE_READY, STATE_PLAYING, etc)")
+      uint8 state;
+
+      @verbatim (language="comment", text=
+        "1 = game in first half, 0 otherwise")
+      uint8 first_half;
+
+      @verbatim (language="comment", text=
+        "the team number of the next team to kick off or DROPBALL")
+      uint8 kick_off_team;
+
+      @verbatim (language="comment", text=
+        "extra state information - (STATE2_NORMAL, STATE2_PENALTYSHOOT, etc)")
+      uint8 secondary_state;
+
+      @verbatim (language="comment", text=
+        "Extra info on the secondary state")
+      uint8__4 secondary_state_info;
+
+      @verbatim (language="comment", text=
+        "number of team that caused last drop in")
+      uint8 drop_in_team;
+
+      @verbatim (language="comment", text=
+        "number of seconds passed since the last drop in. -1 (0xffff) before first dropin")
+      uint16 drop_in_time;
+
+      @verbatim (language="comment", text=
+        "estimate of number of seconds remaining in the half")
+      uint16 secs_remaining;
+
+      @verbatim (language="comment", text=
+        "number of seconds shown as secondary time (remaining ready, until free ball, etc)")
+      uint16 secondary_time;
+
+      game_controller_interface__msg__TeamInfo__2 teams;
+    };
+  };
+};
