@@ -2,6 +2,7 @@
 
 import launch
 import os
+from ament_index_python.packages import PackageNotFoundError, get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch_ros.actions import Node
@@ -18,6 +19,16 @@ def handle_configuration(context, *args, **kwargs):
     config_file = os.path.join(config_path, 'config.yaml') 
     config_local_file = os.path.join(config_path, 'config_local.yaml') 
     config_home_file = os.path.join(os.path.expanduser('~'), 'agents/booster_soccer/brain.yaml') 
+    motion_control_config_file = None
+    default_motion_model_path = ''
+    motion_control_available = False
+    try:
+        motion_control_share = get_package_share_directory('motion_control')
+        motion_control_config_file = os.path.join(motion_control_share, 'config', 'config.yaml')
+        default_motion_model_path = os.path.join(motion_control_share, 'model', 'policy.onnx')
+        motion_control_available = True
+    except PackageNotFoundError:
+        print('[brain launch] motion_control package not found, skipping custom motion node')
 
 
     behavior_trees_dir = os.path.join(os.path.dirname(__file__), '../behavior_trees')
@@ -65,7 +76,34 @@ def handle_configuration(context, *args, **kwargs):
     if disableCom in ['true', 'True', '1']:
         config['enable_com'] = False
 
-    return [
+    motion_model_path = context.perform_substitution(LaunchConfiguration('custom_walk_model_path'))
+    use_custom_walk_arg = context.perform_substitution(LaunchConfiguration('use_custom_walk'))
+    use_custom_walk_auto = motion_control_available
+    if use_custom_walk_arg in ['true', 'True', '1']:
+        use_custom_walk = True
+    elif use_custom_walk_arg in ['false', 'False', '0']:
+        use_custom_walk = False
+    else:
+        use_custom_walk = use_custom_walk_auto
+
+    if use_custom_walk and not motion_control_available:
+        print('[brain launch] custom walk was requested but motion_control is not available; falling back to stock walk')
+        use_custom_walk = False
+
+    if use_custom_walk:
+        print('[brain launch] custom walk enabled')
+    else:
+        print('[brain launch] custom walk disabled')
+
+    motion_config = {
+        'robot.custom_walk_model_path': motion_model_path if motion_model_path else default_motion_model_path,
+    }
+    if not robot_name == '':
+        motion_config['robot.robot_name'] = robot_name
+    if sim in ['true', 'True', '1']:
+        motion_config['use_sim_time'] = True
+
+    nodes = [
         Node(
             package ='brain',
             executable='brain_node',
@@ -74,10 +112,28 @@ def handle_configuration(context, *args, **kwargs):
                 config_file,
                 config_local_file,
                 config_home_file,
-                config
+                config,
+                {
+                    'robot.use_custom_walk': use_custom_walk,
+                }
             ]
         )
     ]
+
+    if motion_control_available and use_custom_walk:
+        nodes.append(
+            Node(
+                package='motion_control',
+                executable='custom_motion_node',
+                output='screen',
+                parameters=[
+                    motion_control_config_file,
+                    motion_config
+                ]
+            )
+        )
+
+    return nodes
 
 
 def generate_launch_description():
@@ -112,6 +168,16 @@ def generate_launch_description():
             'robot_name',
             default_value='',
             description='Set the robot name, for example robot_name:=robot0'
+        ),
+        DeclareLaunchArgument(
+            'custom_walk_model_path',
+            default_value='',
+            description='Override the ONNX locomotion policy path used by motion_control'
+        ),
+        DeclareLaunchArgument(
+            'use_custom_walk',
+            default_value='auto',
+            description='Set to true, false, or auto. auto enables custom walk when motion_control is available'
         ),
         DeclareLaunchArgument(
             'sim', 

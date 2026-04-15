@@ -6,6 +6,7 @@
 #include "booster_interface/srv/rpc_service.hpp"
 #include "booster_interface/msg/booster_api_req_msg.hpp"
 #include "booster_msgs/msg/rpc_req_msg.hpp"
+#include "geometry_msgs/msg/twist.hpp"
 
 using namespace std;
 
@@ -123,8 +124,10 @@ public:
 private:
     int call(booster_interface::msg::BoosterApiReqMsg msg);
     rclcpp::Publisher<booster_msgs::msg::RpcReqMsg>::SharedPtr publisher;
+    rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr custom_walk_publisher;
     Brain *brain;
     double _vx, _vy, _vtheta;
     rclcpp::Time _lastCmdTime;
     rclcpp::Time _lastNonZeroCmdTime;
+    bool custom_walk_mode_active_ = false;
 };

@@ -20,6 +20,8 @@ brain_node:
       min_vx: 0.3 # Minimum x velocity when command is too small, to prevent no response
       min_vy: 0.3 # Minimum y velocity when command is too small, to prevent no response
       min_vtheta: 0.25 # Minimum theta velocity when command is too small, to prevent no response
+      use_custom_walk: false
+      custom_walk_cmd_topic: "/custom_walk_cmd"
 
     strategy:
       ball_confidence_threshold: 50.0

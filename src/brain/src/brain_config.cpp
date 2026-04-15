@@ -113,6 +113,15 @@ double BrainConfig::get_min_vtheta() {
     return static_cast<rclcpp::Node*>(brain)->get_parameter_or("robot.min_vtheta", 0.2);
 }
 
+bool BrainConfig::get_use_custom_walk() {
+    return static_cast<rclcpp::Node*>(brain)->get_parameter_or("robot.use_custom_walk", false);
+}
+
+string BrainConfig::get_custom_walk_cmd_topic() {
+    return static_cast<rclcpp::Node*>(brain)->get_parameter_or("robot.custom_walk_cmd_topic",
+                                                               string("/custom_walk_cmd"));
+}
+
 double BrainConfig::get_ball_confidence_threshold() {
     return static_cast<rclcpp::Node*>(brain)->get_parameter_or("strategy.ball_confidence_threshold", 50.0);
 }

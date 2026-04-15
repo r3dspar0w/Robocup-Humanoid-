@@ -11,6 +11,10 @@ void RobotClient::init(string robot_name)
 {
     string suffix = robot_name.empty() ? "" : ("/" + robot_name);
     publisher = brain->create_publisher<booster_msgs::msg::RpcReqMsg>("LocoApiTopic" + suffix + "Req", 10);
+    custom_walk_publisher = brain->create_publisher<geometry_msgs::msg::Twist>(
+        brain->config->get_custom_walk_cmd_topic() + suffix,
+        10
+    );
 }
 
 int RobotClient::call(booster_interface::msg::BoosterApiReqMsg msg)
@@ -39,6 +43,7 @@ int RobotClient::moveHead(double pitch, double yaw)
 
 int RobotClient::standUp()
 {
+    custom_walk_mode_active_ = false;
     booster_interface::msg::BoosterApiReqMsg msg;
     msg.api_id = static_cast<int64_t>(booster::robot::b1::LocoApiId::kGetUp);
     nlohmann::json body;
@@ -49,6 +54,7 @@ int RobotClient::standUp()
 
 int RobotClient::RLVisionKick(bool start)
 {
+    custom_walk_mode_active_ = false;
     booster_interface::msg::BoosterApiReqMsg msg;
     msg.api_id = static_cast<int64_t>(booster::robot::b1::LocoApiId::kShoot);
     nlohmann::json body;
@@ -60,12 +66,14 @@ int RobotClient::RLVisionKick(bool start)
 
 int RobotClient::robocupWalk()
 {
+    custom_walk_mode_active_ = false;
     std::cout << "RobotClient::robocupWalk CreateChangeModeMsg called" << std::endl;
     return call(booster_interface::CreateChangeModeMsg(booster::robot::RobotMode::kWalking));
 }
 
 int RobotClient::enterDamping()
 {
+    custom_walk_mode_active_ = false;
     return call(booster_interface::CreateChangeModeMsg(booster::robot::RobotMode::kDamping));
 }
 
@@ -118,6 +126,22 @@ int RobotClient::setVelocity(double x, double y, double theta)
     if (fabs(_vx) > 1e-3 || fabs(_vy) > 1e-3 || fabs(_vtheta) > 1e-3) _lastNonZeroCmdTime = brain->get_clock()->now();
     brain->log->log("RobotClient/setVelocity_out",
         format("vx: %.2f  vy: %.2f  vtheta: %.2f", x, y, theta));
+
+    if (brain->config->get_use_custom_walk() && custom_walk_publisher) {
+        if (!custom_walk_mode_active_) {
+            call(booster_interface::CreateChangeModeMsg(booster::robot::RobotMode::kCustom));
+            custom_walk_mode_active_ = true;
+        }
+
+        geometry_msgs::msg::Twist cmd;
+        cmd.linear.x = x;
+        cmd.linear.y = y;
+        cmd.angular.z = theta;
+        custom_walk_publisher->publish(cmd);
+        return 0;
+    }
+
+    custom_walk_mode_active_ = false;
     return call(booster_interface::CreateMoveMsg(x, y, theta));
 }
 

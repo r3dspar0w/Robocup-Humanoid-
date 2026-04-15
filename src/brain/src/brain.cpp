@@ -57,6 +57,8 @@ Brain::Brain() : rclcpp::Node("brain_node")
     declare_parameter<double>("robot.min_vx", 0.4);
     declare_parameter<double>("robot.min_vy", 0.3);
     declare_parameter<double>("robot.min_vtheta", 0.2);
+    declare_parameter<bool>("robot.use_custom_walk", false);
+    declare_parameter<string>("robot.custom_walk_cmd_topic", "/custom_walk_cmd");
 
     declare_parameter<double>("strategy.ball_confidence_threshold", 50.0);   
     declare_parameter<double>("strategy.ball_memory_timeout", 3.0);

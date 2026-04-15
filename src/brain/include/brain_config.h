@@ -50,6 +50,8 @@ public:
     double get_min_vx();
     double get_min_vy();
     double get_min_vtheta();
+    bool get_use_custom_walk();
+    string get_custom_walk_cmd_topic();
 
     double get_ball_confidence_threshold();
     double get_ball_memory_timeout();
