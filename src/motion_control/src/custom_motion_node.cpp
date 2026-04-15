@@ -33,6 +33,11 @@ constexpr std::array<float, kMotorCount> kActionScales = {
         0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f,
 };
 
+constexpr std::array<float, kMotorCount> kPolicyReferencePose = {
+        0.f,   0.f,   0.02f, -1.50f, 0.05f, 0.f,   0.02f, 1.50f, 0.05f, 0.f, 0.f, -0.32f,
+        0.f,   0.f,   0.64f, -0.34f, 0.f,   -0.32f, 0.f,  0.f,   0.64f, -0.34f, 0.f,
+};
+
 constexpr std::array<float, kMotorCount> kDefaultStiffness = {
         12.f, 12.f, 18.f, 20.f, 18.f, 18.f, 18.f, 20.f, 18.f, 18.f, 20.f, 55.f,
         40.f, 30.f, 70.f, 55.f, 55.f, 55.f, 40.f, 30.f, 70.f, 55.f, 55.f,
@@ -478,10 +483,10 @@ private:
             logEvent("INFO", "Received first LowState snapshot from robot");
         }
         if (!stand_pose_initialized_) {
-            stand_pose_ = snapshot.q;
-            filtered_targets_ = stand_pose_;
+            stand_pose_ = kPolicyReferencePose;
+            filtered_targets_ = snapshot.q;
             stand_pose_initialized_ = true;
-            logEvent("INFO", "Captured stand pose reference from the first valid LowState snapshot");
+            logEvent("INFO", "Initialized policy reference pose from Booster T1 training defaults");
         }
     }
 
@@ -517,15 +522,15 @@ private:
             logEvent(command_is_fresh ? "INFO" : "WARN",
                      command_is_fresh
                              ? "Walk command stream is fresh again"
-                             : "Walk command stream is stale, commanding zero velocity");
+                             : "Walk command stream is stale, holding the policy reference pose");
         }
         const float cmd_x = command_is_fresh ? static_cast<float>(last_command_.linear.x) : 0.f;
         const float cmd_y = command_is_fresh ? static_cast<float>(last_command_.linear.y) : 0.f;
         const float cmd_yaw = command_is_fresh ? static_cast<float>(last_command_.angular.z) : 0.f;
 
-        std::array<float, kMotorCount> target_positions = snapshot.q;
+        std::array<float, kMotorCount> target_positions = stand_pose;
 
-        if (policy_loaded_) {
+        if (policy_loaded_ && command_is_fresh) {
             const auto observation = buildObservation(snapshot, stand_pose, cmd_x, cmd_y, cmd_yaw);
             const auto policy_output = policy_backend_->infer(observation);
             if (policy_output.size() >= kMotorCount) {
@@ -536,7 +541,7 @@ private:
                     } else if (shouldLogEvery(last_non_finite_action_log_time_, 1000.0)) {
                         logEvent("WARN",
                                  "Policy produced a non-finite action for " + std::string(kMotorNames[i]) +
-                                 ". Holding that joint at the stand pose for safety.");
+                                 ". Holding that joint at the policy reference pose for safety.");
                     }
                     last_actions_[i] = action;
                     if (kActionScales[i] > 0.f) {
@@ -547,8 +552,10 @@ private:
                 logEvent("WARN",
                          "Policy output had only " + std::to_string(policy_output.size()) +
                          " values; expected at least " + std::to_string(kMotorCount) +
-                         ". Holding the current stance.");
+                         ". Holding the policy reference pose.");
             }
+        } else {
+            std::fill(last_actions_.begin(), last_actions_.end(), 0.0f);
         }
 
         checkCurrentJointLimits(snapshot.q);
