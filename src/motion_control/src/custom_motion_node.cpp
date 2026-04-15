@@ -48,13 +48,6 @@ constexpr std::array<float, kMotorCount> kDefaultDamping = {
         3.0f, 2.0f, 5.0f, 3.5f, 3.5f, 4.0f, 3.0f, 2.0f, 5.0f, 3.5f, 3.5f,
 };
 
-constexpr std::array<float, kMotorCount> kTorqueLimits = {
-        7.f, 7.f, 10.f, 10.f, 10.f, 10.f, 10.f, 10.f, 10.f, 10.f, 30.f, 60.f,
-        25.f, 30.f, 60.f, 24.f, 15.f, 60.f, 25.f, 30.f, 60.f, 24.f, 15.f,
-};
-
-constexpr std::array<int, 4> kParallelMechanismIndexes = {15, 16, 21, 22};
-
 constexpr float degToRad(float degrees) {
     return degrees * kPi / 180.0f;
 }
@@ -62,28 +55,22 @@ constexpr float degToRad(float degrees) {
 constexpr float kJointLimitWarningTolerance = degToRad(2.0f);
 
 constexpr std::array<float, kMotorCount> kJointUpperLimits = {
-        degToRad(58.f),  degToRad(47.f),  degToRad(68.f),  degToRad(88.f),  degToRad(128.f),
-        degToRad(2.f),   degToRad(68.f),  degToRad(94.f),  degToRad(128.f), degToRad(120.f),
-        degToRad(58.f),  degToRad(118.f), degToRad(88.f),  degToRad(58.f),  degToRad(123.f),
-        degToRad(49.f),  degToRad(45.f),  degToRad(118.f), degToRad(21.f),  degToRad(58.f),
-        degToRad(123.f), degToRad(49.f),  degToRad(45.f),
+        1.57f, 1.22f, 1.22f, 1.57f, 2.27f, 0.0f, 1.22f, 1.74f, 2.27f, 2.44f, 1.57f, 1.57f,
+        1.57f, 1.0f, 2.34f, 0.35f, 0.44f, 1.57f, 0.2f, 1.0f, 2.34f, 0.35f, 0.44f,
 };
 
 constexpr std::array<float, kMotorCount> kJointLowerLimits = {
-        degToRad(-58.f),  degToRad(-18.f),  degToRad(-188.f), degToRad(-94.f),  degToRad(-128.f),
-        degToRad(-120.f), degToRad(-188.f), degToRad(-88.f),  degToRad(-128.f), degToRad(-2.f),
-        degToRad(-58.f),  degToRad(-118.f), degToRad(-21.f),  degToRad(-58.f),  degToRad(0.f),
-        degToRad(-23.f),  degToRad(-24.f),  degToRad(-118.f), degToRad(-88.f),  degToRad(-58.f),
-        degToRad(0.f),    degToRad(-23.f),  degToRad(-24.f),
+        -1.57f, -0.35f, -3.31f, -1.74f, -2.27f, -2.44f, -3.31f, -1.57f, -2.27f, 0.0f, -1.57f,
+        -1.8f, -0.2f, -1.0f, 0.0f, -0.87f, -0.44f, -1.8f, -1.57f, -1.0f, 0.0f, -0.87f, -0.44f,
 };
 
 constexpr std::array<const char *, kMotorCount> kMotorNames = {
-        "head_yaw",          "head_pitch",        "left_shoulder_pitch", "left_shoulder_roll",
-        "left_shoulder_yaw", "left_elbow",        "right_shoulder_pitch","right_shoulder_roll",
-        "right_shoulder_yaw","right_elbow",       "waist_yaw",           "left_hip_pitch",
-        "left_hip_roll",     "left_hip_yaw",      "left_knee",           "left_ankle_up",
-        "left_ankle_down",   "right_hip_pitch",   "right_hip_roll",      "right_hip_yaw",
-        "right_knee",        "right_ankle_up",    "right_ankle_down",
+        "AAHead_yaw",         "Head_pitch",        "Left_Shoulder_Pitch", "Left_Shoulder_Roll",
+        "Left_Elbow_Pitch",   "Left_Elbow_Yaw",   "Right_Shoulder_Pitch","Right_Shoulder_Roll",
+        "Right_Elbow_Pitch",  "Right_Elbow_Yaw",  "Waist",               "Left_Hip_Pitch",
+        "Left_Hip_Roll",      "Left_Hip_Yaw",     "Left_Knee_Pitch",     "Left_Ankle_Pitch",
+        "Left_Ankle_Roll",    "Right_Hip_Pitch",  "Right_Hip_Roll",      "Right_Hip_Yaw",
+        "Right_Knee_Pitch",   "Right_Ankle_Pitch","Right_Ankle_Roll",
 };
 
 struct SensorSnapshot {
@@ -560,7 +547,7 @@ private:
 
         checkCurrentJointLimits(snapshot.q);
         clampTargetsToManualLimits(target_positions, snapshot.q);
-        publishLowCmd(target_positions, snapshot.q);
+        publishLowCmd(target_positions);
     }
 
     std::vector<float> buildObservation(const SensorSnapshot &snapshot,
@@ -664,7 +651,7 @@ private:
 
         if (!violations.empty() && shouldLogEvery(last_joint_state_warning_time_, 1000.0)) {
             logEvent("WARN",
-                     "Current joints are outside T1 manual limits, which can trigger PROTECT mode: " +
+                     "Current joints are outside the configured serial joint limits: " +
                      summarizeMessages(violations));
         }
     }
@@ -690,13 +677,12 @@ private:
 
         if (!clamp_messages.empty() && shouldLogEvery(last_joint_target_clamp_log_time_, 1000.0)) {
             logEvent("WARN",
-                     "Clamped target joints to T1 manual limits to avoid PROTECT mode: " +
+                     "Clamped target joints to the configured serial joint limits: " +
                      summarizeMessages(clamp_messages));
         }
     }
 
-    void publishLowCmd(const std::array<float, kMotorCount> &target_positions,
-                       const std::array<float, kMotorCount> &current_positions) {
+    void publishLowCmd(const std::array<float, kMotorCount> &target_positions) {
         for (size_t i = 0; i < kMotorCount; ++i) {
             filtered_targets_[i] = filtered_targets_[i] * 0.8f + target_positions[i] * 0.2f;
         }
@@ -714,17 +700,6 @@ private:
             motor.kp = kDefaultStiffness[i];
             motor.kd = kDefaultDamping[i];
             motor.weight = 1.f;
-        }
-
-        for (int index : kParallelMechanismIndexes) {
-            const float torque = std::clamp(
-                    (filtered_targets_[index] - current_positions[index]) * kDefaultStiffness[index],
-                    -kTorqueLimits[index],
-                    kTorqueLimits[index]);
-            auto &motor = cmd.motor_cmd[index];
-            motor.q = current_positions[index];
-            motor.tau = torque;
-            motor.kp = 0.f;
         }
 
         low_cmd_pub_->publish(cmd);
