@@ -4,7 +4,7 @@ import launch
 import os
 from ament_index_python.packages import PackageNotFoundError, get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, TimerAction
 from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
 
@@ -80,6 +80,9 @@ def handle_configuration(context, *args, **kwargs):
 
     motion_model_path = context.perform_substitution(LaunchConfiguration('custom_walk_model_path'))
     use_custom_walk_arg = context.perform_substitution(LaunchConfiguration('use_custom_walk'))
+    use_start_pose_arg = context.perform_substitution(LaunchConfiguration('use_start_pose'))
+    start_pose_transition_s = float(context.perform_substitution(LaunchConfiguration('start_pose_transition_s')))
+    start_pose_hold_s = float(context.perform_substitution(LaunchConfiguration('start_pose_hold_s')))
     use_custom_walk_auto = motion_control_available
     if use_custom_walk_arg in ['true', 'True', '1']:
         use_custom_walk = True
@@ -97,15 +100,32 @@ def handle_configuration(context, *args, **kwargs):
     else:
         print('[brain launch] custom walk disabled')
 
+    if use_start_pose_arg in ['true', 'True', '1']:
+        use_start_pose = True
+    elif use_start_pose_arg in ['false', 'False', '0']:
+        use_start_pose = False
+    else:
+        use_start_pose = use_custom_walk
+
+    if use_start_pose:
+        print('[brain launch] start pose node enabled before custom walk')
+    else:
+        print('[brain launch] start pose node disabled')
+
     motion_config = {
         'robot.custom_walk_model_path': motion_model_path if motion_model_path else default_motion_model_path,
     }
+    start_pose_config = {}
     if use_custom_walk:
         print(f"[brain launch] using custom walk model: {motion_config['robot.custom_walk_model_path']}")
     if not robot_name == '':
         motion_config['robot.robot_name'] = robot_name
+        start_pose_config['robot.robot_name'] = robot_name
     if sim in ['true', 'True', '1']:
         motion_config['use_sim_time'] = True
+        start_pose_config['use_sim_time'] = True
+
+    start_pose_config['robot.start_pose_transition_s'] = start_pose_transition_s
 
     nodes = [
         Node(
@@ -125,17 +145,38 @@ def handle_configuration(context, *args, **kwargs):
     ]
 
     if motion_control_available and use_custom_walk:
-        nodes.append(
-            Node(
-                package='motion_control',
-                executable='custom_motion_node',
-                output='screen',
-                parameters=[
-                    motion_control_config_file,
-                    motion_config
-                ]
-            )
+        motion_node = Node(
+            package='motion_control',
+            executable='custom_motion_node',
+            output='screen',
+            parameters=[
+                motion_control_config_file,
+                motion_config
+            ]
         )
+
+        if use_start_pose:
+            nodes.append(
+                Node(
+                    package='motion_control',
+                    executable='start_pose_node',
+                    output='screen',
+                    parameters=[
+                        motion_control_config_file,
+                        start_pose_config
+                    ]
+                )
+            )
+
+            motion_delay = max(0.0, start_pose_transition_s + start_pose_hold_s)
+            nodes.append(
+                TimerAction(
+                    period=motion_delay,
+                    actions=[motion_node]
+                )
+            )
+        else:
+            nodes.append(motion_node)
 
     return nodes
 
@@ -182,6 +223,21 @@ def generate_launch_description():
             'use_custom_walk',
             default_value='auto',
             description='Set to true, false, or auto. auto enables custom walk when motion_control is available'
+        ),
+        DeclareLaunchArgument(
+            'use_start_pose',
+            default_value='auto',
+            description='Set to true, false, or auto. auto enables start pose whenever custom walk is enabled'
+        ),
+        DeclareLaunchArgument(
+            'start_pose_transition_s',
+            default_value='3.0',
+            description='Seconds used by start_pose_node to move from current posture to training start pose'
+        ),
+        DeclareLaunchArgument(
+            'start_pose_hold_s',
+            default_value='1.0',
+            description='Extra hold time after start pose before launching custom_motion_node'
         ),
         DeclareLaunchArgument(
             'sim', 

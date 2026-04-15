@@ -10,3 +10,12 @@ custom_motion_node:
       custom_walk_cmd_timeout_ms: 250.0
       custom_walk_loop_hz: 100.0
       custom_walk_gait_frequency: 1.5
+
+start_pose_node:
+  ros__parameters:
+    robot:
+      robot_name: ""
+      start_pose_low_state_topic: "/low_state"
+      start_pose_low_cmd_topic: "/low_cmd"
+      start_pose_loop_hz: 100.0
+      start_pose_transition_s: 3.0

@@ -39,7 +39,15 @@ add_executable(custom_motion_node
   src/custom_motion_node.cpp
 )
 
+add_executable(start_pose_node
+  src/start_pose_node.cpp
+)
+
 target_include_directories(custom_motion_node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+
+target_include_directories(start_pose_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 
@@ -55,10 +63,17 @@ ament_target_dependencies(custom_motion_node
   booster_interface
 )
 
+ament_target_dependencies(start_pose_node
+  rclcpp
+  booster_interface
+)
+
 target_compile_features(custom_motion_node PUBLIC c_std_99 cxx_std_17)
+target_compile_features(start_pose_node PUBLIC c_std_99 cxx_std_17)
 
 install(TARGETS
   custom_motion_node
+  start_pose_node
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY launch
