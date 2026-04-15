@@ -25,7 +25,9 @@ def handle_configuration(context, *args, **kwargs):
     try:
         motion_control_share = get_package_share_directory('motion_control')
         motion_control_config_file = os.path.join(motion_control_share, 'config', 'config.yaml')
-        default_motion_model_path = os.path.join(motion_control_share, 'model', 'policy.onnx')
+        walking_model_path = os.path.join(motion_control_share, 'model', 'Walking', 'policy.onnx')
+        fallback_model_path = os.path.join(motion_control_share, 'model', 'policy.onnx')
+        default_motion_model_path = walking_model_path if os.path.exists(walking_model_path) else fallback_model_path
         motion_control_available = True
     except PackageNotFoundError:
         print('[brain launch] motion_control package not found, skipping custom motion node')
@@ -98,6 +100,8 @@ def handle_configuration(context, *args, **kwargs):
     motion_config = {
         'robot.custom_walk_model_path': motion_model_path if motion_model_path else default_motion_model_path,
     }
+    if use_custom_walk:
+        print(f"[brain launch] using custom walk model: {motion_config['robot.custom_walk_model_path']}")
     if not robot_name == '':
         motion_config['robot.robot_name'] = robot_name
     if sim in ['true', 'True', '1']:

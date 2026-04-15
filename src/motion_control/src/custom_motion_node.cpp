@@ -2,10 +2,14 @@
 #include <array>
 #include <chrono>
 #include <cmath>
+#include <cstdlib>
 #include <filesystem>
+#include <fstream>
 #include <functional>
+#include <iomanip>
 #include <memory>
 #include <mutex>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -21,6 +25,7 @@
 namespace {
 
 constexpr size_t kMotorCount = 23;
+constexpr float kPi = 3.14159265358979323846f;
 
 constexpr std::array<float, kMotorCount> kActionScales = {
         0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f,
@@ -45,6 +50,37 @@ constexpr std::array<float, kMotorCount> kTorqueLimits = {
 
 constexpr std::array<int, 4> kParallelMechanismIndexes = {15, 16, 21, 22};
 
+constexpr float degToRad(float degrees) {
+    return degrees * kPi / 180.0f;
+}
+
+constexpr float kJointLimitWarningTolerance = degToRad(2.0f);
+
+constexpr std::array<float, kMotorCount> kJointUpperLimits = {
+        degToRad(58.f),  degToRad(47.f),  degToRad(68.f),  degToRad(88.f),  degToRad(128.f),
+        degToRad(2.f),   degToRad(68.f),  degToRad(94.f),  degToRad(128.f), degToRad(120.f),
+        degToRad(58.f),  degToRad(118.f), degToRad(88.f),  degToRad(58.f),  degToRad(123.f),
+        degToRad(49.f),  degToRad(45.f),  degToRad(118.f), degToRad(21.f),  degToRad(58.f),
+        degToRad(123.f), degToRad(49.f),  degToRad(45.f),
+};
+
+constexpr std::array<float, kMotorCount> kJointLowerLimits = {
+        degToRad(-58.f),  degToRad(-18.f),  degToRad(-188.f), degToRad(-94.f),  degToRad(-128.f),
+        degToRad(-120.f), degToRad(-188.f), degToRad(-88.f),  degToRad(-128.f), degToRad(-2.f),
+        degToRad(-58.f),  degToRad(-118.f), degToRad(-21.f),  degToRad(-58.f),  degToRad(0.f),
+        degToRad(-23.f),  degToRad(-24.f),  degToRad(-118.f), degToRad(-88.f),  degToRad(-58.f),
+        degToRad(0.f),    degToRad(-23.f),  degToRad(-24.f),
+};
+
+constexpr std::array<const char *, kMotorCount> kMotorNames = {
+        "head_yaw",          "head_pitch",        "left_shoulder_pitch", "left_shoulder_roll",
+        "left_shoulder_yaw", "left_elbow",        "right_shoulder_pitch","right_shoulder_roll",
+        "right_shoulder_yaw","right_elbow",       "waist_yaw",           "left_hip_pitch",
+        "left_hip_roll",     "left_hip_yaw",      "left_knee",           "left_ankle_up",
+        "left_ankle_down",   "right_hip_pitch",   "right_hip_roll",      "right_hip_yaw",
+        "right_knee",        "right_ankle_up",    "right_ankle_down",
+};
+
 struct SensorSnapshot {
     std::array<float, 3> rpy{};
     std::array<float, 3> gyro{};
@@ -65,6 +101,106 @@ std::string appendRobotSuffix(const std::string &base_topic, const std::string &
     }
     return base_topic + "/" + robot_name;
 }
+
+std::string makeTimestamp(const char *format) {
+    const auto now = std::chrono::system_clock::now();
+    const auto time = std::chrono::system_clock::to_time_t(now);
+    std::tm local_time{};
+#ifdef _WIN32
+    localtime_s(&local_time, &time);
+#else
+    localtime_r(&time, &local_time);
+#endif
+    std::ostringstream oss;
+    oss << std::put_time(&local_time, format);
+    return oss.str();
+}
+
+std::string formatFloat(float value, int precision = 3) {
+    std::ostringstream oss;
+    oss << std::fixed << std::setprecision(precision) << value;
+    return oss.str();
+}
+
+std::string formatHex(uint32_t value) {
+    std::ostringstream oss;
+    oss << "0x" << std::hex << std::uppercase << value;
+    return oss.str();
+}
+
+std::string summarizeMessages(const std::vector<std::string> &messages, size_t max_items = 4) {
+    std::ostringstream oss;
+    for (size_t i = 0; i < messages.size() && i < max_items; ++i) {
+        if (i > 0) {
+            oss << "; ";
+        }
+        oss << messages[i];
+    }
+    if (messages.size() > max_items) {
+        oss << "; +" << (messages.size() - max_items) << " more";
+    }
+    return oss.str();
+}
+
+class RuntimeEventLogger {
+public:
+    void init(const rclcpp::Logger &logger,
+              const std::string &configured_dir,
+              const std::string &robot_name) {
+        try {
+            std::filesystem::path root = configured_dir.empty()
+                    ? (std::filesystem::current_path() / "motion_control_logs")
+                    : std::filesystem::path(configured_dir);
+            if (root.is_relative()) {
+                root = std::filesystem::current_path() / root;
+            }
+
+            const std::string session_name = robot_name.empty()
+                    ? makeTimestamp("%Y%m%d_%H%M%S")
+                    : robot_name + "_" + makeTimestamp("%Y%m%d_%H%M%S");
+            session_dir_ = root / session_name;
+            std::filesystem::create_directories(session_dir_);
+
+            log_path_ = session_dir_ / "events.log";
+            stream_.open(log_path_, std::ios::out | std::ios::app);
+            enabled_ = stream_.is_open();
+
+            if (enabled_) {
+                RCLCPP_INFO(logger, "motion_control event log: %s", log_path_.string().c_str());
+                log("INFO", "motion_control log session started");
+            } else {
+                RCLCPP_WARN(logger, "Failed to open motion_control event log at %s",
+                            log_path_.string().c_str());
+            }
+        } catch (const std::exception &e) {
+            enabled_ = false;
+            RCLCPP_WARN(logger, "Failed to initialize motion_control event log: %s", e.what());
+        }
+    }
+
+    void log(const std::string &level, const std::string &message) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        if (!enabled_ || !stream_.is_open()) {
+            return;
+        }
+
+        stream_ << makeTimestamp("%Y-%m-%d %H:%M:%S")
+                << " [" << level << "] "
+                << message << '\n';
+        stream_.flush();
+    }
+
+    std::string path() const {
+        return log_path_.string();
+    }
+
+private:
+    bool enabled_ = false;
+    std::filesystem::path session_dir_;
+    std::filesystem::path log_path_;
+    std::ofstream stream_;
+    std::mutex mutex_;
+};
 
 class PolicyBackend {
 public:
@@ -194,14 +330,17 @@ public:
         declare_parameter<std::string>("robot.custom_walk_low_state_topic", "/low_state");
         declare_parameter<std::string>("robot.custom_walk_low_cmd_topic", "/low_cmd");
         declare_parameter<std::string>("robot.custom_walk_model_path", "");
+        declare_parameter<std::string>("robot.custom_walk_log_dir", "motion_control_logs");
         declare_parameter<double>("robot.custom_walk_cmd_timeout_ms", 250.0);
         declare_parameter<double>("robot.custom_walk_loop_hz", 100.0);
         declare_parameter<double>("robot.custom_walk_gait_frequency", 1.5);
 
         robot_name_ = get_parameter("robot.robot_name").as_string();
+        const std::string log_dir = get_parameter("robot.custom_walk_log_dir").as_string();
         cmd_timeout_ms_ = static_cast<float>(get_parameter("robot.custom_walk_cmd_timeout_ms").as_double());
         loop_hz_ = static_cast<float>(get_parameter("robot.custom_walk_loop_hz").as_double());
         gait_frequency_ = static_cast<float>(get_parameter("robot.custom_walk_gait_frequency").as_double());
+        event_logger_.init(get_logger(), log_dir, robot_name_);
 
         const auto command_topic = appendRobotSuffix(
                 get_parameter("robot.custom_walk_cmd_topic").as_string(), robot_name_);
@@ -225,11 +364,19 @@ public:
                     "motion_control using ROS low-level topics: state=%s cmd=%s",
                     low_state_topic.c_str(),
                     low_cmd_topic.c_str());
+        logEvent("INFO",
+                 "Configured motion_control with state_topic=" + low_state_topic +
+                 ", cmd_topic=" + low_cmd_topic +
+                 ", walk_cmd_topic=" + command_topic +
+                 ", loop_hz=" + formatFloat(loop_hz_, 1) +
+                 ", command_timeout_ms=" + formatFloat(cmd_timeout_ms_, 1));
 
 #ifdef MOTION_CONTROL_HAVE_ONNX_RUNTIME
         policy_backend_ = std::make_unique<OnnxPolicyBackend>();
+        logEvent("INFO", "motion_control built with ONNX Runtime support");
 #else
         policy_backend_ = std::make_unique<NullPolicyBackend>();
+        logEvent("WARN", "motion_control was built without ONNX Runtime; policy inference is disabled");
 #endif
 
         const std::string model_path = get_parameter("robot.custom_walk_model_path").as_string();
@@ -237,6 +384,11 @@ public:
         if (!policy_loaded_) {
             RCLCPP_WARN(get_logger(),
                         "Locomotion policy backend is not active yet. The node will keep the current stance.");
+            logEvent("WARN",
+                     "Policy backend inactive for model_path=" + model_path +
+                     ". This can happen if the ONNX file is missing or ONNX Runtime was not found.");
+        } else {
+            logEvent("INFO", "Loaded locomotion policy from " + model_path);
         }
 
         filtered_targets_.fill(0.f);
@@ -248,6 +400,7 @@ public:
                 std::bind(&CustomMotionNode::controlLoop, this));
 
         RCLCPP_INFO(get_logger(), "motion_control listening for walk commands on %s", command_topic.c_str());
+        logEvent("INFO", "motion_control is ready and waiting for low_state and walk commands");
     }
 
 private:
@@ -255,10 +408,34 @@ private:
         return 3 + 3 + 3 + kMotorCount + kMotorCount + kMotorCount;
     }
 
+    void logEvent(const std::string &level, const std::string &message) {
+        event_logger_.log(level, message);
+    }
+
+    bool shouldLogEvery(rclcpp::Time &last_log_time, double interval_ms) {
+        const auto current_time = now();
+        if (last_log_time.nanoseconds() == 0 ||
+            (current_time - last_log_time).nanoseconds() / 1e6 >= interval_ms) {
+            last_log_time = current_time;
+            return true;
+        }
+        return false;
+    }
+
     void onWalkCommand(const geometry_msgs::msg::Twist::SharedPtr msg) {
         last_command_ = *msg;
         last_command_time_ = now();
         has_received_command_ = true;
+
+        const bool has_motion = std::fabs(msg->linear.x) > 1e-3 ||
+                                std::fabs(msg->linear.y) > 1e-3 ||
+                                std::fabs(msg->angular.z) > 1e-3;
+        if (has_motion) {
+            logEvent("INFO",
+                     "Received walk command vx=" + formatFloat(static_cast<float>(msg->linear.x)) +
+                     ", vy=" + formatFloat(static_cast<float>(msg->linear.y)) +
+                     ", yaw=" + formatFloat(static_cast<float>(msg->angular.z)));
+        }
     }
 
     void onLowState(const booster_interface::msg::LowState::SharedPtr msg) {
@@ -269,6 +446,9 @@ private:
                             msg->motor_state_serial.size(),
                             kMotorCount);
                 warned_motor_count_ = true;
+                logEvent("WARN",
+                         "LowState had only " + std::to_string(msg->motor_state_serial.size()) +
+                         " serial joints; expected " + std::to_string(kMotorCount));
             }
             return;
         }
@@ -284,6 +464,7 @@ private:
             snapshot.q[i] = msg->motor_state_serial[i].q;
             snapshot.dq[i] = msg->motor_state_serial[i].dq;
         }
+        inspectMotorDiagnostics(*msg);
         updateSensorSnapshot(snapshot);
     }
 
@@ -291,31 +472,53 @@ private:
         std::lock_guard<std::mutex> lock(sensor_mutex_);
         sensor_snapshot_ = snapshot;
         has_sensor_snapshot_ = true;
+        last_sensor_time_ = now();
+        if (!received_first_sensor_snapshot_) {
+            received_first_sensor_snapshot_ = true;
+            logEvent("INFO", "Received first LowState snapshot from robot");
+        }
         if (!stand_pose_initialized_) {
             stand_pose_ = snapshot.q;
             filtered_targets_ = stand_pose_;
             stand_pose_initialized_ = true;
+            logEvent("INFO", "Captured stand pose reference from the first valid LowState snapshot");
         }
     }
 
     void controlLoop() {
-        if (!has_received_command_) {
-            return;
-        }
-
         SensorSnapshot snapshot;
         std::array<float, kMotorCount> stand_pose{};
+        rclcpp::Time last_sensor_time{0, 0, RCL_ROS_TIME};
         {
             std::lock_guard<std::mutex> lock(sensor_mutex_);
             if (!has_sensor_snapshot_ || !stand_pose_initialized_) {
+                if (shouldLogEvery(last_waiting_for_sensor_log_time_, 2000.0)) {
+                    logEvent("WARN",
+                             "controlLoop is waiting for LowState. Without a stable low-level state stream, T1 can fall back to DAMP/PROTECT.");
+                }
                 return;
             }
             snapshot = sensor_snapshot_;
             stand_pose = stand_pose_;
+            last_sensor_time = last_sensor_time_;
+        }
+
+        const double sensor_age_ms = (now() - last_sensor_time).nanoseconds() / 1e6;
+        if (sensor_age_ms > 500.0 && shouldLogEvery(last_sensor_timeout_log_time_, 1000.0)) {
+            logEvent("WARN",
+                     "LowState stream is stale for " + formatFloat(static_cast<float>(sensor_age_ms), 1) +
+                     " ms. The robot may enter DAMP/PROTECT if low-level control becomes uncontrolled.");
         }
 
         const bool command_is_fresh =
                 (now() - last_command_time_).nanoseconds() / 1e6 < cmd_timeout_ms_;
+        if (has_received_command_ && command_is_fresh != last_command_fresh_) {
+            last_command_fresh_ = command_is_fresh;
+            logEvent(command_is_fresh ? "INFO" : "WARN",
+                     command_is_fresh
+                             ? "Walk command stream is fresh again"
+                             : "Walk command stream is stale, commanding zero velocity");
+        }
         const float cmd_x = command_is_fresh ? static_cast<float>(last_command_.linear.x) : 0.f;
         const float cmd_y = command_is_fresh ? static_cast<float>(last_command_.linear.y) : 0.f;
         const float cmd_yaw = command_is_fresh ? static_cast<float>(last_command_.angular.z) : 0.f;
@@ -327,15 +530,29 @@ private:
             const auto policy_output = policy_backend_->infer(observation);
             if (policy_output.size() >= kMotorCount) {
                 for (size_t i = 0; i < kMotorCount; ++i) {
-                    const float action = std::clamp(policy_output[i], -1.0f, 1.0f);
+                    float action = 0.0f;
+                    if (std::isfinite(policy_output[i])) {
+                        action = std::clamp(policy_output[i], -1.0f, 1.0f);
+                    } else if (shouldLogEvery(last_non_finite_action_log_time_, 1000.0)) {
+                        logEvent("WARN",
+                                 "Policy produced a non-finite action for " + std::string(kMotorNames[i]) +
+                                 ". Holding that joint at the stand pose for safety.");
+                    }
                     last_actions_[i] = action;
                     if (kActionScales[i] > 0.f) {
                         target_positions[i] = stand_pose[i] + action * kActionScales[i];
                     }
                 }
+            } else if (shouldLogEvery(last_policy_output_warning_time_, 1000.0)) {
+                logEvent("WARN",
+                         "Policy output had only " + std::to_string(policy_output.size()) +
+                         " values; expected at least " + std::to_string(kMotorCount) +
+                         ". Holding the current stance.");
             }
         }
 
+        checkCurrentJointLimits(snapshot.q);
+        clampTargetsToManualLimits(target_positions, snapshot.q);
         publishLowCmd(target_positions, snapshot.q);
     }
 
@@ -365,6 +582,110 @@ private:
         }
         observation.insert(observation.end(), last_actions_.begin(), last_actions_.end());
         return observation;
+    }
+
+    void inspectMotorDiagnostics(const booster_interface::msg::LowState &msg) {
+        for (size_t i = 0; i < kMotorCount; ++i) {
+            const auto &motor = msg.motor_state_serial[i];
+            const uint32_t error_flags = motor.reserve[0];
+
+            if (!motor_diagnostics_initialized_) {
+                last_motor_modes_[i] = static_cast<int>(motor.mode);
+                last_motor_error_flags_[i] = error_flags;
+                last_motor_lost_[i] = motor.lost;
+                last_motor_temperatures_[i] = static_cast<int>(motor.temperature);
+
+                if (error_flags != 0) {
+                    logEvent("WARN",
+                             "Motor " + std::string(kMotorNames[i]) +
+                             " started with error_flags=" + formatHex(error_flags));
+                }
+                continue;
+            }
+
+            if (static_cast<int>(motor.mode) != last_motor_modes_[i]) {
+                logEvent("INFO",
+                         "Motor mode change on " + std::string(kMotorNames[i]) +
+                         ": " + std::to_string(last_motor_modes_[i]) +
+                         " -> " + std::to_string(static_cast<int>(motor.mode)));
+                last_motor_modes_[i] = static_cast<int>(motor.mode);
+            }
+
+            if (error_flags != last_motor_error_flags_[i]) {
+                logEvent(error_flags == 0 ? "INFO" : "WARN",
+                         "Motor error flags on " + std::string(kMotorNames[i]) +
+                         " changed from " + formatHex(last_motor_error_flags_[i]) +
+                         " to " + formatHex(error_flags));
+                last_motor_error_flags_[i] = error_flags;
+            }
+
+            if (motor.lost > last_motor_lost_[i]) {
+                logEvent("WARN",
+                         "Motor packet loss increased on " + std::string(kMotorNames[i]) +
+                         ": " + std::to_string(last_motor_lost_[i]) +
+                         " -> " + std::to_string(motor.lost));
+                last_motor_lost_[i] = motor.lost;
+            }
+
+            if (motor.temperature >= 80 &&
+                (last_motor_temperatures_[i] < 80 ||
+                 std::abs(static_cast<int>(motor.temperature) - last_motor_temperatures_[i]) >= 5)) {
+                logEvent("WARN",
+                         "High motor temperature on " + std::string(kMotorNames[i]) +
+                         ": " + std::to_string(static_cast<int>(motor.temperature)) + " C");
+            }
+            last_motor_temperatures_[i] = static_cast<int>(motor.temperature);
+        }
+
+        if (!motor_diagnostics_initialized_) {
+            motor_diagnostics_initialized_ = true;
+            logEvent("INFO", "Captured initial per-motor diagnostic snapshot");
+        }
+    }
+
+    void checkCurrentJointLimits(const std::array<float, kMotorCount> &current_positions) {
+        std::vector<std::string> violations;
+        for (size_t i = 0; i < kMotorCount; ++i) {
+            if (current_positions[i] < kJointLowerLimits[i] - kJointLimitWarningTolerance ||
+                current_positions[i] > kJointUpperLimits[i] + kJointLimitWarningTolerance) {
+                violations.push_back(
+                        std::string(kMotorNames[i]) + "=" + formatFloat(current_positions[i]) +
+                        " (allowed " + formatFloat(kJointLowerLimits[i]) +
+                        " to " + formatFloat(kJointUpperLimits[i]) + ")");
+            }
+        }
+
+        if (!violations.empty() && shouldLogEvery(last_joint_state_warning_time_, 1000.0)) {
+            logEvent("WARN",
+                     "Current joints are outside T1 manual limits, which can trigger PROTECT mode: " +
+                     summarizeMessages(violations));
+        }
+    }
+
+    void clampTargetsToManualLimits(std::array<float, kMotorCount> &target_positions,
+                                    const std::array<float, kMotorCount> &current_positions) {
+        std::vector<std::string> clamp_messages;
+        for (size_t i = 0; i < kMotorCount; ++i) {
+            if (!std::isfinite(target_positions[i])) {
+                target_positions[i] = current_positions[i];
+                clamp_messages.push_back(std::string(kMotorNames[i]) + " had non-finite target");
+                continue;
+            }
+
+            const float clamped_target = std::clamp(target_positions[i], kJointLowerLimits[i], kJointUpperLimits[i]);
+            if (clamped_target != target_positions[i]) {
+                clamp_messages.push_back(
+                        std::string(kMotorNames[i]) + "=" + formatFloat(target_positions[i]) +
+                        " -> " + formatFloat(clamped_target));
+                target_positions[i] = clamped_target;
+            }
+        }
+
+        if (!clamp_messages.empty() && shouldLogEvery(last_joint_target_clamp_log_time_, 1000.0)) {
+            logEvent("WARN",
+                     "Clamped target joints to T1 manual limits to avoid PROTECT mode: " +
+                     summarizeMessages(clamp_messages));
+        }
     }
 
     void publishLowCmd(const std::array<float, kMotorCount> &target_positions,
@@ -408,6 +729,9 @@ private:
     bool warned_motor_count_ = false;
     bool stand_pose_initialized_ = false;
     bool policy_loaded_ = false;
+    bool received_first_sensor_snapshot_ = false;
+    bool motor_diagnostics_initialized_ = false;
+    bool last_command_fresh_ = false;
     float cmd_timeout_ms_ = 250.f;
     float loop_hz_ = 100.f;
     float gait_frequency_ = 1.5f;
@@ -416,11 +740,23 @@ private:
     SensorSnapshot sensor_snapshot_{};
     geometry_msgs::msg::Twist last_command_;
     rclcpp::Time last_command_time_{0, 0, RCL_ROS_TIME};
+    rclcpp::Time last_sensor_time_{0, 0, RCL_ROS_TIME};
+    rclcpp::Time last_waiting_for_sensor_log_time_{0, 0, RCL_ROS_TIME};
+    rclcpp::Time last_sensor_timeout_log_time_{0, 0, RCL_ROS_TIME};
+    rclcpp::Time last_policy_output_warning_time_{0, 0, RCL_ROS_TIME};
+    rclcpp::Time last_non_finite_action_log_time_{0, 0, RCL_ROS_TIME};
+    rclcpp::Time last_joint_target_clamp_log_time_{0, 0, RCL_ROS_TIME};
+    rclcpp::Time last_joint_state_warning_time_{0, 0, RCL_ROS_TIME};
 
     std::array<float, kMotorCount> stand_pose_{};
     std::array<float, kMotorCount> filtered_targets_{};
+    std::array<int, kMotorCount> last_motor_modes_{};
+    std::array<uint32_t, kMotorCount> last_motor_error_flags_{};
+    std::array<uint32_t, kMotorCount> last_motor_lost_{};
+    std::array<int, kMotorCount> last_motor_temperatures_{};
     std::vector<float> last_actions_;
     std::unique_ptr<PolicyBackend> policy_backend_;
+    RuntimeEventLogger event_logger_;
 
     rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr walk_command_sub_;
     rclcpp::Subscription<booster_interface::msg::LowState>::SharedPtr low_state_sub_;

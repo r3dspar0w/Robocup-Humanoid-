@@ -128,6 +128,12 @@ int RobotClient::setVelocity(double x, double y, double theta)
         format("vx: %.2f  vy: %.2f  vtheta: %.2f", x, y, theta));
 
     if (brain->config->get_use_custom_walk() && custom_walk_publisher) {
+        const bool wants_motion = fabs(x) > 1e-3 || fabs(y) > 1e-3 || fabs(theta) > 1e-3;
+
+        if (!custom_walk_mode_active_ && !wants_motion) {
+            return call(booster_interface::CreateMoveMsg(0, 0, 0));
+        }
+
         if (!custom_walk_mode_active_) {
             call(booster_interface::CreateChangeModeMsg(booster::robot::RobotMode::kCustom));
             custom_walk_mode_active_ = true;

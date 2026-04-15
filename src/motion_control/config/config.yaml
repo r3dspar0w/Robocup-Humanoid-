@@ -6,6 +6,7 @@ custom_motion_node:
       custom_walk_low_state_topic: "/low_state"
       custom_walk_low_cmd_topic: "/low_cmd"
       custom_walk_model_path: ""
+      custom_walk_log_dir: "motion_control_logs"
       custom_walk_cmd_timeout_ms: 250.0
       custom_walk_loop_hz: 100.0
       custom_walk_gait_frequency: 1.5
