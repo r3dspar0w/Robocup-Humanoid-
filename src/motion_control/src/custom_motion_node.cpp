@@ -48,6 +48,13 @@ constexpr std::array<float, kMotorCount> kDefaultDamping = {
         3.0f, 2.0f, 5.0f, 3.5f, 3.5f, 4.0f, 3.0f, 2.0f, 5.0f, 3.5f, 3.5f,
 };
 
+constexpr std::array<float, kMotorCount> kTorqueLimits = {
+        7.f, 7.f, 10.f, 10.f, 10.f, 10.f, 10.f, 10.f, 10.f, 10.f, 30.f, 60.f,
+        25.f, 30.f, 60.f, 24.f, 15.f, 60.f, 25.f, 30.f, 60.f, 24.f, 15.f,
+};
+
+constexpr std::array<int, 4> kParallelMechanismIndexes = {15, 16, 21, 22};
+
 constexpr float degToRad(float degrees) {
     return degrees * kPi / 180.0f;
 }
@@ -547,7 +554,7 @@ private:
 
         checkCurrentJointLimits(snapshot.q);
         clampTargetsToManualLimits(target_positions, snapshot.q);
-        publishLowCmd(target_positions);
+        publishLowCmd(target_positions, snapshot.q);
     }
 
     std::vector<float> buildObservation(const SensorSnapshot &snapshot,
@@ -682,7 +689,8 @@ private:
         }
     }
 
-    void publishLowCmd(const std::array<float, kMotorCount> &target_positions) {
+    void publishLowCmd(const std::array<float, kMotorCount> &target_positions,
+                       const std::array<float, kMotorCount> &current_positions) {
         for (size_t i = 0; i < kMotorCount; ++i) {
             filtered_targets_[i] = filtered_targets_[i] * 0.8f + target_positions[i] * 0.2f;
         }
@@ -700,6 +708,19 @@ private:
             motor.kp = kDefaultStiffness[i];
             motor.kd = kDefaultDamping[i];
             motor.weight = 1.f;
+        }
+
+        // Booster's official serial deploy path still converts ankle targets into
+        // torque commands for the series-parallel mechanism joints.
+        for (int index : kParallelMechanismIndexes) {
+            const float torque = std::clamp(
+                    (filtered_targets_[index] - current_positions[index]) * kDefaultStiffness[index],
+                    -kTorqueLimits[index],
+                    kTorqueLimits[index]);
+            auto &motor = cmd.motor_cmd[index];
+            motor.q = current_positions[index];
+            motor.tau = torque;
+            motor.kp = 0.f;
         }
 
         low_cmd_pub_->publish(cmd);
