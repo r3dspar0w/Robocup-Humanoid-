@@ -43,11 +43,19 @@ add_executable(start_pose_node
   src/start_pose_node.cpp
 )
 
+add_executable(actuator_monitor_node
+  src/actuator_monitor_node.cpp
+)
+
 target_include_directories(custom_motion_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 
 target_include_directories(start_pose_node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+
+target_include_directories(actuator_monitor_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 
@@ -68,12 +76,19 @@ ament_target_dependencies(start_pose_node
   booster_interface
 )
 
+ament_target_dependencies(actuator_monitor_node
+  rclcpp
+  booster_interface
+)
+
 target_compile_features(custom_motion_node PUBLIC c_std_99 cxx_std_17)
 target_compile_features(start_pose_node PUBLIC c_std_99 cxx_std_17)
+target_compile_features(actuator_monitor_node PUBLIC c_std_99 cxx_std_17)
 
 install(TARGETS
   custom_motion_node
   start_pose_node
+  actuator_monitor_node
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY launch

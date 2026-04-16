@@ -83,7 +83,7 @@ def handle_configuration(context, *args, **kwargs):
     use_start_pose_arg = context.perform_substitution(LaunchConfiguration('use_start_pose'))
     start_pose_transition_s = float(context.perform_substitution(LaunchConfiguration('start_pose_transition_s')))
     start_pose_hold_s = float(context.perform_substitution(LaunchConfiguration('start_pose_hold_s')))
-    use_custom_walk_auto = motion_control_available
+    use_custom_walk_auto = False
     if use_custom_walk_arg in ['true', 'True', '1']:
         use_custom_walk = True
     elif use_custom_walk_arg in ['false', 'False', '0']:
@@ -221,13 +221,13 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'use_custom_walk',
-            default_value='auto',
-            description='Set to true, false, or auto. auto enables custom walk when motion_control is available'
+            default_value='false',
+            description='Set to true, false, or auto. default=false keeps stock walking unless explicitly enabled'
         ),
         DeclareLaunchArgument(
             'use_start_pose',
-            default_value='auto',
-            description='Set to true, false, or auto. auto enables start pose whenever custom walk is enabled'
+            default_value='false',
+            description='Set to true, false, or auto. default=false keeps start pose disabled unless explicitly enabled'
         ),
         DeclareLaunchArgument(
             'start_pose_transition_s',

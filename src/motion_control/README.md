@@ -14,3 +14,23 @@ ros2 launch brain launch.py use_custom_walk:=true
 find . -path 'motion_control_logsevents.log'
 tail -f motion_control_logs/*/events.log
 ```
+
+To run the starting pos
+
+```
+./scripts/start.sh use_custom_walk:=true use_start_pose:=true start_pose_transition_s:=3.0 start_pose_hold_s:=1.0
+```
+
+To run actuator monitor only (no policy, no `/low_cmd` output)
+
+```
+colcon build --packages-select motion_control
+source install/setup.bash
+ros2 launch motion_control actuator_monitor.launch.py
+```
+
+The node prints motor values from `/low_state` and writes CSV samples to:
+
+```
+motion_control_logs/*_actuator_monitor_*/actuator_samples.csv
+```

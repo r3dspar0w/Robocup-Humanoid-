@@ -19,3 +19,15 @@ start_pose_node:
       start_pose_low_cmd_topic: "/low_cmd"
       start_pose_loop_hz: 100.0
       start_pose_transition_s: 3.0
+
+actuator_monitor_node:
+  ros__parameters:
+    robot:
+      robot_name: ""
+      actuator_monitor_low_state_topic: "/low_state"
+      actuator_monitor_console_period_s: 1.0
+      actuator_monitor_print_all_joints: true
+      actuator_monitor_csv_enabled: true
+      actuator_monitor_csv_sample_every_n: 10
+      actuator_monitor_csv_log_dir: "motion_control_logs"
+      actuator_monitor_temp_warn_c: 80
