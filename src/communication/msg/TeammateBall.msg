@@ -1,0 +1,12 @@
+uint8 player_id
+bool ball_valid
+float32 robot_x
+float32 robot_y
+float32 robot_theta
+float32 ball_x
+float32 ball_y
+float32 ball_age_sec
+float32 rx_age_sec
+uint32 sequence
+uint64 sent_time_ms
+builtin_interfaces/Time stamp
