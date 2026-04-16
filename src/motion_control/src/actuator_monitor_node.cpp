@@ -2,6 +2,7 @@
 #include <array>
 #include <chrono>
 #include <cmath>
+#include <cstdint>
 #include <filesystem>
 #include <fstream>
 #include <functional>
@@ -81,8 +82,10 @@ public:
         robot_name_ = get_parameter("robot.robot_name").as_string();
         print_all_joints_ = get_parameter("robot.actuator_monitor_print_all_joints").as_bool();
         csv_enabled_ = get_parameter("robot.actuator_monitor_csv_enabled").as_bool();
-        csv_sample_every_n_ = std::max(1, get_parameter("robot.actuator_monitor_csv_sample_every_n").as_int());
-        temp_warn_c_ = get_parameter("robot.actuator_monitor_temp_warn_c").as_int();
+        const int64_t csv_sample_every_n =
+                get_parameter("robot.actuator_monitor_csv_sample_every_n").as_int();
+        csv_sample_every_n_ = static_cast<int>(std::max<int64_t>(1, csv_sample_every_n));
+        temp_warn_c_ = static_cast<int>(get_parameter("robot.actuator_monitor_temp_warn_c").as_int());
 
         const auto low_state_topic = appendRobotSuffix(
                 get_parameter("robot.actuator_monitor_low_state_topic").as_string(),
