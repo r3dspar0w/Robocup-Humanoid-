@@ -4,6 +4,7 @@
 #include <functional>
 #include <filesystem>
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 #include <fstream>
 
@@ -424,6 +425,18 @@ void VisionNode::ProcessData(SyncedDataBlock &synced_data, vision_interface::msg
             // add robot color to detection_obj
             detection_obj.color = robot_color_str;
         }
+
+        // log detail semantic and spatial information
+        std::cout << "[Detection Log] " << detection_obj.label;
+        if (detection_obj.label == "Opponent" && !detection_obj.color.empty()) {
+            std::cout << " (Color: " << detection_obj.color << ")";
+        }
+        std::cout << " (Conf: " << std::fixed << std::setprecision(1) << detection_obj.confidence << "%)"
+                  << " | Pos_Proj: [" << detection_obj.position_projection[0] << ", "
+                  << detection_obj.position_projection[1] << ", " << detection_obj.position_projection[2] << "]"
+                  << " | Pos_Depth: [" << detection_obj.position[0] << ", "
+                  << detection_obj.position[1] << ", " << detection_obj.position[2] << "]"
+                  << std::endl;
 
         // publish detection
         detection_msg.detected_objects.push_back(detection_obj);
