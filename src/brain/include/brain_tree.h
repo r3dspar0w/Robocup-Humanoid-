@@ -108,10 +108,6 @@ public:
             InputPort<double>("chase_threshold", 1.0, "If the distance exceeds this value, execute the chase action"),
             InputPort<double>("adjust_angle_tolerance", 0.1, "If the angle is less than this value, consider adjust successful"), //
             InputPort<double>("adjust_y_tolerance", 0.1, "If the y-direction offset is less than this value, consider y-direction adjust successful"),  //
-            InputPort<double>("defensive_threshold_ratio", 0.0, "0 keeps emergency clear near the penalty-area front line, 1 extends it to halfway"),
-            InputPort<double>("free_ball_radius", 0.9, "If no humanoid is within this radius of the ball, the ball is treated as free"),
-            InputPort<double>("return_home_x_margin", 0.35, "How far in front of the goalie home point the robot may drift before it is forced back home"),
-            InputPort<double>("visual_ball_timeout_msec", 5000.0, "If the goalie cannot physically see the ball for longer than this, it returns home"),
             InputPort<string>("decision_in", "", "Used to read the previous decision"),
             InputPort<double>("auto_visual_kick_enable_dist_min", 2.0, "Minimum distance for enabling auto visual kick"),
             InputPort<double>("auto_visual_kick_enable_dist_max", 3.0, "Maximum distance for enabling auto visual kick"),
@@ -526,11 +522,13 @@ public:
     static BT::PortsList providedPorts()
     {
         return {
-            InputPort<double>("dist_tolerance", 0.8, "dist tolerance, within which considered arrived."),
-            InputPort<double>("theta_tolerance", 0.8, "theta tolerance, winin which considered arrived."),
-            InputPort<double>("vx_limit", 0.1, "x speed limit"),
-            InputPort<double>("vy_limit", 0.1, "y speed limit"),
+            InputPort<double>("dist_tolerance", 0.2, "dist tolerance, within which considered arrived."),
+            InputPort<double>("theta_tolerance", 0.35, "theta tolerance, winin which considered arrived."),
+            InputPort<double>("vx_limit", 0.8, "x speed limit"),
+            InputPort<double>("vy_limit", 0.35, "y speed limit"),
+            InputPort<double>("vtheta_limit", 1.2, "theta speed limit"),
             InputPort<double>("dist_to_goalline", 2.5, "Distance from the robot to the goal line"),
+            InputPort<string>("mode", "block", "block | home | intercept"),
         };
     }
 

@@ -4,16 +4,32 @@
    <include path="./subtree_locate.xml" />
    <BehaviorTree ID="StrikerFreekick">
       <ReactiveSequence>
+
+         <!-- if WE are the team taking the free kick (attacking) -->
          <ReactiveSequence _while="gc_is_sub_state_kickoff_side" name="move to attacking freekick position">
+            <!-- Keep Tracking the ball with the camera -->
             <CamTrackBall _while="ball_location_known" />
+
+            <!-- Calculate Kick Direction -->
+            <!-- Decide where to kick (towards goal or teammate?)-->
             <CalcKickDir />
+
+            <!-- If you cannot see ball AND your team do not have reliable info -->
+            <!-- Search for ball if that is the case -->
             <SubTree ID="FindBall" _while="!(ball_location_known || tm_ball_pos_reliable)" _autoremap="true" />
+
+            <!-- If Ball is known, then move to correct attacking position -->
             <GoToFreekickPosition _while="ball_location_known || tm_ball_pos_reliable" side="attack" vx_limit="0.7" vy_limit="0.4" />
          </ReactiveSequence>
+
+         <!-- if OPPONENT has the free kick (defending) -->
          <ReactiveSequence _while="!gc_is_sub_state_kickoff_side" name="move to defending freekick position">
+            <!-- if OPPONENT has the free kick (defending) -->
             <CamTrackBall _while="ball_location_known" />
+            <!-- Kick Direction -->
             <CalcKickDir />
             <SubTree ID="FindBall" _while="!(ball_location_known || tm_ball_pos_reliable)" _autoremap="true" />
+            <!-- Move into defensive position -->
             <GoToFreekickPosition _while="ball_location_known || tm_ball_pos_reliable" side="defense" />
          </ReactiveSequence>
       </ReactiveSequence>

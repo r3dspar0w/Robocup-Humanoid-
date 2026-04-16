@@ -1,6 +1,49 @@
 #include "brain.h"
 #include "brain_communication.h"
 
+/*
+It handles 3 Critical things:
+    1. Game Controller Communication
+    2. Discovery -> Robot find teammates on this network
+    3. Team Communication -> Robot share game state (ball, roles and decisions)
+
+This is what enables:
+    1. Role Switching (Striker <---> Goal Keeper)
+    2. Passing Decisions
+    3. Avoid Multiple Robots Chasing the same ball
+    4. Leader Election
+*/
+
+// -------------------- Things to include inside -----------------------
+/*
+    1. Cost Function Design
+    - Who to go for ball
+        IF myCost < all tmStatus.cost
+            → chase ball
+        ELSE
+            → reposition
+    - Must use `cost` so that not everyone chases ball
+
+    2. Role Assignment
+    - Striker / Goalkeeper switching
+    - dynamic roles
+    - Must use `robotPoseToField` so that robots don't collide
+
+    3. Leader Logic
+    - Who decides
+    - When to switch leader
+    - Use `isLead`
+
+    4. Team Coordination Logic In Behavioral tree
+    - Decides who does the 
+        - Spacing
+        - Passing
+        - Fallback Behavior
+    - Must modify the `ballPosToField` to ensure that they pass
+    
+    
+*/
+
 BrainCommunication::BrainCommunication(Brain *argBrain) : brain(argBrain)
 {
 }
@@ -251,6 +294,7 @@ void BrainCommunication::unicastToGameController() {
     }
 }
 
+// This is for robot to broadcast 'i exist'
 void BrainCommunication::broadcastDiscovery() {
     while (_broadcast_discovery_flag.load(std::memory_order_relaxed))
     {
@@ -362,6 +406,14 @@ void BrainCommunication::initCommunicationUnicast() {
     
 }
 
+// --------- This is the core data your Behavioral tree depends on -------------
+/*
+    Your Behavioral Tree can:
+        - Decide who to go for ball
+        - Decide who becomes the leader
+        - Decide Passing vs Shooting
+        - Decide Positioning
+*/
 void BrainCommunication::unicastCommunication() {
     auto log = [=](string msg) {
         brain->log->debug("sendMsg", msg);
@@ -472,6 +524,7 @@ void BrainCommunication::initCommunicationReceiver() {
     }
 }
 
+// ---------------------- Receiving Teammates Info ---------------------------
 void BrainCommunication::spinCommunicationReceiver() {
     auto log = [=](string msg) {
         brain->log->debug("receiveMsg", msg);

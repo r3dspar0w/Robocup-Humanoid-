@@ -75,6 +75,7 @@ Brain::Brain() : rclcpp::Node("brain_node")
     declare_parameter<double>("strategy.move_block_msecs", 2000.0);
     declare_parameter<bool>("strategy.enable_auto_visual_kick", false);
     declare_parameter<bool>("strategy.enable_auto_visual_defend", false);
+    declare_parameter<string>("strategy.log_path", "strategy.log");
 
     declare_parameter<bool>("strategy.power_shoot.enable", false);
     declare_parameter<bool>("strategy.power_shoot.use_for_kickoff", false);
@@ -134,13 +135,6 @@ Brain::Brain() : rclcpp::Node("brain_node")
     declare_parameter<string>("vision_config_local_path", "");
 
     declare_parameter<int>("recovery.retry_max_count", 2);
-    
-    declare_parameter<bool>("rerunLog.enable_tcp", false);
-    declare_parameter<std::string>("rerunLog.server_ip", "127.0.0.1:9876");
-    declare_parameter<bool>("rerunLog.enable_file", false);
-    declare_parameter<std::string>("rerunLog.log_dir", "/home/booster/Workspace/rrlog");
-    declare_parameter<double>("rerunLog.max_log_file_mins", 5.0);
-    declare_parameter<int>("rerunLog.img_interval", 1);
 }
 
 Brain::~Brain()

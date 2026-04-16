@@ -54,6 +54,12 @@ public:
     GameObject tmBall;           
     double robotBallAngleToField; 
     bool lose_ball = false;
+    Pose2D goaliePredictedInterceptPose;
+    bool goaliePredictedInterceptActive = false;
+    Point goaliePredictedBallVelocityToField{0.0, 0.0, 0.0};
+    double goaliePredictedBallSpeed = 0.0;
+    double goaliePredictedInterceptETA = -1.0;
+    double goaliePredictedGoalLineY = 0.0;
 
     inline vector<GameObject> getRobots() const {
         std::lock_guard<std::mutex> lock(_robotsMutex);
