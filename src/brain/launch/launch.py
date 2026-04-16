@@ -25,9 +25,16 @@ def handle_configuration(context, *args, **kwargs):
     try:
         motion_control_share = get_package_share_directory('motion_control')
         motion_control_config_file = os.path.join(motion_control_share, 'config', 'config.yaml')
-        walking_model_path = os.path.join(motion_control_share, 'model', 'Walking', 'policy.onnx')
-        fallback_model_path = os.path.join(motion_control_share, 'model', 'policy.onnx')
-        default_motion_model_path = walking_model_path if os.path.exists(walking_model_path) else fallback_model_path
+        walking_model_candidates = [
+            os.path.join(motion_control_share, 'model', 'walking', 'policy.onnx'),
+            os.path.join(motion_control_share, 'model', 'Walking', 'policy.onnx'),
+        ]
+        for model_path in walking_model_candidates:
+            if os.path.exists(model_path):
+                default_motion_model_path = model_path
+                break
+        if not default_motion_model_path:
+            print('[brain launch] Walking policy ONNX not found under motion_control/model/walking (or /Walking)')
         motion_control_available = True
     except PackageNotFoundError:
         print('[brain launch] motion_control package not found, skipping custom motion node')
@@ -83,7 +90,7 @@ def handle_configuration(context, *args, **kwargs):
     use_start_pose_arg = context.perform_substitution(LaunchConfiguration('use_start_pose'))
     start_pose_transition_s = float(context.perform_substitution(LaunchConfiguration('start_pose_transition_s')))
     start_pose_hold_s = float(context.perform_substitution(LaunchConfiguration('start_pose_hold_s')))
-    use_custom_walk_auto = False
+    use_custom_walk_auto = motion_control_available
     if use_custom_walk_arg in ['true', 'True', '1']:
         use_custom_walk = True
     elif use_custom_walk_arg in ['false', 'False', '0']:
@@ -93,6 +100,9 @@ def handle_configuration(context, *args, **kwargs):
 
     if use_custom_walk and not motion_control_available:
         print('[brain launch] custom walk was requested but motion_control is not available; falling back to stock walk')
+        use_custom_walk = False
+    if use_custom_walk and not motion_model_path and not default_motion_model_path:
+        print('[brain launch] custom walk requested but no Walking ONNX was found; falling back to stock walk')
         use_custom_walk = False
 
     if use_custom_walk:
@@ -221,13 +231,13 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'use_custom_walk',
-            default_value='false',
-            description='Set to true, false, or auto. default=false keeps stock walking unless explicitly enabled'
+            default_value='auto',
+            description='Set to true, false, or auto. auto enables custom walk when motion_control is available'
         ),
         DeclareLaunchArgument(
             'use_start_pose',
-            default_value='false',
-            description='Set to true, false, or auto. default=false keeps start pose disabled unless explicitly enabled'
+            default_value='auto',
+            description='Set to true, false, or auto. auto enables start pose whenever custom walk is enabled'
         ),
         DeclareLaunchArgument(
             'start_pose_transition_s',

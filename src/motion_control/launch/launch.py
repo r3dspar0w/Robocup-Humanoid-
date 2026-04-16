@@ -10,7 +10,13 @@ from launch_ros.actions import Node
 def handle_configuration(context, *args, **kwargs):
     pkg_share = get_package_share_directory("motion_control")
     config_file = os.path.join(pkg_share, "config", "config.yaml")
-    default_model_path = os.path.join(pkg_share, "model", "policy.onnx")
+    model_candidates = [
+        os.path.join(pkg_share, "model", "walking", "policy.onnx"),
+        os.path.join(pkg_share, "model", "Walking", "policy.onnx"),
+    ]
+    default_model_path = next((path for path in model_candidates if os.path.exists(path)), model_candidates[0])
+    if not os.path.exists(default_model_path):
+        print("[motion_control launch] Walking policy ONNX not found under motion_control/model/walking (or /Walking)")
 
     config = {
         "robot.custom_walk_model_path": default_model_path,
