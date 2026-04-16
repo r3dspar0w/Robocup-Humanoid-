@@ -15,10 +15,10 @@ find . -path 'motion_control_logsevents.log'
 tail -f motion_control_logs/*/events.log
 ```
 
-To run the starting pos
+To run custom walk directly (skip start pose)
 
 ```
-./scripts/start.sh use_custom_walk:=true use_start_pose:=true start_pose_transition_s:=3.0 start_pose_hold_s:=1.0
+./scripts/start.sh use_custom_walk:=true use_start_pose:=false
 ```
 
 To run actuator monitor only (no policy, no `/low_cmd` output)

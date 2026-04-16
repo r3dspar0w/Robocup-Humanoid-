@@ -129,5 +129,10 @@ private:
     double _vx, _vy, _vtheta;
     rclcpp::Time _lastCmdTime;
     rclcpp::Time _lastNonZeroCmdTime;
+    rclcpp::Time _lastBoosterWalkLogTime;
+    bool booster_walk_log_initialized_ = false;
     bool custom_walk_mode_active_ = false;
+    bool last_use_custom_walk_config_initialized_ = false;
+    bool last_use_custom_walk_config_ = false;
+    bool warned_custom_walk_publisher_missing_ = false;
 };

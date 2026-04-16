@@ -15,6 +15,12 @@ void RobotClient::init(string robot_name)
         brain->config->get_custom_walk_cmd_topic() + suffix,
         10
     );
+    brain->log->log(
+        "RobotClient/motion_backend",
+        format("Initialized walk backend. use_custom_walk=%d, custom_walk_topic=%s",
+               brain->config->get_use_custom_walk() ? 1 : 0,
+               (brain->config->get_custom_walk_cmd_topic() + suffix).c_str())
+    );
 }
 
 int RobotClient::call(booster_interface::msg::BoosterApiReqMsg msg)
@@ -67,13 +73,14 @@ int RobotClient::RLVisionKick(bool start)
 int RobotClient::robocupWalk()
 {
     custom_walk_mode_active_ = false;
-    std::cout << "RobotClient::robocupWalk CreateChangeModeMsg called" << std::endl;
+    brain->log->log("RobotClient/motion_backend", "Switching robot mode to Booster walking (kWalking)");
     return call(booster_interface::CreateChangeModeMsg(booster::robot::RobotMode::kWalking));
 }
 
 int RobotClient::enterDamping()
 {
     custom_walk_mode_active_ = false;
+    brain->log->warn("RobotClient/motion_backend", "Switching robot mode to damping (kDamping)");
     return call(booster_interface::CreateChangeModeMsg(booster::robot::RobotMode::kDamping));
 }
 
@@ -127,14 +134,37 @@ int RobotClient::setVelocity(double x, double y, double theta)
     brain->log->log("RobotClient/setVelocity_out",
         format("vx: %.2f  vy: %.2f  vtheta: %.2f", x, y, theta));
 
-    if (brain->config->get_use_custom_walk() && custom_walk_publisher) {
+    const bool use_custom_walk = brain->config->get_use_custom_walk();
+    if (!last_use_custom_walk_config_initialized_ || use_custom_walk != last_use_custom_walk_config_) {
+        brain->log->log(
+            "RobotClient/motion_backend",
+            format("runtime config changed: use_custom_walk=%d", use_custom_walk ? 1 : 0)
+        );
+        last_use_custom_walk_config_initialized_ = true;
+        last_use_custom_walk_config_ = use_custom_walk;
+    }
+
+    if (use_custom_walk && !custom_walk_publisher && !warned_custom_walk_publisher_missing_) {
+        warned_custom_walk_publisher_missing_ = true;
+        brain->log->warn(
+            "RobotClient/motion_backend",
+            "use_custom_walk is enabled but custom_walk publisher is unavailable. Falling back to Booster walk."
+        );
+    }
+
+    if (use_custom_walk && custom_walk_publisher) {
         const bool wants_motion = fabs(x) > 1e-3 || fabs(y) > 1e-3 || fabs(theta) > 1e-3;
 
         if (!custom_walk_mode_active_ && !wants_motion) {
+            brain->log->log(
+                "RobotClient/motion_backend",
+                "Custom walk requested but command is zero; sending Booster move(0,0,0) keepalive."
+            );
             return call(booster_interface::CreateMoveMsg(0, 0, 0));
         }
 
         if (!custom_walk_mode_active_) {
+            brain->log->log("RobotClient/motion_backend", "Switching robot mode to custom walk (kCustom)");
             call(booster_interface::CreateChangeModeMsg(booster::robot::RobotMode::kCustom));
             custom_walk_mode_active_ = true;
         }
@@ -147,7 +177,23 @@ int RobotClient::setVelocity(double x, double y, double theta)
         return 0;
     }
 
+    if (custom_walk_mode_active_) {
+        brain->log->warn(
+            "RobotClient/motion_backend",
+            "Leaving custom walk path and falling back to Booster walk CreateMoveMsg."
+        );
+    }
     custom_walk_mode_active_ = false;
+    if (!booster_walk_log_initialized_ ||
+        brain->msecsSince(_lastBoosterWalkLogTime) > 2000.0) {
+        brain->log->log(
+            "RobotClient/motion_backend",
+            format("Using Booster walk CreateMoveMsg. cmd(vx=%.2f, vy=%.2f, vtheta=%.2f)",
+                   x, y, theta)
+        );
+        booster_walk_log_initialized_ = true;
+        _lastBoosterWalkLogTime = brain->get_clock()->now();
+    }
     return call(booster_interface::CreateMoveMsg(x, y, theta));
 }
 

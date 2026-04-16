@@ -115,7 +115,7 @@ def handle_configuration(context, *args, **kwargs):
     elif use_start_pose_arg in ['false', 'False', '0']:
         use_start_pose = False
     else:
-        use_start_pose = use_custom_walk
+        use_start_pose = False
 
     if use_start_pose:
         print('[brain launch] start pose node enabled before custom walk')
@@ -236,8 +236,8 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'use_start_pose',
-            default_value='auto',
-            description='Set to true, false, or auto. auto enables start pose whenever custom walk is enabled'
+            default_value='false',
+            description='Set to true, false, or auto. Default/auto skips start pose and starts custom walk directly'
         ),
         DeclareLaunchArgument(
             'start_pose_transition_s',
