@@ -9,6 +9,7 @@
 #include <stdexcept>
 
 #include <arpa/inet.h>
+#include <builtin_interfaces/msg/time.hpp>
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -23,6 +24,22 @@ constexpr uint8_t kStateReady = 1;
 constexpr uint8_t kStateSet = 2;
 constexpr uint8_t kStatePlaying = 3;
 constexpr uint8_t kSecondaryPenaltyShoot = 1;
+
+builtin_interfaces::msg::Time toBuiltinTimeMsg(const rclcpp::Time &time)
+{
+    builtin_interfaces::msg::Time msg;
+    const int64_t nanoseconds = time.nanoseconds();
+    int64_t seconds = nanoseconds / 1000000000LL;
+    int64_t remainder = nanoseconds % 1000000000LL;
+    if (remainder < 0)
+    {
+        --seconds;
+        remainder += 1000000000LL;
+    }
+    msg.sec = static_cast<int32_t>(seconds);
+    msg.nanosec = static_cast<uint32_t>(remainder);
+    return msg;
+}
 } // namespace
 
 TeamCommunicationNode::TeamCommunicationNode() : rclcpp::Node("team_communication_node")
@@ -348,7 +365,7 @@ void TeamCommunicationNode::publishTeammates()
 {
     communication::msg::TeammateBallArray array_msg;
     const rclcpp::Time t_now = now();
-    array_msg.stamp = t_now.to_msg();
+    array_msg.stamp = toBuiltinTimeMsg(t_now);
 
     {
         std::lock_guard<std::mutex> lock(teammates_mutex_);
@@ -373,7 +390,7 @@ void TeamCommunicationNode::publishTeammates()
             teammate_msg.rx_age_sec = static_cast<float>(rx_age_sec);
             teammate_msg.sequence = it->second.sequence;
             teammate_msg.sent_time_ms = it->second.sent_time_ms;
-            teammate_msg.stamp = it->second.last_rx_time.to_msg();
+            teammate_msg.stamp = toBuiltinTimeMsg(it->second.last_rx_time);
             array_msg.teammates.push_back(teammate_msg);
 
             ++it;
