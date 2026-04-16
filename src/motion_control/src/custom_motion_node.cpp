@@ -25,27 +25,24 @@
 namespace {
 
 constexpr size_t kMotorCount = 23;
+constexpr size_t kPolicyActionCount = 12;
+constexpr size_t kPolicyDofStartIndex = 11;
 constexpr float kPi = 3.14159265358979323846f;
-
-constexpr std::array<float, kMotorCount> kActionScales = {
-        0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f,
-        0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f,
-        0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f,
-};
+constexpr float kPolicyActionScale = 1.0f;
 
 constexpr std::array<float, kMotorCount> kPolicyReferencePose = {
-        0.f,   0.f,   0.02f, -1.50f, 0.05f, 0.f,   0.02f, 1.50f, 0.05f, 0.f, 0.f, -0.32f,
-        0.f,   0.f,   0.64f, -0.34f, 0.f,   -0.32f, 0.f,  0.f,   0.64f, -0.34f, 0.f,
+        0.f, 0.f, 0.2f, -1.35f, 0.f, -0.5f, 0.2f, 1.35f, 0.f, 0.5f, 0.f, -0.2f,
+        0.f, 0.f, 0.4f, -0.25f, 0.f, -0.2f, 0.f, 0.f, 0.4f, -0.25f, 0.f,
 };
 
 constexpr std::array<float, kMotorCount> kDefaultStiffness = {
-        12.f, 12.f, 18.f, 20.f, 18.f, 18.f, 18.f, 20.f, 18.f, 18.f, 20.f, 55.f,
-        40.f, 30.f, 70.f, 55.f, 55.f, 55.f, 40.f, 30.f, 70.f, 55.f, 55.f,
+        20.f, 20.f, 20.f, 20.f, 20.f, 20.f, 20.f, 20.f, 20.f, 20.f, 200.f, 200.f,
+        200.f, 200.f, 200.f, 50.f, 50.f, 200.f, 200.f, 200.f, 200.f, 50.f, 50.f,
 };
 
 constexpr std::array<float, kMotorCount> kDefaultDamping = {
-        0.2f, 0.2f, 0.6f, 0.8f, 0.6f, 0.6f, 0.6f, 0.8f, 0.6f, 0.6f, 0.8f, 4.0f,
-        3.0f, 2.0f, 5.0f, 3.5f, 3.5f, 4.0f, 3.0f, 2.0f, 5.0f, 3.5f, 3.5f,
+        0.2f, 0.2f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 5.f, 5.f,
+        5.f, 5.f, 5.f, 3.f, 3.f, 5.f, 5.f, 5.f, 5.f, 3.f, 3.f,
 };
 
 constexpr std::array<float, kMotorCount> kTorqueLimits = {
@@ -54,22 +51,6 @@ constexpr std::array<float, kMotorCount> kTorqueLimits = {
 };
 
 constexpr std::array<int, 4> kParallelMechanismIndexes = {15, 16, 21, 22};
-
-constexpr float degToRad(float degrees) {
-    return degrees * kPi / 180.0f;
-}
-
-constexpr float kJointLimitWarningTolerance = degToRad(2.0f);
-
-constexpr std::array<float, kMotorCount> kJointUpperLimits = {
-        1.57f, 1.22f, 1.22f, 1.57f, 2.27f, 0.0f, 1.22f, 1.74f, 2.27f, 2.44f, 1.57f, 1.57f,
-        1.57f, 1.0f, 2.34f, 0.35f, 0.44f, 1.57f, 0.2f, 1.0f, 2.34f, 0.35f, 0.44f,
-};
-
-constexpr std::array<float, kMotorCount> kJointLowerLimits = {
-        -1.57f, -0.35f, -3.31f, -1.74f, -2.27f, -2.44f, -3.31f, -1.57f, -2.27f, 0.0f, -1.57f,
-        -1.8f, -0.2f, -1.0f, 0.0f, -0.87f, -0.44f, -1.8f, -1.57f, -1.0f, 0.0f, -0.87f, -0.44f,
-};
 
 constexpr std::array<const char *, kMotorCount> kMotorNames = {
         "AAHead_yaw",         "Head_pitch",        "Left_Shoulder_Pitch", "Left_Shoulder_Roll",
@@ -124,20 +105,6 @@ std::string formatFloat(float value, int precision = 3) {
 std::string formatHex(uint32_t value) {
     std::ostringstream oss;
     oss << "0x" << std::hex << std::uppercase << value;
-    return oss.str();
-}
-
-std::string summarizeMessages(const std::vector<std::string> &messages, size_t max_items = 4) {
-    std::ostringstream oss;
-    for (size_t i = 0; i < messages.size() && i < max_items; ++i) {
-        if (i > 0) {
-            oss << "; ";
-        }
-        oss << messages[i];
-    }
-    if (messages.size() > max_items) {
-        oss << "; +" << (messages.size() - max_items) << " more";
-    }
     return oss.str();
 }
 
@@ -391,7 +358,7 @@ public:
         }
 
         filtered_targets_.fill(0.f);
-        last_actions_.assign(kMotorCount, 0.f);
+        last_actions_.assign(kPolicyActionCount, 0.f);
 
         const auto loop_period = std::chrono::duration<double>(1.0 / std::max(loop_hz_, 1.0f));
         control_timer_ = create_wall_timer(
@@ -404,7 +371,7 @@ public:
 
 private:
     size_t expectedObservationSize() const {
-        return 3 + 3 + 3 + kMotorCount + kMotorCount + kMotorCount;
+        return 3 + 3 + 3 + 7 + 2 + kPolicyActionCount + kPolicyActionCount + kPolicyActionCount;
     }
 
     void logEvent(const std::string &level, const std::string &message) {
@@ -522,38 +489,34 @@ private:
         const float cmd_y = command_is_fresh ? static_cast<float>(last_command_.linear.y) : 0.f;
         const float cmd_yaw = command_is_fresh ? static_cast<float>(last_command_.angular.z) : 0.f;
 
-        std::array<float, kMotorCount> target_positions = stand_pose;
+        std::array<float, kMotorCount> target_positions = snapshot.q;
 
         if (policy_loaded_ && command_is_fresh) {
             const auto observation = buildObservation(snapshot, stand_pose, cmd_x, cmd_y, cmd_yaw);
             const auto policy_output = policy_backend_->infer(observation);
-            if (policy_output.size() >= kMotorCount) {
-                for (size_t i = 0; i < kMotorCount; ++i) {
+            if (policy_output.size() >= kPolicyActionCount) {
+                target_positions = stand_pose;
+                for (size_t i = 0; i < kPolicyActionCount; ++i) {
                     float action = 0.0f;
                     if (std::isfinite(policy_output[i])) {
                         action = std::clamp(policy_output[i], -1.0f, 1.0f);
                     } else if (shouldLogEvery(last_non_finite_action_log_time_, 1000.0)) {
-                        logEvent("WARN",
-                                 "Policy produced a non-finite action for " + std::string(kMotorNames[i]) +
-                                 ". Holding that joint at the policy reference pose for safety.");
+                        logEvent("WARN", "Policy produced a non-finite action at index " + std::to_string(i));
                     }
                     last_actions_[i] = action;
-                    if (kActionScales[i] > 0.f) {
-                        target_positions[i] = stand_pose[i] + action * kActionScales[i];
-                    }
+                    const size_t joint_index = kPolicyDofStartIndex + i;
+                    target_positions[joint_index] = stand_pose[joint_index] + action * kPolicyActionScale;
                 }
             } else if (shouldLogEvery(last_policy_output_warning_time_, 1000.0)) {
                 logEvent("WARN",
                          "Policy output had only " + std::to_string(policy_output.size()) +
-                         " values; expected at least " + std::to_string(kMotorCount) +
+                         " values; expected at least " + std::to_string(kPolicyActionCount) +
                          ". Holding the policy reference pose.");
             }
         } else {
             std::fill(last_actions_.begin(), last_actions_.end(), 0.0f);
         }
 
-        checkCurrentJointLimits(snapshot.q);
-        clampTargetsToManualLimits(target_positions, snapshot.q);
         publishLowCmd(target_positions, snapshot.q);
     }
 
@@ -567,19 +530,36 @@ private:
         std::vector<float> observation;
         observation.reserve(expectedObservationSize());
 
-        observation.push_back(snapshot.gyro[0] * 0.25f);
-        observation.push_back(snapshot.gyro[1] * 0.25f);
-        observation.push_back(snapshot.gyro[2] * 0.25f);
         observation.insert(observation.end(), gravity.begin(), gravity.end());
-        observation.push_back(cmd_x);
-        observation.push_back(cmd_y);
-        observation.push_back(cmd_yaw);
+        observation.push_back(snapshot.gyro[0]);
+        observation.push_back(snapshot.gyro[1]);
+        observation.push_back(snapshot.gyro[2]);
 
-        for (size_t i = 0; i < kMotorCount; ++i) {
+        const bool has_motion = std::fabs(cmd_x) > 1e-3f ||
+                                std::fabs(cmd_y) > 1e-3f ||
+                                std::fabs(cmd_yaw) > 1e-3f;
+        const float gait_frequency = has_motion ? gait_frequency_ : 0.0f;
+        const float gait_active = gait_frequency > 1e-8f ? 1.0f : 0.0f;
+        const float gait_phase = std::fmod(static_cast<float>(now().seconds()) * gait_frequency, 1.0f);
+
+        observation.push_back(0.0f * gait_active);
+        observation.push_back(0.0f * gait_active);
+        observation.push_back(0.0f * gait_active);
+        observation.push_back(gait_frequency);
+        observation.push_back(0.0f);
+        observation.push_back(0.0f);
+        observation.push_back(0.0f);
+        observation.push_back(0.0f);
+        observation.push_back(0.0f);
+        observation.push_back(0.0f);
+        observation.push_back(std::cos(gait_phase * 2.0f * kPi) * gait_active);
+        observation.push_back(std::sin(gait_phase * 2.0f * kPi) * gait_active);
+
+        for (size_t i = kPolicyDofStartIndex; i < kMotorCount; ++i) {
             observation.push_back(snapshot.q[i] - stand_pose[i]);
         }
-        for (size_t i = 0; i < kMotorCount; ++i) {
-            observation.push_back(snapshot.dq[i] * 0.05f);
+        for (size_t i = kPolicyDofStartIndex; i < kMotorCount; ++i) {
+            observation.push_back(snapshot.dq[i] * 0.1f);
         }
         observation.insert(observation.end(), last_actions_.begin(), last_actions_.end());
         return observation;
@@ -644,51 +624,6 @@ private:
         }
     }
 
-    void checkCurrentJointLimits(const std::array<float, kMotorCount> &current_positions) {
-        std::vector<std::string> violations;
-        for (size_t i = 0; i < kMotorCount; ++i) {
-            if (current_positions[i] < kJointLowerLimits[i] - kJointLimitWarningTolerance ||
-                current_positions[i] > kJointUpperLimits[i] + kJointLimitWarningTolerance) {
-                violations.push_back(
-                        std::string(kMotorNames[i]) + "=" + formatFloat(current_positions[i]) +
-                        " (allowed " + formatFloat(kJointLowerLimits[i]) +
-                        " to " + formatFloat(kJointUpperLimits[i]) + ")");
-            }
-        }
-
-        if (!violations.empty() && shouldLogEvery(last_joint_state_warning_time_, 1000.0)) {
-            logEvent("WARN",
-                     "Current joints are outside the configured serial joint limits: " +
-                     summarizeMessages(violations));
-        }
-    }
-
-    void clampTargetsToManualLimits(std::array<float, kMotorCount> &target_positions,
-                                    const std::array<float, kMotorCount> &current_positions) {
-        std::vector<std::string> clamp_messages;
-        for (size_t i = 0; i < kMotorCount; ++i) {
-            if (!std::isfinite(target_positions[i])) {
-                target_positions[i] = current_positions[i];
-                clamp_messages.push_back(std::string(kMotorNames[i]) + " had non-finite target");
-                continue;
-            }
-
-            const float clamped_target = std::clamp(target_positions[i], kJointLowerLimits[i], kJointUpperLimits[i]);
-            if (clamped_target != target_positions[i]) {
-                clamp_messages.push_back(
-                        std::string(kMotorNames[i]) + "=" + formatFloat(target_positions[i]) +
-                        " -> " + formatFloat(clamped_target));
-                target_positions[i] = clamped_target;
-            }
-        }
-
-        if (!clamp_messages.empty() && shouldLogEvery(last_joint_target_clamp_log_time_, 1000.0)) {
-            logEvent("WARN",
-                     "Clamped target joints to the configured serial joint limits: " +
-                     summarizeMessages(clamp_messages));
-        }
-    }
-
     void publishLowCmd(const std::array<float, kMotorCount> &target_positions,
                        const std::array<float, kMotorCount> &current_positions) {
         for (size_t i = 0; i < kMotorCount; ++i) {
@@ -748,8 +683,6 @@ private:
     rclcpp::Time last_sensor_timeout_log_time_{0, 0, RCL_ROS_TIME};
     rclcpp::Time last_policy_output_warning_time_{0, 0, RCL_ROS_TIME};
     rclcpp::Time last_non_finite_action_log_time_{0, 0, RCL_ROS_TIME};
-    rclcpp::Time last_joint_target_clamp_log_time_{0, 0, RCL_ROS_TIME};
-    rclcpp::Time last_joint_state_warning_time_{0, 0, RCL_ROS_TIME};
 
     std::array<float, kMotorCount> stand_pose_{};
     std::array<float, kMotorCount> filtered_targets_{};
