@@ -45,6 +45,7 @@ Brain::Brain() : rclcpp::Node("brain_node")
     declare_parameter<string>("game.player_role", "", player_role_desc);
     declare_parameter<bool>("game.treat_person_as_robot", false);
     declare_parameter<int>("game.number_of_players", 2);
+    declare_parameter<bool>("game.start_on_opponent_side", false);
 
     declare_parameter<string>("robot.robot_name", "");
     declare_parameter<double>("robot.robot_height", 1.0);
@@ -718,9 +719,17 @@ vector<double> Brain::getGoalPostAngles(const double margin)
 {
     double leftX, leftY, rightX, rightY; 
 
-    leftX = config->fieldDimensions.length / 2;
+    double goalX;
+
+    if (config->get_start_on_opponent_side()) {
+        goalX = -config->fieldDimensions.length / 2;
+    } else {
+        goalX = config->fieldDimensions.length / 2;
+    }
+
+    leftX = goalX;
     leftY = config->fieldDimensions.goalWidth / 2;
-    rightX = config->fieldDimensions.length / 2;
+    rightX = goalX;
     rightY = -config->fieldDimensions.goalWidth / 2;
 
 
