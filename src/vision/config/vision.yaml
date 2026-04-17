@@ -49,7 +49,7 @@ camera:
       - 0
       - 0
       - 1
-  pitch_compensation: 0
+  pitch_compensation: 0.03
   yaw_compensation: 0
   z_compensation: 0
 detection_model:
@@ -64,7 +64,7 @@ detection_model:
       Ball: 0.2
       Goalpost: 0.2
       Person: 0.2
-      LCross: 0.1
+      LCross: 0.5
       TCross: 0.1
       XCross: 0.1
       PenaltyPoint: 0.1
@@ -74,9 +74,9 @@ segmentation_model:
   model_path: /home/booster/Workspace/robocup_demo/src/vision/model/best_seg_orin_10.3.engine
   confidence_threshold: 0.3
   nms_threshold: 0.9
-use_depth: false
+use_depth: true 
 ball_pose_estimator:
-  use_depth: false
+  use_depth: ture
   radius: 0.109
   down_sample_leaf_size: 0.01
   cluster_distance_threshold: 0.01
@@ -85,7 +85,7 @@ ball_pose_estimator:
   filter_distance: 1.2
   check_ball_height: true
 human_like_pose_estimator:
-  use_depth: false
+  use_depth: true
   down_sample_leaf_size: 0.01
   fitting_distance_threshold: 0.01
   statistic_outlier_multiplier: 0.01
@@ -93,7 +93,7 @@ field_marker_pose_estimator:
   refine: false
   line_segment_area_threshold: 75
 calibration:
-  sync_max_time_diff_ms: 1400
+  sync_max_time_diff_ms: 5000
   offset:
     exclude_distance: 2.0
     zero_translation: true
