@@ -185,6 +185,8 @@ rosidl_generator_cpp/vision_interface/msg/detected_object.hpp: /opt/ros/humble/s
 rosidl_generator_cpp/vision_interface/msg/detected_object.hpp: /opt/ros/humble/share/geometry_msgs/msg/Point32.idl
 rosidl_generator_cpp/vision_interface/msg/detected_object.hpp: /opt/ros/humble/share/geometry_msgs/msg/PointStamped.idl
 rosidl_generator_cpp/vision_interface/msg/detected_object.hpp: /opt/ros/humble/share/geometry_msgs/msg/Polygon.idl
+rosidl_generator_cpp/vision_interface/msg/detected_object.hpp: /opt/ros/humble/share/geometry_msgs/msg/PolygonInstance.idl
+rosidl_generator_cpp/vision_interface/msg/detected_object.hpp: /opt/ros/humble/share/geometry_msgs/msg/PolygonInstanceStamped.idl
 rosidl_generator_cpp/vision_interface/msg/detected_object.hpp: /opt/ros/humble/share/geometry_msgs/msg/PolygonStamped.idl
 rosidl_generator_cpp/vision_interface/msg/detected_object.hpp: /opt/ros/humble/share/geometry_msgs/msg/Pose.idl
 rosidl_generator_cpp/vision_interface/msg/detected_object.hpp: /opt/ros/humble/share/geometry_msgs/msg/Pose2D.idl

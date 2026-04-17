@@ -124,7 +124,7 @@ src/vision_node: src/CMakeFiles/vision_node.dir/main.cpp.o
 src/vision_node: src/CMakeFiles/vision_node.dir/img_bridge.cpp.o
 src/vision_node: src/CMakeFiles/vision_node.dir/vision_node.cpp.o
 src/vision_node: src/CMakeFiles/vision_node.dir/build.make
-src/vision_node: /opt/ros/humble/lib/libfastrtps.so.2.6.10
+src/vision_node: /opt/ros/humble/lib/libfastrtps.so.2.6.11
 src/vision_node: src/pose_estimator/libbooster_vision_pose_estimator.so
 src/vision_node: src/model/libyolov8_model.so
 src/vision_node: /opt/ros/humble/lib/aarch64-linux-gnu/libimage_transport.so
@@ -281,7 +281,7 @@ src/vision_node: /opt/ros/humble/lib/libgeometry_msgs__rosidl_typesupport_fastrt
 src/vision_node: /opt/ros/humble/lib/libstd_msgs__rosidl_typesupport_fastrtps_cpp.so
 src/vision_node: /opt/ros/humble/lib/libbuiltin_interfaces__rosidl_typesupport_fastrtps_cpp.so
 src/vision_node: /opt/ros/humble/lib/librosidl_typesupport_fastrtps_cpp.so
-src/vision_node: /opt/ros/humble/lib/libfastcdr.so.1.0.24
+src/vision_node: /opt/ros/humble/lib/libfastcdr.so.1.0.29
 src/vision_node: /opt/ros/humble/lib/librmw.so
 src/vision_node: /opt/ros/humble/lib/libsensor_msgs__rosidl_typesupport_introspection_c.so
 src/vision_node: /opt/ros/humble/lib/libgeometry_msgs__rosidl_typesupport_introspection_c.so

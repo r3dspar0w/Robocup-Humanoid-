@@ -118,6 +118,8 @@ CMakeFiles/vision_interface: /opt/ros/humble/share/geometry_msgs/msg/Point.idl
 CMakeFiles/vision_interface: /opt/ros/humble/share/geometry_msgs/msg/Point32.idl
 CMakeFiles/vision_interface: /opt/ros/humble/share/geometry_msgs/msg/PointStamped.idl
 CMakeFiles/vision_interface: /opt/ros/humble/share/geometry_msgs/msg/Polygon.idl
+CMakeFiles/vision_interface: /opt/ros/humble/share/geometry_msgs/msg/PolygonInstance.idl
+CMakeFiles/vision_interface: /opt/ros/humble/share/geometry_msgs/msg/PolygonInstanceStamped.idl
 CMakeFiles/vision_interface: /opt/ros/humble/share/geometry_msgs/msg/PolygonStamped.idl
 CMakeFiles/vision_interface: /opt/ros/humble/share/geometry_msgs/msg/Pose.idl
 CMakeFiles/vision_interface: /opt/ros/humble/share/geometry_msgs/msg/Pose2D.idl

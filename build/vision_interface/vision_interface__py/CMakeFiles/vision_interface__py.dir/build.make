@@ -156,6 +156,8 @@ rosidl_generator_py/vision_interface/_vision_interface_s.ep.rosidl_typesupport_f
 rosidl_generator_py/vision_interface/_vision_interface_s.ep.rosidl_typesupport_fastrtps_c.c: /opt/ros/humble/share/geometry_msgs/msg/Point32.idl
 rosidl_generator_py/vision_interface/_vision_interface_s.ep.rosidl_typesupport_fastrtps_c.c: /opt/ros/humble/share/geometry_msgs/msg/PointStamped.idl
 rosidl_generator_py/vision_interface/_vision_interface_s.ep.rosidl_typesupport_fastrtps_c.c: /opt/ros/humble/share/geometry_msgs/msg/Polygon.idl
+rosidl_generator_py/vision_interface/_vision_interface_s.ep.rosidl_typesupport_fastrtps_c.c: /opt/ros/humble/share/geometry_msgs/msg/PolygonInstance.idl
+rosidl_generator_py/vision_interface/_vision_interface_s.ep.rosidl_typesupport_fastrtps_c.c: /opt/ros/humble/share/geometry_msgs/msg/PolygonInstanceStamped.idl
 rosidl_generator_py/vision_interface/_vision_interface_s.ep.rosidl_typesupport_fastrtps_c.c: /opt/ros/humble/share/geometry_msgs/msg/PolygonStamped.idl
 rosidl_generator_py/vision_interface/_vision_interface_s.ep.rosidl_typesupport_fastrtps_c.c: /opt/ros/humble/share/geometry_msgs/msg/Pose.idl
 rosidl_generator_py/vision_interface/_vision_interface_s.ep.rosidl_typesupport_fastrtps_c.c: /opt/ros/humble/share/geometry_msgs/msg/Pose2D.idl

@@ -169,7 +169,7 @@ src/base/libbooster_vision_base.so: /opt/ros/humble/lib/libgeometry_msgs__rosidl
 src/base/libbooster_vision_base.so: /opt/ros/humble/lib/libstd_msgs__rosidl_typesupport_fastrtps_cpp.so
 src/base/libbooster_vision_base.so: /opt/ros/humble/lib/libbuiltin_interfaces__rosidl_typesupport_fastrtps_cpp.so
 src/base/libbooster_vision_base.so: /opt/ros/humble/lib/librosidl_typesupport_fastrtps_cpp.so
-src/base/libbooster_vision_base.so: /opt/ros/humble/lib/libfastcdr.so.1.0.24
+src/base/libbooster_vision_base.so: /opt/ros/humble/lib/libfastcdr.so.1.0.29
 src/base/libbooster_vision_base.so: /opt/ros/humble/lib/librmw.so
 src/base/libbooster_vision_base.so: /opt/ros/humble/lib/libgeometry_msgs__rosidl_typesupport_introspection_cpp.so
 src/base/libbooster_vision_base.so: /opt/ros/humble/lib/libstd_msgs__rosidl_typesupport_introspection_cpp.so

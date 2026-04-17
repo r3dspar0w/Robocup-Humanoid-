@@ -129,6 +129,8 @@ rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/detected_object__rosid
 rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_fastrtps_c.h: /opt/ros/humble/share/geometry_msgs/msg/Point32.idl
 rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_fastrtps_c.h: /opt/ros/humble/share/geometry_msgs/msg/PointStamped.idl
 rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_fastrtps_c.h: /opt/ros/humble/share/geometry_msgs/msg/Polygon.idl
+rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_fastrtps_c.h: /opt/ros/humble/share/geometry_msgs/msg/PolygonInstance.idl
+rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_fastrtps_c.h: /opt/ros/humble/share/geometry_msgs/msg/PolygonInstanceStamped.idl
 rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_fastrtps_c.h: /opt/ros/humble/share/geometry_msgs/msg/PolygonStamped.idl
 rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_fastrtps_c.h: /opt/ros/humble/share/geometry_msgs/msg/Pose.idl
 rosidl_typesupport_fastrtps_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_fastrtps_c.h: /opt/ros/humble/share/geometry_msgs/msg/Pose2D.idl
@@ -410,7 +412,7 @@ libvision_interface__rosidl_typesupport_fastrtps_c.so: /opt/ros/humble/lib/libge
 libvision_interface__rosidl_typesupport_fastrtps_c.so: /opt/ros/humble/lib/libstd_msgs__rosidl_typesupport_fastrtps_c.so
 libvision_interface__rosidl_typesupport_fastrtps_c.so: /opt/ros/humble/lib/libbuiltin_interfaces__rosidl_typesupport_fastrtps_c.so
 libvision_interface__rosidl_typesupport_fastrtps_c.so: /opt/ros/humble/lib/librosidl_typesupport_fastrtps_cpp.so
-libvision_interface__rosidl_typesupport_fastrtps_c.so: /opt/ros/humble/lib/libfastcdr.so.1.0.24
+libvision_interface__rosidl_typesupport_fastrtps_c.so: /opt/ros/humble/lib/libfastcdr.so.1.0.29
 libvision_interface__rosidl_typesupport_fastrtps_c.so: /opt/ros/humble/lib/librmw.so
 libvision_interface__rosidl_typesupport_fastrtps_c.so: /opt/ros/humble/lib/librosidl_typesupport_fastrtps_c.so
 libvision_interface__rosidl_typesupport_fastrtps_c.so: /opt/ros/humble/lib/libsensor_msgs__rosidl_generator_c.so

@@ -440,6 +440,7 @@ CMakeFiles/game_controller_node.dir/src/game_controller_node.cpp.o: /home/booste
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info_array.h \
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info.h \
   /opt/ros/humble/include/rclcpp/rclcpp/event.hpp \
+  /opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/detail/node_interfaces_helpers.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/qos.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/duration.hpp \
   /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/duration.hpp \
@@ -1155,6 +1156,7 @@ CMakeFiles/game_controller_node.dir/src/main.cpp.o: /home/booster/Workspace/robo
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info_array.h \
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info.h \
   /opt/ros/humble/include/rclcpp/rclcpp/event.hpp \
+  /opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/detail/node_interfaces_helpers.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/qos.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/duration.hpp \
   /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/duration.hpp \
@@ -1461,8 +1463,6 @@ CMakeFiles/game_controller_node.dir/src/main.cpp.o: /home/booster/Workspace/robo
 
 /home/booster/Workspace/robocup_demo/src/game_controller/include/RoboCupGameControlData.h:
 
-/opt/ros/humble/include/rclcpp/rclcpp/wait_set_policies/static_storage.hpp:
-
 /opt/ros/humble/include/rclcpp/rclcpp/wait_result.hpp:
 
 /opt/ros/humble/include/rclcpp/rclcpp/subscription_wait_set_mask.hpp:
@@ -1664,6 +1664,10 @@ CMakeFiles/game_controller_node.dir/src/main.cpp.o: /home/booster/Workspace/robo
 /opt/ros/humble/include/libstatistics_collector/libstatistics_collector/moving_average_statistics/types.hpp:
 
 /opt/ros/humble/include/statistics_msgs/statistics_msgs/msg/detail/metrics_message__type_support.hpp:
+
+/opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/get_node_topics_interface.hpp:
+
+/opt/ros/humble/include/statistics_msgs/statistics_msgs/msg/detail/metrics_message__builder.hpp:
 
 /usr/include/c++/11/bits/std_function.h:
 
@@ -2043,10 +2047,6 @@ CMakeFiles/game_controller_node.dir/src/main.cpp.o: /home/booster/Workspace/robo
 
 /usr/include/c++/11/bits/stl_bvector.h:
 
-/opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/get_node_topics_interface.hpp:
-
-/opt/ros/humble/include/statistics_msgs/statistics_msgs/msg/detail/metrics_message__builder.hpp:
-
 /opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/node_timers_interface_traits.hpp:
 
 /opt/ros/humble/include/libstatistics_collector/libstatistics_collector/collector/collector.hpp:
@@ -2198,6 +2198,10 @@ CMakeFiles/game_controller_node.dir/src/main.cpp.o: /home/booster/Workspace/robo
 /usr/include/c++/11/cassert:
 
 /usr/include/c++/11/bits/stl_raw_storage_iter.h:
+
+/opt/ros/humble/include/rclcpp/rclcpp/wait_set_policies/static_storage.hpp:
+
+/opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/detail/node_interfaces_helpers.hpp:
 
 /usr/include/c++/11/tr1/riemann_zeta.tcc:
 

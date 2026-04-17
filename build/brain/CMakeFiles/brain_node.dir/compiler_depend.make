@@ -487,6 +487,7 @@ CMakeFiles/brain_node.dir/src/brain.cpp.o: /home/booster/Workspace/robocup_demo/
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info_array.h \
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info.h \
   /opt/ros/humble/include/rclcpp/rclcpp/event.hpp \
+  /opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/detail/node_interfaces_helpers.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/qos.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/duration.hpp \
   /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/duration.hpp \
@@ -1005,7 +1006,8 @@ CMakeFiles/brain_node.dir/src/brain.cpp.o: /home/booster/Workspace/robocup_demo/
   rosidl_generator_cpp/brain/msg/rosidl_generator_cpp__visibility_control.hpp \
   /usr/local/include/booster/robot/b1/b1_api_const.hpp \
   /opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.h \
-  /opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.h \
+  /opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.hpp \
+  /opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/transform_stamped.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/transform_stamped__struct.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/transform__struct.hpp \
@@ -1272,20 +1274,20 @@ CMakeFiles/brain_node.dir/src/brain.cpp.o: /home/booster/Workspace/robocup_demo/
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/rosidl_generator_cpp__visibility_control.hpp \
   /home/booster/Workspace/robocup_demo/src/brain/include/brain_tree.h \
   /opt/ros/humble/include/behaviortree_cpp/behavior_tree.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/control_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/action_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/leaf_node.h \
   /opt/ros/humble/include/behaviortree_cpp/tree_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/signal.h \
   /opt/ros/humble/include/behaviortree_cpp/basic_types.h \
+  /opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/exceptions.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
   /opt/ros/humble/include/behaviortree_cpp/utils/safe_any.hpp \
   /usr/include/c++/11/charconv \
   /opt/ros/humble/include/behaviortree_cpp/contrib/any.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h \
   /opt/ros/humble/include/behaviortree_cpp/utils/convert_impl.hpp \
   /opt/ros/humble/include/behaviortree_cpp/utils/simple_string.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/exceptions.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/polymorphic_cast_registry.hpp \
   /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
   /opt/ros/humble/include/behaviortree_cpp/blackboard.h \
   /opt/ros/humble/include/behaviortree_cpp/contrib/json.hpp \
@@ -1310,44 +1312,46 @@ CMakeFiles/brain_node.dir/src/brain.cpp.o: /home/booster/Workspace/robocup_demo/
   /usr/include/c++/11/bits/fs_ops.h \
   /usr/include/c++/11/any \
   /opt/ros/humble/include/behaviortree_cpp/utils/locked_reference.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/wakeup_signal.hpp \
   /opt/ros/humble/include/behaviortree_cpp/scripting/script_parser.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_all_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_sequence.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_fallback.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/signal.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/wakeup_signal.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/always_success_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h \
+  /opt/ros/humble/include/behaviortree_cpp/condition_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/script_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/set_blackboard_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/timer_queue.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/test_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/unset_blackboard_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/updated_action.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/fallback_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/control_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/if_then_else_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_all_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_fallback.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_sequence.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/sequence_node.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/sequence_with_memory_node.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/switch_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/if_then_else_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/try_catch_node.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/while_do_else_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/action_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/leaf_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/condition_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/inverter_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorator_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/retry_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/repeat_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/run_once_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/subtree_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/loop_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/updated_decorator.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/always_success_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/script_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/set_blackboard_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/test_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/timer_queue.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/unset_blackboard_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/updated_action.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/force_success_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/timeout_node.h \
   /opt/ros/humble/include/behaviortree_cpp/decorators/delay_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorator_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/force_success_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/inverter_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/loop_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/repeat_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/retry_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/run_once_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/subtree_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/timeout_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/updated_decorator.h \
   /opt/ros/humble/include/behaviortree_cpp/bt_factory.h \
   /opt/ros/humble/include/behaviortree_cpp/contrib/magic_enum.hpp \
   /opt/ros/humble/include/behaviortree_cpp/loggers/groot2_publisher.h \
@@ -1477,7 +1481,7 @@ CMakeFiles/brain_node.dir/src/brain.cpp.o: /home/booster/Workspace/robocup_demo/
   /opt/ros/humble/include/tf2/tf2/LinearMath/Matrix3x3.hpp \
   /opt/ros/humble/include/tf2/tf2/LinearMath/Quaternion.hpp \
   /opt/ros/humble/include/tf2/tf2/LinearMath/Vector3.hpp \
-  /opt/ros/humble/include/tf2_ros/tf2_ros/buffer_interface.h
+  /opt/ros/humble/include/tf2_ros/tf2_ros/buffer_interface.hpp
 
 CMakeFiles/brain_node.dir/src/brain_communication.cpp.o: /home/booster/Workspace/robocup_demo/src/brain/src/brain_communication.cpp \
   /usr/include/stdc-predef.h \
@@ -1904,6 +1908,7 @@ CMakeFiles/brain_node.dir/src/brain_communication.cpp.o: /home/booster/Workspace
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info_array.h \
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info.h \
   /opt/ros/humble/include/rclcpp/rclcpp/event.hpp \
+  /opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/detail/node_interfaces_helpers.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/qos.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/duration.hpp \
   /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/duration.hpp \
@@ -2448,7 +2453,8 @@ CMakeFiles/brain_node.dir/src/brain_communication.cpp.o: /home/booster/Workspace
   rosidl_generator_cpp/brain/msg/rosidl_generator_cpp__visibility_control.hpp \
   /usr/local/include/booster/robot/b1/b1_api_const.hpp \
   /opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.h \
-  /opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.h \
+  /opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.hpp \
+  /opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/transform_stamped.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/transform_stamped__struct.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/transform__struct.hpp \
@@ -2707,6 +2713,10 @@ CMakeFiles/brain_node.dir/src/brain_communication.cpp.o: /home/booster/Workspace
   /opt/ros/humble/include/sensor_msgs/sensor_msgs/msg/detail/image__traits.hpp \
   /opt/ros/humble/include/sensor_msgs/sensor_msgs/msg/detail/image__type_support.hpp \
   /home/booster/Workspace/robocup_demo/src/brain/include/brain_log.h \
+  /usr/include/c++/11/fstream \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/basic_file.h \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/c++io.h \
+  /usr/include/c++/11/bits/fstream.tcc \
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/key_value.hpp \
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/detail/key_value__struct.hpp \
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/detail/key_value__builder.hpp \
@@ -2715,20 +2725,20 @@ CMakeFiles/brain_node.dir/src/brain_communication.cpp.o: /home/booster/Workspace
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/rosidl_generator_cpp__visibility_control.hpp \
   /home/booster/Workspace/robocup_demo/src/brain/include/brain_tree.h \
   /opt/ros/humble/include/behaviortree_cpp/behavior_tree.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/control_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/action_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/leaf_node.h \
   /opt/ros/humble/include/behaviortree_cpp/tree_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/signal.h \
   /opt/ros/humble/include/behaviortree_cpp/basic_types.h \
+  /opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/exceptions.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
   /opt/ros/humble/include/behaviortree_cpp/utils/safe_any.hpp \
   /usr/include/c++/11/charconv \
   /opt/ros/humble/include/behaviortree_cpp/contrib/any.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h \
   /opt/ros/humble/include/behaviortree_cpp/utils/convert_impl.hpp \
   /opt/ros/humble/include/behaviortree_cpp/utils/simple_string.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/exceptions.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/polymorphic_cast_registry.hpp \
   /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
   /opt/ros/humble/include/behaviortree_cpp/blackboard.h \
   /opt/ros/humble/include/behaviortree_cpp/contrib/json.hpp \
@@ -2753,44 +2763,46 @@ CMakeFiles/brain_node.dir/src/brain_communication.cpp.o: /home/booster/Workspace
   /usr/include/c++/11/bits/fs_ops.h \
   /usr/include/c++/11/any \
   /opt/ros/humble/include/behaviortree_cpp/utils/locked_reference.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/wakeup_signal.hpp \
   /opt/ros/humble/include/behaviortree_cpp/scripting/script_parser.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_all_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_sequence.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_fallback.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/signal.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/wakeup_signal.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/always_success_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h \
+  /opt/ros/humble/include/behaviortree_cpp/condition_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/script_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/set_blackboard_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/timer_queue.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/test_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/unset_blackboard_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/updated_action.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/fallback_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/control_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/if_then_else_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_all_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_fallback.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_sequence.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/sequence_node.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/sequence_with_memory_node.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/switch_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/if_then_else_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/try_catch_node.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/while_do_else_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/action_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/leaf_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/condition_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/inverter_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorator_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/retry_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/repeat_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/run_once_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/subtree_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/loop_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/updated_decorator.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/always_success_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/script_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/set_blackboard_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/test_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/timer_queue.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/unset_blackboard_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/updated_action.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/force_success_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/timeout_node.h \
   /opt/ros/humble/include/behaviortree_cpp/decorators/delay_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorator_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/force_success_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/inverter_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/loop_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/repeat_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/retry_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/run_once_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/subtree_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/timeout_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/updated_decorator.h \
   /opt/ros/humble/include/behaviortree_cpp/bt_factory.h \
   /opt/ros/humble/include/behaviortree_cpp/contrib/magic_enum.hpp \
   /opt/ros/humble/include/behaviortree_cpp/loggers/groot2_publisher.h \
@@ -2801,10 +2813,6 @@ CMakeFiles/brain_node.dir/src/brain_communication.cpp.o: /home/booster/Workspace
   /usr/include/aarch64-linux-gnu/c++/11/bits/opt_random.h \
   /usr/include/c++/11/bits/random.tcc \
   /opt/ros/humble/include/behaviortree_cpp/loggers/bt_file_logger_v2.h \
-  /usr/include/c++/11/fstream \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/basic_file.h \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/c++io.h \
-  /usr/include/c++/11/bits/fstream.tcc \
   /home/booster/Workspace/robocup_demo/src/brain/include/brain_communication.h \
   /home/booster/Workspace/robocup_demo/src/brain/include/locator.h \
   /usr/include/eigen3/Eigen/Core \
@@ -3272,6 +3280,7 @@ CMakeFiles/brain_node.dir/src/brain_config.cpp.o: /home/booster/Workspace/robocu
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info_array.h \
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info.h \
   /opt/ros/humble/include/rclcpp/rclcpp/event.hpp \
+  /opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/detail/node_interfaces_helpers.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/qos.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/duration.hpp \
   /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/duration.hpp \
@@ -4454,6 +4463,7 @@ CMakeFiles/brain_node.dir/src/brain_data.cpp.o: /home/booster/Workspace/robocup_
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info_array.h \
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info.h \
   /opt/ros/humble/include/rclcpp/rclcpp/event.hpp \
+  /opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/detail/node_interfaces_helpers.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/qos.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/duration.hpp \
   /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/duration.hpp \
@@ -4886,6 +4896,19 @@ CMakeFiles/brain_node.dir/src/brain_log.cpp.o: /home/booster/Workspace/robocup_d
   /usr/include/c++/11/bits/invoke.h \
   /usr/include/c++/11/bits/stl_multimap.h \
   /usr/include/c++/11/bits/erase_if.h \
+  /usr/include/c++/11/fstream \
+  /usr/include/c++/11/bits/codecvt.h \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/basic_file.h \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/c++io.h \
+  /usr/include/c++/11/bits/fstream.tcc \
+  /usr/include/c++/11/mutex \
+  /usr/include/c++/11/chrono \
+  /usr/include/c++/11/ratio \
+  /usr/include/c++/11/limits \
+  /usr/include/c++/11/ctime \
+  /usr/include/c++/11/bits/parse_numbers.h \
+  /usr/include/c++/11/bits/std_mutex.h \
+  /usr/include/c++/11/bits/unique_lock.h \
   /opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp \
   /usr/include/c++/11/csignal \
   /usr/include/signal.h \
@@ -4957,14 +4980,6 @@ CMakeFiles/brain_node.dir/src/brain_log.cpp.o: /home/booster/Workspace/robocup_d
   /usr/include/c++/11/pstl/execution_defs.h \
   /opt/ros/humble/include/rclcpp/rclcpp/executors.hpp \
   /usr/include/c++/11/future \
-  /usr/include/c++/11/mutex \
-  /usr/include/c++/11/chrono \
-  /usr/include/c++/11/ratio \
-  /usr/include/c++/11/limits \
-  /usr/include/c++/11/ctime \
-  /usr/include/c++/11/bits/parse_numbers.h \
-  /usr/include/c++/11/bits/std_mutex.h \
-  /usr/include/c++/11/bits/unique_lock.h \
   /usr/include/c++/11/condition_variable \
   /usr/include/c++/11/atomic \
   /usr/include/c++/11/bits/atomic_futex.h \
@@ -5116,6 +5131,7 @@ CMakeFiles/brain_node.dir/src/brain_log.cpp.o: /home/booster/Workspace/robocup_d
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info_array.h \
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info.h \
   /opt/ros/humble/include/rclcpp/rclcpp/event.hpp \
+  /opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/detail/node_interfaces_helpers.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/qos.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/duration.hpp \
   /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/duration.hpp \
@@ -5127,7 +5143,6 @@ CMakeFiles/brain_node.dir/src/brain_log.cpp.o: /home/booster/Workspace/robocup_d
   /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/detail/duration__traits.hpp \
   /opt/ros/humble/include/rosidl_runtime_cpp/rosidl_runtime_cpp/traits.hpp \
   /usr/include/c++/11/codecvt \
-  /usr/include/c++/11/bits/codecvt.h \
   /usr/include/c++/11/iomanip \
   /usr/include/c++/11/locale \
   /usr/include/c++/11/bits/locale_facets_nonio.h \
@@ -5668,7 +5683,8 @@ CMakeFiles/brain_node.dir/src/brain_log.cpp.o: /home/booster/Workspace/robocup_d
   rosidl_generator_cpp/brain/msg/rosidl_generator_cpp__visibility_control.hpp \
   /usr/local/include/booster/robot/b1/b1_api_const.hpp \
   /opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.h \
-  /opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.h \
+  /opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.hpp \
+  /opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/transform_stamped.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/transform_stamped__struct.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/transform__struct.hpp \
@@ -5927,20 +5943,20 @@ CMakeFiles/brain_node.dir/src/brain_log.cpp.o: /home/booster/Workspace/robocup_d
   /opt/ros/humble/include/sensor_msgs/sensor_msgs/msg/detail/image__type_support.hpp \
   /home/booster/Workspace/robocup_demo/src/brain/include/brain_tree.h \
   /opt/ros/humble/include/behaviortree_cpp/behavior_tree.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/control_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/action_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/leaf_node.h \
   /opt/ros/humble/include/behaviortree_cpp/tree_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/signal.h \
   /opt/ros/humble/include/behaviortree_cpp/basic_types.h \
+  /opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/exceptions.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
   /opt/ros/humble/include/behaviortree_cpp/utils/safe_any.hpp \
   /usr/include/c++/11/charconv \
   /opt/ros/humble/include/behaviortree_cpp/contrib/any.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h \
   /opt/ros/humble/include/behaviortree_cpp/utils/convert_impl.hpp \
   /opt/ros/humble/include/behaviortree_cpp/utils/simple_string.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/exceptions.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/polymorphic_cast_registry.hpp \
   /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
   /opt/ros/humble/include/behaviortree_cpp/blackboard.h \
   /opt/ros/humble/include/behaviortree_cpp/contrib/json.hpp \
@@ -5965,44 +5981,46 @@ CMakeFiles/brain_node.dir/src/brain_log.cpp.o: /home/booster/Workspace/robocup_d
   /usr/include/c++/11/bits/fs_ops.h \
   /usr/include/c++/11/any \
   /opt/ros/humble/include/behaviortree_cpp/utils/locked_reference.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/wakeup_signal.hpp \
   /opt/ros/humble/include/behaviortree_cpp/scripting/script_parser.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_all_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_sequence.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_fallback.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/signal.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/wakeup_signal.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/always_success_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h \
+  /opt/ros/humble/include/behaviortree_cpp/condition_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/script_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/set_blackboard_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/timer_queue.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/test_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/unset_blackboard_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/updated_action.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/fallback_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/control_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/if_then_else_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_all_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_fallback.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_sequence.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/sequence_node.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/sequence_with_memory_node.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/switch_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/if_then_else_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/try_catch_node.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/while_do_else_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/action_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/leaf_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/condition_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/inverter_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorator_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/retry_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/repeat_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/run_once_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/subtree_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/loop_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/updated_decorator.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/always_success_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/script_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/set_blackboard_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/test_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/timer_queue.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/unset_blackboard_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/updated_action.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/force_success_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/timeout_node.h \
   /opt/ros/humble/include/behaviortree_cpp/decorators/delay_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorator_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/force_success_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/inverter_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/loop_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/repeat_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/retry_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/run_once_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/subtree_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/timeout_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/updated_decorator.h \
   /opt/ros/humble/include/behaviortree_cpp/bt_factory.h \
   /opt/ros/humble/include/behaviortree_cpp/contrib/magic_enum.hpp \
   /opt/ros/humble/include/behaviortree_cpp/loggers/groot2_publisher.h \
@@ -6013,10 +6031,6 @@ CMakeFiles/brain_node.dir/src/brain_log.cpp.o: /home/booster/Workspace/robocup_d
   /usr/include/aarch64-linux-gnu/c++/11/bits/opt_random.h \
   /usr/include/c++/11/bits/random.tcc \
   /opt/ros/humble/include/behaviortree_cpp/loggers/bt_file_logger_v2.h \
-  /usr/include/c++/11/fstream \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/basic_file.h \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/c++io.h \
-  /usr/include/c++/11/bits/fstream.tcc \
   /home/booster/Workspace/robocup_demo/src/brain/include/brain_communication.h \
   /home/booster/Workspace/robocup_demo/src/brain/include/locator.h \
   /usr/include/eigen3/Eigen/Core \
@@ -6196,45 +6210,53 @@ CMakeFiles/brain_node.dir/src/brain_tree.cpp.o: /home/booster/Workspace/robocup_
   /usr/include/c++/11/bits/uses_allocator.h \
   /usr/include/c++/11/bits/invoke.h \
   /opt/ros/humble/include/behaviortree_cpp/behavior_tree.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h \
-  /usr/include/c++/11/set \
-  /usr/include/c++/11/bits/stl_tree.h \
+  /opt/ros/humble/include/behaviortree_cpp/action_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/leaf_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/tree_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/basic_types.h \
+  /opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp \
+  /usr/include/c++/11/cassert \
+  /usr/include/assert.h \
+  /usr/include/c++/11/exception \
+  /usr/include/c++/11/bits/exception.h \
+  /usr/include/c++/11/bits/exception_ptr.h \
+  /usr/include/c++/11/bits/cxxabi_init_exception.h \
+  /usr/include/c++/11/typeinfo \
+  /usr/include/c++/11/bits/hash_bytes.h \
+  /usr/include/c++/11/new \
+  /usr/include/c++/11/bits/nested_exception.h \
+  /usr/include/c++/11/functional \
+  /usr/include/c++/11/bits/stl_function.h \
+  /usr/include/c++/11/backward/binders.h \
+  /usr/include/c++/11/bits/functional_hash.h \
+  /usr/include/c++/11/bits/refwrap.h \
+  /usr/include/c++/11/bits/std_function.h \
+  /usr/include/c++/11/unordered_map \
   /usr/include/c++/11/bits/allocator.h \
   /usr/include/aarch64-linux-gnu/c++/11/bits/c++allocator.h \
   /usr/include/c++/11/ext/new_allocator.h \
-  /usr/include/c++/11/new \
-  /usr/include/c++/11/bits/exception.h \
   /usr/include/c++/11/bits/memoryfwd.h \
-  /usr/include/c++/11/bits/stl_function.h \
-  /usr/include/c++/11/backward/binders.h \
   /usr/include/c++/11/ext/alloc_traits.h \
   /usr/include/c++/11/bits/alloc_traits.h \
   /usr/include/c++/11/bits/stl_construct.h \
   /usr/include/c++/11/ext/aligned_buffer.h \
+  /usr/include/c++/11/bits/hashtable.h \
+  /usr/include/c++/11/bits/hashtable_policy.h \
+  /usr/include/c++/11/bits/enable_special_members.h \
   /usr/include/c++/11/bits/node_handle.h \
-  /usr/include/c++/11/bits/stl_set.h \
-  /usr/include/c++/11/bits/stl_multiset.h \
+  /usr/include/c++/11/bits/unordered_map.h \
   /usr/include/c++/11/bits/erase_if.h \
-  /opt/ros/humble/include/behaviortree_cpp/control_node.h \
   /usr/include/c++/11/vector \
   /usr/include/c++/11/bits/stl_uninitialized.h \
   /usr/include/c++/11/bits/stl_vector.h \
   /usr/include/c++/11/bits/stl_bvector.h \
-  /usr/include/c++/11/bits/functional_hash.h \
-  /usr/include/c++/11/bits/hash_bytes.h \
   /usr/include/c++/11/bits/vector.tcc \
-  /opt/ros/humble/include/behaviortree_cpp/tree_node.h \
-  /usr/include/c++/11/exception \
-  /usr/include/c++/11/bits/exception_ptr.h \
-  /usr/include/c++/11/bits/cxxabi_init_exception.h \
-  /usr/include/c++/11/typeinfo \
-  /usr/include/c++/11/bits/nested_exception.h \
-  /usr/include/c++/11/map \
-  /usr/include/c++/11/bits/stl_map.h \
-  /usr/include/c++/11/bits/stl_multimap.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/signal.h \
-  /usr/include/c++/11/memory \
+  /usr/include/c++/11/bits/stl_algo.h \
+  /usr/include/c++/11/bits/algorithmfwd.h \
+  /usr/include/c++/11/bits/stl_heap.h \
   /usr/include/c++/11/bits/stl_tempbuf.h \
+  /usr/include/c++/11/bits/uniform_int_dist.h \
+  /usr/include/c++/11/memory \
   /usr/include/c++/11/bits/stl_raw_storage_iter.h \
   /usr/include/c++/11/bits/align.h \
   /usr/include/c++/11/bit \
@@ -6257,7 +6279,6 @@ CMakeFiles/brain_node.dir/src/brain_tree.cpp.o: /home/booster/Workspace/robocup_
   /usr/include/aarch64-linux-gnu/bits/types/FILE.h \
   /usr/include/c++/11/bits/shared_ptr_base.h \
   /usr/include/c++/11/bits/allocated_ptr.h \
-  /usr/include/c++/11/bits/refwrap.h \
   /usr/include/c++/11/ext/atomicity.h \
   /usr/include/aarch64-linux-gnu/c++/11/bits/gthr.h \
   /usr/include/aarch64-linux-gnu/c++/11/bits/gthr-default.h \
@@ -6283,27 +6304,20 @@ CMakeFiles/brain_node.dir/src/brain_tree.cpp.o: /home/booster/Workspace/robocup_
   /usr/include/c++/11/backward/auto_ptr.h \
   /usr/include/c++/11/pstl/glue_memory_defs.h \
   /usr/include/c++/11/pstl/execution_defs.h \
-  /usr/include/c++/11/functional \
-  /usr/include/c++/11/bits/std_function.h \
-  /usr/include/c++/11/unordered_map \
-  /usr/include/c++/11/bits/hashtable.h \
-  /usr/include/c++/11/bits/hashtable_policy.h \
-  /usr/include/c++/11/bits/enable_special_members.h \
-  /usr/include/c++/11/bits/unordered_map.h \
-  /usr/include/c++/11/bits/stl_algo.h \
-  /usr/include/c++/11/bits/algorithmfwd.h \
-  /usr/include/c++/11/bits/stl_heap.h \
-  /usr/include/c++/11/bits/uniform_int_dist.h \
-  /opt/ros/humble/include/behaviortree_cpp/basic_types.h \
-  /usr/include/c++/11/chrono \
-  /usr/include/c++/11/ratio \
-  /usr/include/c++/11/cstdint \
-  /usr/include/c++/11/ctime \
-  /usr/include/c++/11/bits/parse_numbers.h \
-  /usr/include/c++/11/iostream \
-  /usr/include/c++/11/ostream \
-  /usr/include/c++/11/ios \
+  /usr/include/c++/11/system_error \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/error_constants.h \
+  /usr/include/c++/11/cerrno \
+  /usr/include/errno.h \
+  /usr/include/aarch64-linux-gnu/bits/errno.h \
+  /usr/include/linux/errno.h \
+  /usr/include/aarch64-linux-gnu/asm/errno.h \
+  /usr/include/asm-generic/errno.h \
+  /usr/include/asm-generic/errno-base.h \
+  /usr/include/aarch64-linux-gnu/bits/types/error_t.h \
+  /usr/include/c++/11/stdexcept \
+  /usr/include/c++/11/string \
   /usr/include/c++/11/bits/char_traits.h \
+  /usr/include/c++/11/cstdint \
   /usr/include/c++/11/bits/localefwd.h \
   /usr/include/aarch64-linux-gnu/c++/11/bits/c++locale.h \
   /usr/include/c++/11/clocale \
@@ -6311,9 +6325,6 @@ CMakeFiles/brain_node.dir/src/brain_tree.cpp.o: /home/booster/Workspace/robocup_
   /usr/include/aarch64-linux-gnu/bits/locale.h \
   /usr/include/c++/11/cctype \
   /usr/include/ctype.h \
-  /usr/include/c++/11/bits/ios_base.h \
-  /usr/include/c++/11/bits/locale_classes.h \
-  /usr/include/c++/11/string \
   /usr/include/c++/11/bits/ostream_insert.h \
   /usr/include/c++/11/bits/cxxabi_forced.h \
   /usr/include/c++/11/bits/basic_string.h \
@@ -6327,20 +6338,48 @@ CMakeFiles/brain_node.dir/src/brain_tree.cpp.o: /home/booster/Workspace/robocup_
   /usr/include/aarch64-linux-gnu/bits/types/struct_FILE.h \
   /usr/include/aarch64-linux-gnu/bits/types/cookie_io_functions_t.h \
   /usr/include/aarch64-linux-gnu/bits/stdio_lim.h \
-  /usr/include/c++/11/cerrno \
-  /usr/include/errno.h \
-  /usr/include/aarch64-linux-gnu/bits/errno.h \
-  /usr/include/linux/errno.h \
-  /usr/include/aarch64-linux-gnu/asm/errno.h \
-  /usr/include/asm-generic/errno.h \
-  /usr/include/asm-generic/errno-base.h \
-  /usr/include/aarch64-linux-gnu/bits/types/error_t.h \
   /usr/include/c++/11/bits/charconv.h \
   /usr/include/c++/11/bits/basic_string.tcc \
+  /opt/ros/humble/include/behaviortree_cpp/exceptions.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/utils/safe_any.hpp \
+  /usr/include/c++/11/charconv \
+  /opt/ros/humble/include/behaviortree_cpp/contrib/any.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/utils/convert_impl.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/utils/simple_string.hpp \
+  /usr/include/c++/11/cstring \
+  /usr/include/string.h \
+  /usr/include/strings.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h \
+  /usr/include/c++/11/chrono \
+  /usr/include/c++/11/ratio \
+  /usr/include/c++/11/ctime \
+  /usr/include/c++/11/bits/parse_numbers.h \
+  /usr/include/c++/11/typeindex \
+  /usr/include/c++/11/cstddef \
+  /usr/include/c++/11/cxxabi.h \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/cxxabi_tweaks.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/polymorphic_cast_registry.hpp \
+  /usr/include/c++/11/algorithm \
+  /usr/include/c++/11/pstl/glue_algorithm_defs.h \
+  /usr/include/c++/11/map \
+  /usr/include/c++/11/bits/stl_tree.h \
+  /usr/include/c++/11/bits/stl_map.h \
+  /usr/include/c++/11/bits/stl_multimap.h \
+  /usr/include/c++/11/mutex \
+  /usr/include/c++/11/bits/std_mutex.h \
+  /usr/include/c++/11/bits/unique_lock.h \
+  /usr/include/c++/11/set \
+  /usr/include/c++/11/bits/stl_set.h \
+  /usr/include/c++/11/bits/stl_multiset.h \
+  /usr/include/c++/11/shared_mutex \
+  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
+  /usr/include/c++/11/iostream \
+  /usr/include/c++/11/ostream \
+  /usr/include/c++/11/ios \
+  /usr/include/c++/11/bits/ios_base.h \
+  /usr/include/c++/11/bits/locale_classes.h \
   /usr/include/c++/11/bits/locale_classes.tcc \
-  /usr/include/c++/11/system_error \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/error_constants.h \
-  /usr/include/c++/11/stdexcept \
   /usr/include/c++/11/streambuf \
   /usr/include/c++/11/bits/streambuf.tcc \
   /usr/include/c++/11/bits/basic_ios.h \
@@ -6357,32 +6396,8 @@ CMakeFiles/brain_node.dir/src/brain_tree.cpp.o: /home/booster/Workspace/robocup_
   /usr/include/c++/11/istream \
   /usr/include/c++/11/bits/istream.tcc \
   /usr/include/c++/11/variant \
-  /opt/ros/humble/include/behaviortree_cpp/utils/safe_any.hpp \
-  /usr/include/c++/11/charconv \
-  /usr/include/c++/11/typeindex \
-  /opt/ros/humble/include/behaviortree_cpp/contrib/any.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp \
-  /usr/include/c++/11/cassert \
-  /usr/include/assert.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h \
-  /usr/include/c++/11/cxxabi.h \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/cxxabi_tweaks.h \
-  /usr/include/c++/11/cstddef \
-  /opt/ros/humble/include/behaviortree_cpp/utils/convert_impl.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/simple_string.hpp \
-  /usr/include/c++/11/cstring \
-  /usr/include/string.h \
-  /usr/include/strings.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/exceptions.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
   /opt/ros/humble/include/behaviortree_cpp/blackboard.h \
-  /usr/include/c++/11/mutex \
-  /usr/include/c++/11/bits/std_mutex.h \
-  /usr/include/c++/11/bits/unique_lock.h \
   /opt/ros/humble/include/behaviortree_cpp/contrib/json.hpp \
-  /usr/include/c++/11/algorithm \
-  /usr/include/c++/11/pstl/glue_algorithm_defs.h \
   /usr/include/c++/11/iterator \
   /usr/include/c++/11/bits/stream_iterator.h \
   /usr/include/c++/11/forward_list \
@@ -6422,56 +6437,58 @@ CMakeFiles/brain_node.dir/src/brain_tree.cpp.o: /home/booster/Workspace/robocup_
   /usr/include/c++/11/pstl/glue_numeric_defs.h \
   /usr/include/c++/11/any \
   /opt/ros/humble/include/behaviortree_cpp/utils/locked_reference.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/scripting/script_parser.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/utils/signal.h \
   /opt/ros/humble/include/behaviortree_cpp/utils/wakeup_signal.hpp \
   /usr/include/c++/11/atomic \
   /usr/include/c++/11/condition_variable \
-  /opt/ros/humble/include/behaviortree_cpp/scripting/script_parser.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_all_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_sequence.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_fallback.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/fallback_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/sequence_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/sequence_with_memory_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/switch_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/if_then_else_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/while_do_else_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/action_node.h \
-  /usr/include/c++/11/thread \
-  /usr/include/c++/11/bits/std_thread.h \
-  /usr/include/c++/11/bits/this_thread_sleep.h \
   /usr/include/c++/11/future \
   /usr/include/c++/11/bits/atomic_futex.h \
-  /opt/ros/humble/include/behaviortree_cpp/leaf_node.h \
+  /usr/include/c++/11/bits/std_thread.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/always_success_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h \
   /opt/ros/humble/include/behaviortree_cpp/condition_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/inverter_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorator_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/retry_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/repeat_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/run_once_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/subtree_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/loop_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/script_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/set_blackboard_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/timer_queue.h \
+  /usr/include/c++/11/queue \
   /usr/include/c++/11/deque \
   /usr/include/c++/11/bits/stl_deque.h \
   /usr/include/c++/11/bits/deque.tcc \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/updated_decorator.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/always_success_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/script_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/set_blackboard_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/test_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/timer_queue.h \
-  /usr/include/c++/11/queue \
   /usr/include/c++/11/bits/stl_queue.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h \
+  /usr/include/c++/11/thread \
+  /usr/include/c++/11/bits/this_thread_sleep.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/test_node.h \
   /opt/ros/humble/include/behaviortree_cpp/actions/unset_blackboard_node.h \
   /opt/ros/humble/include/behaviortree_cpp/actions/updated_action.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/force_success_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/timeout_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/fallback_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/control_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/if_then_else_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_all_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_fallback.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_sequence.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/sequence_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/sequence_with_memory_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/switch_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/try_catch_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/while_do_else_node.h \
   /opt/ros/humble/include/behaviortree_cpp/decorators/delay_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorator_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/force_success_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/inverter_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/loop_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/repeat_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/retry_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/run_once_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/subtree_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/timeout_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/updated_decorator.h \
   /opt/ros/humble/include/behaviortree_cpp/bt_factory.h \
   /opt/ros/humble/include/behaviortree_cpp/contrib/magic_enum.hpp \
   /usr/include/c++/11/optional \
@@ -6643,6 +6660,7 @@ CMakeFiles/brain_node.dir/src/brain_tree.cpp.o: /home/booster/Workspace/robocup_
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info_array.h \
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info.h \
   /opt/ros/humble/include/rclcpp/rclcpp/event.hpp \
+  /opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/detail/node_interfaces_helpers.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/qos.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/duration.hpp \
   /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/duration.hpp \
@@ -6688,7 +6706,6 @@ CMakeFiles/brain_node.dir/src/brain_tree.cpp.o: /home/booster/Workspace/robocup_
   /opt/ros/humble/include/rclcpp/rclcpp/serialized_message.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/type_adapter.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/experimental/intra_process_manager.hpp \
-  /usr/include/c++/11/shared_mutex \
   /opt/ros/humble/include/rclcpp/rclcpp/experimental/ros_message_intra_process_buffer.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/experimental/subscription_intra_process_base.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/experimental/subscription_intra_process.hpp \
@@ -6888,10 +6905,6 @@ CMakeFiles/brain_node.dir/src/brain_tree.cpp.o: /home/booster/Workspace/robocup_
   /usr/include/aarch64-linux-gnu/c++/11/bits/opt_random.h \
   /usr/include/c++/11/bits/random.tcc \
   /opt/ros/humble/include/behaviortree_cpp/loggers/bt_file_logger_v2.h \
-  /usr/include/c++/11/fstream \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/basic_file.h \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/c++io.h \
-  /usr/include/c++/11/bits/fstream.tcc \
   /home/booster/Workspace/robocup_demo/src/brain/include/locator.h \
   /usr/include/eigen3/Eigen/Core \
   /usr/include/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h \
@@ -7283,7 +7296,8 @@ CMakeFiles/brain_node.dir/src/brain_tree.cpp.o: /home/booster/Workspace/robocup_
   rosidl_generator_cpp/brain/msg/rosidl_generator_cpp__visibility_control.hpp \
   /usr/local/include/booster/robot/b1/b1_api_const.hpp \
   /opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.h \
-  /opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.h \
+  /opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.hpp \
+  /opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/transform_stamped.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/transform_stamped__struct.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/transform__struct.hpp \
@@ -7413,6 +7427,10 @@ CMakeFiles/brain_node.dir/src/brain_tree.cpp.o: /home/booster/Workspace/robocup_
   /opt/ros/humble/include/sensor_msgs/sensor_msgs/msg/detail/image__traits.hpp \
   /opt/ros/humble/include/sensor_msgs/sensor_msgs/msg/detail/image__type_support.hpp \
   /home/booster/Workspace/robocup_demo/src/brain/include/brain_log.h \
+  /usr/include/c++/11/fstream \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/basic_file.h \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/c++io.h \
+  /usr/include/c++/11/bits/fstream.tcc \
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/key_value.hpp \
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/detail/key_value__struct.hpp \
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/detail/key_value__builder.hpp \
@@ -7885,17 +7903,11 @@ CMakeFiles/brain_node.dir/src/locator.cpp.o: /home/booster/Workspace/robocup_dem
   /usr/include/c++/11/ratio \
   /usr/include/c++/11/bits/parse_numbers.h \
   /opt/ros/humble/include/behaviortree_cpp/behavior_tree.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h \
-  /usr/include/c++/11/set \
-  /usr/include/c++/11/bits/stl_tree.h \
-  /usr/include/c++/11/bits/stl_set.h \
-  /usr/include/c++/11/bits/stl_multiset.h \
-  /opt/ros/humble/include/behaviortree_cpp/control_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/action_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/leaf_node.h \
   /opt/ros/humble/include/behaviortree_cpp/tree_node.h \
-  /usr/include/c++/11/map \
-  /usr/include/c++/11/bits/stl_map.h \
-  /usr/include/c++/11/bits/stl_multimap.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/signal.h \
+  /opt/ros/humble/include/behaviortree_cpp/basic_types.h \
+  /opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp \
   /usr/include/c++/11/memory \
   /usr/include/c++/11/bits/stl_raw_storage_iter.h \
   /usr/include/c++/11/bits/align.h \
@@ -7908,26 +7920,33 @@ CMakeFiles/brain_node.dir/src/locator.cpp.o: /home/booster/Workspace/robocup_dem
   /usr/include/c++/11/bits/shared_ptr_atomic.h \
   /usr/include/c++/11/backward/auto_ptr.h \
   /usr/include/c++/11/pstl/glue_memory_defs.h \
-  /opt/ros/humble/include/behaviortree_cpp/basic_types.h \
-  /usr/include/c++/11/iostream \
-  /usr/include/c++/11/variant \
-  /opt/ros/humble/include/behaviortree_cpp/utils/safe_any.hpp \
-  /usr/include/c++/11/charconv \
-  /usr/include/c++/11/typeindex \
-  /opt/ros/humble/include/behaviortree_cpp/contrib/any.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h \
-  /usr/include/c++/11/cxxabi.h \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/cxxabi_tweaks.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/convert_impl.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/simple_string.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
   /opt/ros/humble/include/behaviortree_cpp/exceptions.h \
   /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/blackboard.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/safe_any.hpp \
+  /usr/include/c++/11/charconv \
+  /opt/ros/humble/include/behaviortree_cpp/contrib/any.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/utils/convert_impl.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/utils/simple_string.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h \
+  /usr/include/c++/11/typeindex \
+  /usr/include/c++/11/cxxabi.h \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/cxxabi_tweaks.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/polymorphic_cast_registry.hpp \
+  /usr/include/c++/11/map \
+  /usr/include/c++/11/bits/stl_tree.h \
+  /usr/include/c++/11/bits/stl_map.h \
+  /usr/include/c++/11/bits/stl_multimap.h \
   /usr/include/c++/11/mutex \
   /usr/include/c++/11/bits/std_mutex.h \
   /usr/include/c++/11/bits/unique_lock.h \
+  /usr/include/c++/11/set \
+  /usr/include/c++/11/bits/stl_set.h \
+  /usr/include/c++/11/bits/stl_multiset.h \
+  /usr/include/c++/11/shared_mutex \
+  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
+  /usr/include/c++/11/iostream \
+  /usr/include/c++/11/variant \
+  /opt/ros/humble/include/behaviortree_cpp/blackboard.h \
   /opt/ros/humble/include/behaviortree_cpp/contrib/json.hpp \
   /usr/include/c++/11/iterator \
   /usr/include/c++/11/bits/stream_iterator.h \
@@ -7966,55 +7985,57 @@ CMakeFiles/brain_node.dir/src/locator.cpp.o: /home/booster/Workspace/robocup_dem
   /usr/include/c++/11/pstl/glue_numeric_defs.h \
   /usr/include/c++/11/any \
   /opt/ros/humble/include/behaviortree_cpp/utils/locked_reference.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/scripting/script_parser.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/utils/signal.h \
   /opt/ros/humble/include/behaviortree_cpp/utils/wakeup_signal.hpp \
   /usr/include/c++/11/condition_variable \
-  /opt/ros/humble/include/behaviortree_cpp/scripting/script_parser.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_all_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_sequence.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_fallback.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/fallback_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/sequence_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/sequence_with_memory_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/switch_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/if_then_else_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/while_do_else_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/action_node.h \
-  /usr/include/c++/11/thread \
-  /usr/include/c++/11/bits/std_thread.h \
-  /usr/include/c++/11/bits/this_thread_sleep.h \
   /usr/include/c++/11/future \
   /usr/include/c++/11/bits/atomic_futex.h \
-  /opt/ros/humble/include/behaviortree_cpp/leaf_node.h \
+  /usr/include/c++/11/bits/std_thread.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/always_success_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h \
   /opt/ros/humble/include/behaviortree_cpp/condition_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/inverter_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorator_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/retry_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/repeat_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/run_once_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/subtree_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/loop_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/script_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/set_blackboard_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/timer_queue.h \
+  /usr/include/c++/11/queue \
   /usr/include/c++/11/deque \
   /usr/include/c++/11/bits/stl_deque.h \
   /usr/include/c++/11/bits/deque.tcc \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/updated_decorator.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/always_success_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/script_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/set_blackboard_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/test_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/timer_queue.h \
-  /usr/include/c++/11/queue \
   /usr/include/c++/11/bits/stl_queue.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h \
+  /usr/include/c++/11/thread \
+  /usr/include/c++/11/bits/this_thread_sleep.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/test_node.h \
   /opt/ros/humble/include/behaviortree_cpp/actions/unset_blackboard_node.h \
   /opt/ros/humble/include/behaviortree_cpp/actions/updated_action.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/force_success_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/timeout_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/fallback_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/control_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/if_then_else_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_all_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_fallback.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_sequence.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/sequence_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/sequence_with_memory_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/switch_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/try_catch_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/while_do_else_node.h \
   /opt/ros/humble/include/behaviortree_cpp/decorators/delay_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorator_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/force_success_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/inverter_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/loop_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/repeat_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/retry_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/run_once_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/subtree_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/timeout_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/updated_decorator.h \
   /opt/ros/humble/include/behaviortree_cpp/bt_factory.h \
   /opt/ros/humble/include/behaviortree_cpp/contrib/magic_enum.hpp \
   /usr/include/c++/11/optional \
@@ -8186,6 +8207,7 @@ CMakeFiles/brain_node.dir/src/locator.cpp.o: /home/booster/Workspace/robocup_dem
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info_array.h \
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info.h \
   /opt/ros/humble/include/rclcpp/rclcpp/event.hpp \
+  /opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/detail/node_interfaces_helpers.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/qos.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/duration.hpp \
   /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/duration.hpp \
@@ -8231,7 +8253,6 @@ CMakeFiles/brain_node.dir/src/locator.cpp.o: /home/booster/Workspace/robocup_dem
   /opt/ros/humble/include/rclcpp/rclcpp/serialized_message.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/type_adapter.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/experimental/intra_process_manager.hpp \
-  /usr/include/c++/11/shared_mutex \
   /opt/ros/humble/include/rclcpp/rclcpp/experimental/ros_message_intra_process_buffer.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/experimental/subscription_intra_process_base.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/experimental/subscription_intra_process.hpp \
@@ -8771,7 +8792,8 @@ CMakeFiles/brain_node.dir/src/locator.cpp.o: /home/booster/Workspace/robocup_dem
   rosidl_generator_cpp/brain/msg/rosidl_generator_cpp__visibility_control.hpp \
   /usr/local/include/booster/robot/b1/b1_api_const.hpp \
   /opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.h \
-  /opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.h \
+  /opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.hpp \
+  /opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/transform_stamped.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/transform_stamped__struct.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/transform__struct.hpp \
@@ -8836,6 +8858,10 @@ CMakeFiles/brain_node.dir/src/locator.cpp.o: /home/booster/Workspace/robocup_dem
   /opt/ros/humble/include/sensor_msgs/sensor_msgs/msg/detail/image__traits.hpp \
   /opt/ros/humble/include/sensor_msgs/sensor_msgs/msg/detail/image__type_support.hpp \
   /home/booster/Workspace/robocup_demo/src/brain/include/brain_log.h \
+  /usr/include/c++/11/fstream \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/basic_file.h \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/c++io.h \
+  /usr/include/c++/11/bits/fstream.tcc \
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/key_value.hpp \
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/detail/key_value__struct.hpp \
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/detail/key_value__builder.hpp \
@@ -8847,10 +8873,6 @@ CMakeFiles/brain_node.dir/src/locator.cpp.o: /home/booster/Workspace/robocup_dem
   /opt/ros/humble/include/behaviortree_cpp/loggers/abstract_logger.h \
   /opt/ros/humble/include/behaviortree_cpp/loggers/groot2_protocol.h \
   /opt/ros/humble/include/behaviortree_cpp/loggers/bt_file_logger_v2.h \
-  /usr/include/c++/11/fstream \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/basic_file.h \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/c++io.h \
-  /usr/include/c++/11/bits/fstream.tcc \
   /home/booster/Workspace/robocup_demo/src/brain/include/brain_communication.h \
   /home/booster/Workspace/robocup_demo/src/brain/include/robot_client.h \
   /home/booster/Workspace/robocup_demo/build/booster_interface/rosidl_generator_cpp/booster_interface/srv/rpc_service.hpp \
@@ -9315,6 +9337,7 @@ CMakeFiles/brain_node.dir/src/main.cpp.o: /home/booster/Workspace/robocup_demo/s
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info_array.h \
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info.h \
   /opt/ros/humble/include/rclcpp/rclcpp/event.hpp \
+  /opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/detail/node_interfaces_helpers.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/qos.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/duration.hpp \
   /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/duration.hpp \
@@ -9860,7 +9883,8 @@ CMakeFiles/brain_node.dir/src/main.cpp.o: /home/booster/Workspace/robocup_demo/s
   rosidl_generator_cpp/brain/msg/rosidl_generator_cpp__visibility_control.hpp \
   /usr/local/include/booster/robot/b1/b1_api_const.hpp \
   /opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.h \
-  /opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.h \
+  /opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.hpp \
+  /opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/transform_stamped.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/transform_stamped__struct.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/transform__struct.hpp \
@@ -10119,6 +10143,10 @@ CMakeFiles/brain_node.dir/src/main.cpp.o: /home/booster/Workspace/robocup_demo/s
   /opt/ros/humble/include/sensor_msgs/sensor_msgs/msg/detail/image__traits.hpp \
   /opt/ros/humble/include/sensor_msgs/sensor_msgs/msg/detail/image__type_support.hpp \
   /home/booster/Workspace/robocup_demo/src/brain/include/brain_log.h \
+  /usr/include/c++/11/fstream \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/basic_file.h \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/c++io.h \
+  /usr/include/c++/11/bits/fstream.tcc \
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/key_value.hpp \
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/detail/key_value__struct.hpp \
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/detail/key_value__builder.hpp \
@@ -10127,20 +10155,20 @@ CMakeFiles/brain_node.dir/src/main.cpp.o: /home/booster/Workspace/robocup_demo/s
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/rosidl_generator_cpp__visibility_control.hpp \
   /home/booster/Workspace/robocup_demo/src/brain/include/brain_tree.h \
   /opt/ros/humble/include/behaviortree_cpp/behavior_tree.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/control_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/action_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/leaf_node.h \
   /opt/ros/humble/include/behaviortree_cpp/tree_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/signal.h \
   /opt/ros/humble/include/behaviortree_cpp/basic_types.h \
+  /opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/exceptions.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
   /opt/ros/humble/include/behaviortree_cpp/utils/safe_any.hpp \
   /usr/include/c++/11/charconv \
   /opt/ros/humble/include/behaviortree_cpp/contrib/any.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h \
   /opt/ros/humble/include/behaviortree_cpp/utils/convert_impl.hpp \
   /opt/ros/humble/include/behaviortree_cpp/utils/simple_string.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/exceptions.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/polymorphic_cast_registry.hpp \
   /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
   /opt/ros/humble/include/behaviortree_cpp/blackboard.h \
   /opt/ros/humble/include/behaviortree_cpp/contrib/json.hpp \
@@ -10165,44 +10193,46 @@ CMakeFiles/brain_node.dir/src/main.cpp.o: /home/booster/Workspace/robocup_demo/s
   /usr/include/c++/11/bits/fs_ops.h \
   /usr/include/c++/11/any \
   /opt/ros/humble/include/behaviortree_cpp/utils/locked_reference.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/wakeup_signal.hpp \
   /opt/ros/humble/include/behaviortree_cpp/scripting/script_parser.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_all_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_sequence.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_fallback.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/signal.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/wakeup_signal.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/always_success_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h \
+  /opt/ros/humble/include/behaviortree_cpp/condition_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/script_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/set_blackboard_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/timer_queue.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/test_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/unset_blackboard_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/updated_action.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/fallback_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/control_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/if_then_else_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_all_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_fallback.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_sequence.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/sequence_node.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/sequence_with_memory_node.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/switch_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/if_then_else_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/try_catch_node.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/while_do_else_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/action_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/leaf_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/condition_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/inverter_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorator_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/retry_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/repeat_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/run_once_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/subtree_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/loop_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/updated_decorator.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/always_success_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/script_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/set_blackboard_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/test_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/timer_queue.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/unset_blackboard_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/updated_action.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/force_success_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/timeout_node.h \
   /opt/ros/humble/include/behaviortree_cpp/decorators/delay_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorator_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/force_success_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/inverter_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/loop_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/repeat_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/retry_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/run_once_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/subtree_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/timeout_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/updated_decorator.h \
   /opt/ros/humble/include/behaviortree_cpp/bt_factory.h \
   /opt/ros/humble/include/behaviortree_cpp/contrib/magic_enum.hpp \
   /opt/ros/humble/include/behaviortree_cpp/loggers/groot2_publisher.h \
@@ -10213,10 +10243,6 @@ CMakeFiles/brain_node.dir/src/main.cpp.o: /home/booster/Workspace/robocup_demo/s
   /usr/include/aarch64-linux-gnu/c++/11/bits/opt_random.h \
   /usr/include/c++/11/bits/random.tcc \
   /opt/ros/humble/include/behaviortree_cpp/loggers/bt_file_logger_v2.h \
-  /usr/include/c++/11/fstream \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/basic_file.h \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/c++io.h \
-  /usr/include/c++/11/bits/fstream.tcc \
   /home/booster/Workspace/robocup_demo/src/brain/include/brain_communication.h \
   /home/booster/Workspace/robocup_demo/src/brain/include/locator.h \
   /usr/include/eigen3/Eigen/Core \
@@ -10708,6 +10734,7 @@ CMakeFiles/brain_node.dir/src/robot_client.cpp.o: /home/booster/Workspace/robocu
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info_array.h \
   /opt/ros/humble/include/rmw/rmw/topic_endpoint_info.h \
   /opt/ros/humble/include/rclcpp/rclcpp/event.hpp \
+  /opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/detail/node_interfaces_helpers.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/qos.hpp \
   /opt/ros/humble/include/rclcpp/rclcpp/duration.hpp \
   /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/duration.hpp \
@@ -11228,7 +11255,8 @@ CMakeFiles/brain_node.dir/src/robot_client.cpp.o: /home/booster/Workspace/robocu
   rosidl_generator_cpp/brain/msg/rosidl_generator_cpp__visibility_control.hpp \
   /usr/local/include/booster/robot/b1/b1_api_const.hpp \
   /opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.h \
-  /opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.h \
+  /opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.hpp \
+  /opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/transform_stamped.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/transform_stamped__struct.hpp \
   /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/transform__struct.hpp \
@@ -11487,6 +11515,10 @@ CMakeFiles/brain_node.dir/src/robot_client.cpp.o: /home/booster/Workspace/robocu
   /opt/ros/humble/include/sensor_msgs/sensor_msgs/msg/detail/image__traits.hpp \
   /opt/ros/humble/include/sensor_msgs/sensor_msgs/msg/detail/image__type_support.hpp \
   /home/booster/Workspace/robocup_demo/src/brain/include/brain_log.h \
+  /usr/include/c++/11/fstream \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/basic_file.h \
+  /usr/include/aarch64-linux-gnu/c++/11/bits/c++io.h \
+  /usr/include/c++/11/bits/fstream.tcc \
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/key_value.hpp \
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/detail/key_value__struct.hpp \
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/detail/key_value__builder.hpp \
@@ -11495,20 +11527,20 @@ CMakeFiles/brain_node.dir/src/robot_client.cpp.o: /home/booster/Workspace/robocu
   /opt/ros/humble/include/diagnostic_msgs/diagnostic_msgs/msg/rosidl_generator_cpp__visibility_control.hpp \
   /home/booster/Workspace/robocup_demo/src/brain/include/brain_tree.h \
   /opt/ros/humble/include/behaviortree_cpp/behavior_tree.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/control_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/action_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/leaf_node.h \
   /opt/ros/humble/include/behaviortree_cpp/tree_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/signal.h \
   /opt/ros/humble/include/behaviortree_cpp/basic_types.h \
+  /opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/exceptions.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
   /opt/ros/humble/include/behaviortree_cpp/utils/safe_any.hpp \
   /usr/include/c++/11/charconv \
   /opt/ros/humble/include/behaviortree_cpp/contrib/any.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h \
   /opt/ros/humble/include/behaviortree_cpp/utils/convert_impl.hpp \
   /opt/ros/humble/include/behaviortree_cpp/utils/simple_string.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/exceptions.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/polymorphic_cast_registry.hpp \
   /opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp \
   /opt/ros/humble/include/behaviortree_cpp/blackboard.h \
   /opt/ros/humble/include/behaviortree_cpp/contrib/json.hpp \
@@ -11533,44 +11565,46 @@ CMakeFiles/brain_node.dir/src/robot_client.cpp.o: /home/booster/Workspace/robocu
   /usr/include/c++/11/bits/fs_ops.h \
   /usr/include/c++/11/any \
   /opt/ros/humble/include/behaviortree_cpp/utils/locked_reference.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/utils/wakeup_signal.hpp \
   /opt/ros/humble/include/behaviortree_cpp/scripting/script_parser.hpp \
-  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_all_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_sequence.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_fallback.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/signal.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/wakeup_signal.hpp \
+  /opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/always_success_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h \
+  /opt/ros/humble/include/behaviortree_cpp/condition_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/script_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/set_blackboard_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/utils/timer_queue.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/test_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/unset_blackboard_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/actions/updated_action.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/fallback_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/control_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/if_then_else_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_all_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_fallback.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/reactive_sequence.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/sequence_node.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/sequence_with_memory_node.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/switch_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/controls/if_then_else_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/controls/try_catch_node.h \
   /opt/ros/humble/include/behaviortree_cpp/controls/while_do_else_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/action_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/leaf_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/condition_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/inverter_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorator_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/retry_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/repeat_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/run_once_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/subtree_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/loop_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/updated_decorator.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/always_success_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/script_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/set_blackboard_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/test_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/utils/timer_queue.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/unset_blackboard_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/actions/updated_action.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/force_success_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h \
-  /opt/ros/humble/include/behaviortree_cpp/decorators/timeout_node.h \
   /opt/ros/humble/include/behaviortree_cpp/decorators/delay_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorator_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/force_success_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/inverter_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/loop_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/repeat_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/retry_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/run_once_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/subtree_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/timeout_node.h \
+  /opt/ros/humble/include/behaviortree_cpp/decorators/updated_decorator.h \
   /opt/ros/humble/include/behaviortree_cpp/bt_factory.h \
   /opt/ros/humble/include/behaviortree_cpp/contrib/magic_enum.hpp \
   /opt/ros/humble/include/behaviortree_cpp/loggers/groot2_publisher.h \
@@ -11581,10 +11615,6 @@ CMakeFiles/brain_node.dir/src/robot_client.cpp.o: /home/booster/Workspace/robocu
   /usr/include/aarch64-linux-gnu/c++/11/bits/opt_random.h \
   /usr/include/c++/11/bits/random.tcc \
   /opt/ros/humble/include/behaviortree_cpp/loggers/bt_file_logger_v2.h \
-  /usr/include/c++/11/fstream \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/basic_file.h \
-  /usr/include/aarch64-linux-gnu/c++/11/bits/c++io.h \
-  /usr/include/c++/11/bits/fstream.tcc \
   /home/booster/Workspace/robocup_demo/src/brain/include/brain_communication.h \
   /home/booster/Workspace/robocup_demo/src/brain/include/locator.h \
   /usr/include/eigen3/Eigen/Core \
@@ -12532,6 +12562,8 @@ CMakeFiles/brain_node.dir/src/visualization_publisher.cpp.o: /home/booster/Works
   /opt/ros/humble/include/sensor_msgs/sensor_msgs/impl/point_cloud2_iterator.hpp
 
 
+/opt/ros/humble/include/tf2_ros/tf2_ros/buffer_interface.h:
+
 /usr/local/include/booster/robot/common/robot_shared.hpp:
 
 /usr/local/include/booster/robot/common/entities.hpp:
@@ -12542,7 +12574,7 @@ CMakeFiles/brain_node.dir/src/visualization_publisher.cpp.o: /home/booster/Works
 
 /home/booster/Workspace/robocup_demo/src/brain/src/brain_communication.cpp:
 
-/opt/ros/humble/include/tf2_ros/tf2_ros/buffer_interface.h:
+/opt/ros/humble/include/tf2_ros/tf2_ros/buffer_interface.hpp:
 
 /opt/ros/humble/include/tf2/tf2/LinearMath/Transform.hpp:
 
@@ -12628,8 +12660,6 @@ CMakeFiles/brain_node.dir/src/visualization_publisher.cpp.o: /home/booster/Works
 
 /opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/map_meta_data__traits.hpp:
 
-/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__traits.hpp:
-
 /opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/map_meta_data__struct.hpp:
 
 /opt/ros/humble/include/nav_msgs/nav_msgs/msg/occupancy_grid.hpp:
@@ -12684,31 +12714,19 @@ CMakeFiles/brain_node.dir/src/visualization_publisher.cpp.o: /home/booster/Works
 
 /opt/ros/humble/include/behaviortree_cpp/decorators/timeout_node.h:
 
-/opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h:
-
-/opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h:
-
-/opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h:
-
-/opt/ros/humble/include/behaviortree_cpp/actions/updated_action.h:
-
-/opt/ros/humble/include/behaviortree_cpp/actions/unset_blackboard_node.h:
-
-/opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h:
-
-/opt/ros/humble/include/behaviortree_cpp/actions/test_node.h:
-
-/opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h:
-
-/opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h:
-
 /opt/ros/humble/include/behaviortree_cpp/decorators/subtree_node.h:
+
+/opt/ros/humble/include/behaviortree_cpp/decorators/script_precondition.h:
 
 /opt/ros/humble/include/behaviortree_cpp/decorators/run_once_node.h:
 
 /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point32__type_support.hpp:
 
 /opt/ros/humble/include/behaviortree_cpp/decorators/repeat_node.h:
+
+/opt/ros/humble/include/behaviortree_cpp/decorators/keep_running_until_failure_node.h:
+
+/opt/ros/humble/include/behaviortree_cpp/decorators/force_failure_node.h:
 
 /opt/ros/humble/include/behaviortree_cpp/controls/while_do_else_node.h:
 
@@ -12720,9 +12738,23 @@ CMakeFiles/brain_node.dir/src/visualization_publisher.cpp.o: /home/booster/Works
 
 /opt/ros/humble/include/behaviortree_cpp/controls/sequence_node.h:
 
-/opt/ros/humble/include/behaviortree_cpp/controls/fallback_node.h:
+/opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h:
 
 /opt/ros/humble/include/behaviortree_cpp/controls/parallel_all_node.h:
+
+/opt/ros/humble/include/behaviortree_cpp/controls/fallback_node.h:
+
+/opt/ros/humble/include/behaviortree_cpp/actions/updated_action.h:
+
+/opt/ros/humble/include/behaviortree_cpp/actions/unset_blackboard_node.h:
+
+/opt/ros/humble/include/behaviortree_cpp/actions/test_node.h:
+
+/opt/ros/humble/include/behaviortree_cpp/actions/sleep_node.h:
+
+/opt/ros/humble/include/behaviortree_cpp/actions/script_condition.h:
+
+/opt/ros/humble/include/behaviortree_cpp/actions/always_failure_node.h:
 
 /opt/ros/humble/include/behaviortree_cpp/scripting/script_parser.hpp:
 
@@ -12756,23 +12788,23 @@ CMakeFiles/brain_node.dir/src/visualization_publisher.cpp.o: /home/booster/Works
 
 /opt/ros/humble/include/behaviortree_cpp/blackboard.h:
 
-/opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp:
+/opt/ros/humble/include/behaviortree_cpp/utils/polymorphic_cast_registry.hpp:
+
+/opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h:
 
 /opt/ros/humble/include/behaviortree_cpp/utils/simple_string.hpp:
 
 /opt/ros/humble/include/behaviortree_cpp/utils/convert_impl.hpp:
 
-/opt/ros/humble/include/behaviortree_cpp/utils/demangle_util.h:
-
-/opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp:
-
 /usr/include/c++/11/charconv:
 
 /opt/ros/humble/include/behaviortree_cpp/utils/safe_any.hpp:
 
-/opt/ros/humble/include/behaviortree_cpp/basic_types.h:
+/opt/ros/humble/include/behaviortree_cpp/utils/strcat.hpp:
 
-/opt/ros/humble/include/behaviortree_cpp/controls/parallel_node.h:
+/opt/ros/humble/include/behaviortree_cpp/contrib/expected.hpp:
+
+/opt/ros/humble/include/behaviortree_cpp/basic_types.h:
 
 /home/booster/Workspace/robocup_demo/src/brain/include/brain_tree.h:
 
@@ -12969,8 +13001,6 @@ CMakeFiles/brain_node.dir/src/visualization_publisher.cpp.o: /home/booster/Works
 /usr/include/eigen3/Eigen/src/plugins/ArrayCwiseUnaryOps.h:
 
 /usr/include/eigen3/Eigen/src/Core/Assign.h:
-
-/opt/ros/humble/include/rclcpp/rclcpp/message_info.hpp:
 
 /opt/ros/humble/include/rclcpp/rclcpp/any_subscription_callback.hpp:
 
@@ -13676,6 +13706,8 @@ CMakeFiles/brain_node.dir/src/visualization_publisher.cpp.o: /home/booster/Works
 
 /usr/include/c++/11/initializer_list:
 
+/opt/ros/humble/include/behaviortree_cpp/controls/try_catch_node.h:
+
 /usr/include/c++/11/iosfwd:
 
 /usr/include/opencv4/opencv2/stitching/detail/util_inl.hpp:
@@ -14018,12 +14050,6 @@ rosidl_generator_cpp/brain/msg/detail/kick__type_support.hpp:
 
 /usr/include/aarch64-linux-gnu/bits/waitstatus.h:
 
-/usr/include/aarch64-linux-gnu/asm/socket.h:
-
-/usr/include/c++/11/iostream:
-
-/usr/include/aarch64-linux-gnu/bits/types/FILE.h:
-
 /usr/include/c++/11/tr1/beta_function.tcc:
 
 /opt/ros/humble/include/builtin_interfaces/builtin_interfaces/msg/time.hpp:
@@ -14082,6 +14108,10 @@ rosidl_generator_cpp/brain/msg/detail/kick__type_support.hpp:
 
 /usr/include/c++/11/tr1/modified_bessel_func.tcc:
 
+/opt/ros/humble/include/rclcpp/rclcpp/node_interfaces/detail/node_interfaces_helpers.hpp:
+
+/opt/ros/humble/include/rclcpp/rclcpp/wait_set_policies/static_storage.hpp:
+
 /opt/ros/humble/include/rcl/rcl/macros.h:
 
 /opt/ros/humble/include/rclcpp/rclcpp/expand_topic_or_service_name.hpp:
@@ -14111,6 +14141,10 @@ rosidl_generator_cpp/brain/msg/detail/kick__type_support.hpp:
 /usr/include/aarch64-linux-gnu/asm/errno.h:
 
 /usr/include/aarch64-linux-gnu/bits/long-double.h:
+
+/opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.h:
+
+/opt/ros/humble/include/sensor_msgs/sensor_msgs/msg/detail/compressed_image__struct.hpp:
 
 /opt/ros/humble/include/rcl_interfaces/rcl_interfaces/msg/detail/parameter_descriptor__struct.hpp:
 
@@ -14241,6 +14275,10 @@ rosidl_generator_cpp/brain/msg/detail/kick__type_support.hpp:
 /usr/include/c++/11/bits/memoryfwd.h:
 
 /usr/include/c++/11/tr1/poly_hermite.tcc:
+
+/usr/include/eigen3/Eigen/src/Core/CoreEvaluators.h:
+
+/opt/ros/humble/include/rclcpp/rclcpp/typesupport_helpers.hpp:
 
 /usr/include/aarch64-linux-gnu/c++/11/bits/atomic_word.h:
 
@@ -14455,6 +14493,18 @@ rosidl_generator_cpp/brain/msg/detail/kick__type_support.hpp:
 /usr/include/yaml-cpp/null.h:
 
 /usr/include/opencv4/opencv2/flann/defines.h:
+
+/opt/ros/humble/include/rclcpp/rclcpp/message_info.hpp:
+
+/usr/include/eigen3/Eigen/src/Core/AssignEvaluator.h:
+
+/home/booster/Workspace/robocup_demo/build/booster_interface/rosidl_generator_cpp/booster_interface/msg/detail/remote_controller_state__type_support.hpp:
+
+/usr/include/c++/11/iostream:
+
+/usr/include/aarch64-linux-gnu/bits/types/FILE.h:
+
+/usr/include/aarch64-linux-gnu/asm/socket.h:
 
 /opt/ros/humble/include/rclcpp/rclcpp/serialized_message.hpp:
 
@@ -14804,6 +14854,8 @@ rosidl_generator_cpp/brain/msg/detail/kick__type_support.hpp:
 
 /opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.h:
 
+/opt/ros/humble/include/tf2_ros/tf2_ros/transform_broadcaster.hpp:
+
 /opt/ros/humble/include/rcl_interfaces/rcl_interfaces/srv/detail/get_parameters__type_support.hpp:
 
 /opt/ros/humble/include/rcl_interfaces/rcl_interfaces/srv/detail/list_parameters__struct.hpp:
@@ -14845,8 +14897,6 @@ rosidl_generator_cpp/brain/msg/detail/kick__type_support.hpp:
 /usr/include/limits.h:
 
 /opt/ros/humble/include/rclcpp/rclcpp/wait_result.hpp:
-
-/opt/ros/humble/include/rclcpp/rclcpp/wait_set_policies/static_storage.hpp:
 
 /home/booster/Workspace/robocup_demo/build/booster_interface/rosidl_generator_cpp/booster_interface/msg/detail/low_state__struct.hpp:
 
@@ -15064,6 +15114,10 @@ rosidl_generator_cpp/brain/msg/detail/kick__type_support.hpp:
 
 /usr/include/opencv4/opencv2/stitching/warpers.hpp:
 
+/opt/ros/humble/include/nav_msgs/nav_msgs/msg/detail/occupancy_grid__traits.hpp:
+
+/opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.hpp:
+
 /usr/include/c++/11/bits/stl_numeric.h:
 
 /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/detail/point_stamped__builder.hpp:
@@ -15133,10 +15187,6 @@ rosidl_generator_cpp/brain/msg/detail/kick__type_support.hpp:
 /opt/ros/humble/include/rcl_interfaces/rcl_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp:
 
 /usr/include/eigen3/Eigen/src/plugins/BlockMethods.h:
-
-/home/booster/Workspace/robocup_demo/build/booster_interface/rosidl_generator_cpp/booster_interface/msg/detail/remote_controller_state__type_support.hpp:
-
-/usr/include/eigen3/Eigen/src/Core/AssignEvaluator.h:
 
 /opt/ros/humble/include/std_msgs/std_msgs/msg/detail/float64_multi_array__struct.hpp:
 
@@ -15324,10 +15374,6 @@ rosidl_generator_cpp/brain/msg/detail/kick__traits.hpp:
 
 rosidl_generator_cpp/brain/msg/rosidl_generator_cpp__visibility_control.hpp:
 
-/opt/ros/humble/include/sensor_msgs/sensor_msgs/msg/detail/compressed_image__struct.hpp:
-
-/opt/ros/humble/include/tf2_ros/tf2_ros/visibility_control.h:
-
 /opt/ros/humble/include/rcl_interfaces/rcl_interfaces/srv/detail/get_parameters__builder.hpp:
 
 /opt/ros/humble/include/geometry_msgs/geometry_msgs/msg/transform_stamped.hpp:
@@ -15475,7 +15521,3 @@ rosidl_generator_cpp/brain/msg/rosidl_generator_cpp__visibility_control.hpp:
 /home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_generator_cpp/vision_interface/msg/segmentation_result.hpp:
 
 /usr/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h:
-
-/opt/ros/humble/include/rclcpp/rclcpp/typesupport_helpers.hpp:
-
-/usr/include/eigen3/Eigen/src/Core/CoreEvaluators.h:

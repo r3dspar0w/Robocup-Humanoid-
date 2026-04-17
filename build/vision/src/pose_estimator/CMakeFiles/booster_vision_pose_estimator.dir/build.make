@@ -106,7 +106,7 @@ src/pose_estimator/libbooster_vision_pose_estimator.so: /opt/ros/humble/lib/libg
 src/pose_estimator/libbooster_vision_pose_estimator.so: /opt/ros/humble/lib/libstd_msgs__rosidl_typesupport_fastrtps_cpp.so
 src/pose_estimator/libbooster_vision_pose_estimator.so: /opt/ros/humble/lib/libbuiltin_interfaces__rosidl_typesupport_fastrtps_cpp.so
 src/pose_estimator/libbooster_vision_pose_estimator.so: /opt/ros/humble/lib/librosidl_typesupport_fastrtps_cpp.so
-src/pose_estimator/libbooster_vision_pose_estimator.so: /opt/ros/humble/lib/libfastcdr.so.1.0.24
+src/pose_estimator/libbooster_vision_pose_estimator.so: /opt/ros/humble/lib/libfastcdr.so.1.0.29
 src/pose_estimator/libbooster_vision_pose_estimator.so: /opt/ros/humble/lib/librmw.so
 src/pose_estimator/libbooster_vision_pose_estimator.so: /opt/ros/humble/lib/libgeometry_msgs__rosidl_typesupport_introspection_cpp.so
 src/pose_estimator/libbooster_vision_pose_estimator.so: /opt/ros/humble/lib/libstd_msgs__rosidl_typesupport_introspection_cpp.so

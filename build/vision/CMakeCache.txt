@@ -278,7 +278,7 @@ CUDAToolkit_rt_LIBRARY:FILEPATH=/usr/lib/aarch64-linux-gnu/librt.a
 CUDA_CUDART:FILEPATH=/usr/local/cuda/lib64/libcudart.so
 
 //Path to a library.
-CUDA_OpenCL_LIBRARY:FILEPATH=CUDA_OpenCL_LIBRARY-NOTFOUND
+CUDA_OpenCL_LIBRARY:FILEPATH=/usr/lib/aarch64-linux-gnu/libOpenCL.so
 
 //Path to a library.
 CUDA_cublasLt_LIBRARY:FILEPATH=/usr/local/cuda/lib64/libcublasLt.so
@@ -419,10 +419,10 @@ CUDA_nvgraph_LIBRARY:FILEPATH=CUDA_nvgraph_LIBRARY-NOTFOUND
 CUDA_nvgraph_static_LIBRARY:FILEPATH=CUDA_nvgraph_static_LIBRARY-NOTFOUND
 
 //Path to a library.
-CUDA_nvjpeg_LIBRARY:FILEPATH=CUDA_nvjpeg_LIBRARY-NOTFOUND
+CUDA_nvjpeg_LIBRARY:FILEPATH=/usr/lib/aarch64-linux-gnu/libnvjpeg.so
 
 //Path to a library.
-CUDA_nvjpeg_static_LIBRARY:FILEPATH=CUDA_nvjpeg_static_LIBRARY-NOTFOUND
+CUDA_nvjpeg_static_LIBRARY:FILEPATH=/usr/lib/aarch64-linux-gnu/libnvjpeg_static.a
 
 //Path to a library.
 CUDA_nvml_LIBRARY:FILEPATH=/usr/local/cuda/lib64/stubs/libnvidia-ml.so
@@ -955,10 +955,10 @@ X11_Xaw_INCLUDE_PATH:PATH=X11_Xaw_INCLUDE_PATH-NOTFOUND
 X11_Xaw_LIB:FILEPATH=/usr/lib/aarch64-linux-gnu/libXaw.so
 
 //Path to a file.
-X11_Xcomposite_INCLUDE_PATH:PATH=X11_Xcomposite_INCLUDE_PATH-NOTFOUND
+X11_Xcomposite_INCLUDE_PATH:PATH=/usr/include
 
 //Path to a library.
-X11_Xcomposite_LIB:FILEPATH=X11_Xcomposite_LIB-NOTFOUND
+X11_Xcomposite_LIB:FILEPATH=/usr/lib/aarch64-linux-gnu/libXcomposite.so
 
 //Path to a file.
 X11_Xcursor_INCLUDE_PATH:PATH=/usr/include
@@ -967,10 +967,10 @@ X11_Xcursor_INCLUDE_PATH:PATH=/usr/include
 X11_Xcursor_LIB:FILEPATH=/usr/lib/aarch64-linux-gnu/libXcursor.so
 
 //Path to a file.
-X11_Xdamage_INCLUDE_PATH:PATH=X11_Xdamage_INCLUDE_PATH-NOTFOUND
+X11_Xdamage_INCLUDE_PATH:PATH=/usr/include
 
 //Path to a library.
-X11_Xdamage_LIB:FILEPATH=X11_Xdamage_LIB-NOTFOUND
+X11_Xdamage_LIB:FILEPATH=/usr/lib/aarch64-linux-gnu/libXdamage.so
 
 //Path to a file.
 X11_Xdmcp_INCLUDE_PATH:PATH=/usr/include
@@ -1057,10 +1057,10 @@ X11_Xt_INCLUDE_PATH:PATH=/usr/include
 X11_Xt_LIB:FILEPATH=/usr/lib/aarch64-linux-gnu/libXt.so
 
 //Path to a file.
-X11_Xtst_INCLUDE_PATH:PATH=X11_Xtst_INCLUDE_PATH-NOTFOUND
+X11_Xtst_INCLUDE_PATH:PATH=/usr/include
 
 //Path to a library.
-X11_Xtst_LIB:FILEPATH=X11_Xtst_LIB-NOTFOUND
+X11_Xtst_LIB:FILEPATH=/usr/lib/aarch64-linux-gnu/libXtst.so
 
 //Path to a file.
 X11_Xutil_INCLUDE_PATH:PATH=/usr/include

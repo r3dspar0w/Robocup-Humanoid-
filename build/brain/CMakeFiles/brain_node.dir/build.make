@@ -384,7 +384,7 @@ brain_node: /opt/ros/humble/lib/libgeometry_msgs__rosidl_typesupport_fastrtps_cp
 brain_node: /opt/ros/humble/lib/libstd_msgs__rosidl_typesupport_fastrtps_cpp.so
 brain_node: /opt/ros/humble/lib/libbuiltin_interfaces__rosidl_typesupport_fastrtps_cpp.so
 brain_node: /opt/ros/humble/lib/librosidl_typesupport_fastrtps_cpp.so
-brain_node: /opt/ros/humble/lib/libfastcdr.so.1.0.24
+brain_node: /opt/ros/humble/lib/libfastcdr.so.1.0.29
 brain_node: /opt/ros/humble/lib/librmw.so
 brain_node: /opt/ros/humble/lib/libsensor_msgs__rosidl_typesupport_introspection_c.so
 brain_node: /opt/ros/humble/lib/libgeometry_msgs__rosidl_typesupport_introspection_c.so

@@ -129,6 +129,8 @@ rosidl_typesupport_introspection_c/vision_interface/msg/detail/detected_object__
 rosidl_typesupport_introspection_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_introspection_c.h: /opt/ros/humble/share/geometry_msgs/msg/Point32.idl
 rosidl_typesupport_introspection_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_introspection_c.h: /opt/ros/humble/share/geometry_msgs/msg/PointStamped.idl
 rosidl_typesupport_introspection_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_introspection_c.h: /opt/ros/humble/share/geometry_msgs/msg/Polygon.idl
+rosidl_typesupport_introspection_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_introspection_c.h: /opt/ros/humble/share/geometry_msgs/msg/PolygonInstance.idl
+rosidl_typesupport_introspection_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_introspection_c.h: /opt/ros/humble/share/geometry_msgs/msg/PolygonInstanceStamped.idl
 rosidl_typesupport_introspection_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_introspection_c.h: /opt/ros/humble/share/geometry_msgs/msg/PolygonStamped.idl
 rosidl_typesupport_introspection_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_introspection_c.h: /opt/ros/humble/share/geometry_msgs/msg/Pose.idl
 rosidl_typesupport_introspection_c/vision_interface/msg/detail/detected_object__rosidl_typesupport_introspection_c.h: /opt/ros/humble/share/geometry_msgs/msg/Pose2D.idl
