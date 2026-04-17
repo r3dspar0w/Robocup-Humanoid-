@@ -420,7 +420,7 @@ NodeStatus SelfLocate::tick()
 
     brain->calibrateOdom(res.pose.x, res.pose.y, res.pose.theta);
     brain->tree->setEntry<bool>("odom_calibrated", true);
-    brain->log->strategy('odom_calibrated is true')
+    brain->log->strategy("odom_calibrated is true");
     brain->data->lastSuccessfulLocalizeTime = brain->get_clock()->now();
     prtDebug("Locate Success: " + to_string(res.pose.x) + " " + to_string(res.pose.y) + " " + to_string(rad2deg(res.pose.theta)) + " Dur: " + to_string(res.msecs));
 
@@ -490,7 +490,7 @@ NodeStatus SelfLocateEnterField::tick()
     // else, success.
     brain->calibrateOdom(res.pose.x, res.pose.y, res.pose.theta);
     brain->tree->setEntry<bool>("odom_calibrated", true);
-    brain->log->strategy('odom_calibrated is true')
+    brain->log->strategy("odom_calibrated is true");
     brain->data->lastSuccessfulLocalizeTime = brain->get_clock()->now();
     prtDebug("Locate Success: " + to_string(res.pose.x) + " " + to_string(res.pose.y) + " " + to_string(rad2deg(res.pose.theta)) + " Dur: " + to_string(res.msecs));
 
