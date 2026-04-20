@@ -1,8 +1,0 @@
-{
-  "package_name": "booster_msgs",
-  "non_idl_tuples": [
-    "/home/booster/Workspace/robocup_demo/src/interface/booster_msgs:msg/BinaryData.msg",
-    "/home/booster/Workspace/robocup_demo/src/interface/booster_msgs:msg/RpcReqMsg.msg",
-    "/home/booster/Workspace/robocup_demo/src/interface/booster_msgs:msg/RpcRespMsg.msg"
-  ]
-}

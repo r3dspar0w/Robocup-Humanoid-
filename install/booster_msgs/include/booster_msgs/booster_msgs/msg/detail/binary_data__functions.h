@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/booster_msgs/rosidl_generator_c/booster_msgs/msg/detail/binary_data__functions.h

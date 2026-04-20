@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/booster_msgs/rosidl_generator_py/booster_msgs/msg/_rpc_resp_msg_s.c

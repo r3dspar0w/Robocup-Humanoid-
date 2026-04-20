@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/game_controller_interface/rosidl_generator_cpp/game_controller_interface/msg/detail/team_info__builder.hpp

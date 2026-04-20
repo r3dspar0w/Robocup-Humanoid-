@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/brain/rosidl_generator_c/brain/msg/detail/kick__type_support.h

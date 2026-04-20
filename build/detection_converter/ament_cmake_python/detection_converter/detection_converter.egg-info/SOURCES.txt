@@ -1,6 +1,0 @@
-setup.py
-detection_converter/__init__.py
-detection_converter.egg-info/PKG-INFO
-detection_converter.egg-info/SOURCES.txt
-detection_converter.egg-info/dependency_links.txt
-detection_converter.egg-info/top_level.txt

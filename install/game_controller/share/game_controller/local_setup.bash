@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/game_controller/ament_cmake_environment_hooks/local_setup.bash

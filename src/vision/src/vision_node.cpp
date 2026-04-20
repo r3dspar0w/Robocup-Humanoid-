@@ -281,6 +281,7 @@ void VisionNode::Init(const std::string &cfg_template_path, const std::string &c
     }
 
     detection_pub_ = this->create_publisher<vision_interface::msg::Detections>("/booster_soccer/detection" + topic_suffix, rclcpp::QoS(1));
+    detection_img_pub_ = this->create_publisher<sensor_msgs::msg::Image>("/booster_soccer/debug_image" + topic_suffix, rclcpp::QoS(1));
 
     if (node["segmentation_model"]) {
         std::cout << "create sub for segmentor" << std::endl;
@@ -301,6 +302,105 @@ void VisionNode::Init(const std::string &cfg_template_path, const std::string &c
         calParam_sub_ = this->create_subscription<vision_interface::msg::CalParam>("/booster_soccer/cal_param" + topic_suffix, 10, std::bind(&VisionNode::CalParamCallback, this, std::placeholders::_1));
         pose_tf_pub_ = this->create_publisher<geometry_msgs::msg::TransformStamped>("/booster_soccer/t_head2base" + topic_suffix, rclcpp::QoS(10));
     }
+}
+
+// ---------------------------------------------------------------------------
+// DrawDebugOverlay — draws rich debug info for each detection onto the frame
+// ---------------------------------------------------------------------------
+static cv::Mat DrawDebugOverlay(
+    const cv::Mat &color_bgr,
+    const cv::Mat &depth_float,
+    const std::vector<booster_vision::DetectionRes> &detections,
+    const vision_interface::msg::Detections &detection_msg)
+{
+    // Curated palette must match detector.cc kPalette (BGR order)
+    static const std::vector<cv::Scalar> kPalette = {
+        {  0, 200, 255}, // Ball
+        {255, 200,   0}, // Goalpost
+        { 80, 255,  80}, // Person
+        {255,  80, 200}, // LCross
+        { 50, 180, 255}, // TCross
+        {255,  80,  80}, // XCross
+        {180, 255,  80}, // PenaltyPoint
+        { 80,  80, 255}, // Opponent
+        {200, 200, 200}, // BRMarker
+    };
+    auto get_color = [&](int class_id) -> cv::Scalar {
+        return kPalette[class_id % static_cast<int>(kPalette.size())];
+    };
+
+    cv::Mat img_out = booster_vision::YoloV8Detector::DrawDetection(color_bgr, detections);
+
+    // Overlay Pos_Proj (yellow) and Pos_Depth (green) labels for each detection
+    size_t det_idx = 0;
+    for (const auto &obj : detection_msg.detected_objects) {
+        if (det_idx >= detections.size()) break;
+        const cv::Rect &bbox = detections[det_idx].bbox;
+        cv::Scalar color = get_color(detections[det_idx].class_id);
+
+        // Ground-contact point = bottom-center of bbox
+        cv::Point ground_pt(bbox.x + bbox.width / 2, bbox.y + bbox.height);
+
+        // Dashed vertical line from bottom-center to image bottom
+        for (int yy = ground_pt.y; yy < img_out.rows; yy += 8) {
+            cv::line(img_out, {ground_pt.x, yy}, {ground_pt.x, std::min(yy + 4, img_out.rows - 1)},
+                     color, 1);
+        }
+
+        // Crosshair at ground contact
+        int ch_r = 5;
+        cv::line(img_out, ground_pt - cv::Point(ch_r, 0), ground_pt + cv::Point(ch_r, 0), color, 2);
+        cv::line(img_out, ground_pt - cv::Point(0, ch_r), ground_pt + cv::Point(0, ch_r), color, 2);
+
+        // Pos_Proj label (yellow)
+        const auto &pp = obj.position_projection;
+        std::ostringstream oss_p;
+        oss_p << "P:[" << std::fixed << std::setprecision(1) << pp[0] << "," << pp[1] << "]m";
+        int baseline_p = 0;
+        cv::Size sz_p = cv::getTextSize(oss_p.str(), cv::FONT_HERSHEY_SIMPLEX, 0.38, 1, &baseline_p);
+        int px = std::max(0, bbox.x);
+        int py = bbox.y + bbox.height + sz_p.height + 2;
+        if (py + sz_p.height + 2 < img_out.rows) {
+            cv::rectangle(img_out, cv::Rect(px, py - sz_p.height - 1, sz_p.width + 4, sz_p.height + 3),
+                          cv::Scalar(0, 0, 0), cv::FILLED);
+            cv::putText(img_out, oss_p.str(), {px + 2, py + 1},
+                        cv::FONT_HERSHEY_SIMPLEX, 0.38, cv::Scalar(0, 255, 255), 1, cv::LINE_AA);
+        }
+
+        // Pos_Depth label (green) — only if non-zero
+        const auto &pd = obj.position;
+        if (pd[0] != 0.0f || pd[1] != 0.0f) {
+            std::ostringstream oss_d;
+            oss_d << "D:[" << std::fixed << std::setprecision(1) << pd[0] << "," << pd[1] << "]m";
+            int baseline_d = 0;
+            cv::Size sz_d = cv::getTextSize(oss_d.str(), cv::FONT_HERSHEY_SIMPLEX, 0.38, 1, &baseline_d);
+            int dy = py + sz_d.height + 3;
+            if (dy + sz_d.height + 2 < img_out.rows) {
+                cv::rectangle(img_out, cv::Rect(px, dy - sz_d.height - 1, sz_d.width + 4, sz_d.height + 3),
+                              cv::Scalar(0, 0, 0), cv::FILLED);
+                cv::putText(img_out, oss_d.str(), {px + 2, dy + 1},
+                            cv::FONT_HERSHEY_SIMPLEX, 0.38, cv::Scalar(0, 255, 80), 1, cv::LINE_AA);
+            }
+        }
+
+        det_idx++;
+    }
+
+    // Depth thumbnail (top-right corner, jet colorized)
+    if (!depth_float.empty()) {
+        cv::Mat depth_vis;
+        cv::Mat depth_norm;
+        depth_float.convertTo(depth_norm, CV_8U, 255.0 / 8.0);  // scale: 0-8m -> 0-255
+        cv::applyColorMap(depth_norm, depth_vis, cv::COLORMAP_JET);
+        int th_w = img_out.cols / 5;
+        int th_h = img_out.rows / 5;
+        cv::resize(depth_vis, depth_vis, {th_w, th_h});
+        cv::Rect roi(img_out.cols - th_w - 2, 2, th_w, th_h);
+        depth_vis.copyTo(img_out(roi));
+        cv::rectangle(img_out, roi, cv::Scalar(200, 200, 200), 1);
+    }
+
+    return img_out;
 }
 
 void VisionNode::ProcessData(SyncedDataBlock &synced_data, vision_interface::msg::Detections &detection_msg) {
@@ -473,22 +573,25 @@ void VisionNode::ProcessData(SyncedDataBlock &synced_data, vision_interface::msg
         count++;
     }
 
-    // show vision results
+    // show / publish vision results
     if (show_det_) {
-        cv::Mat color_rgb;
-        cv::cvtColor(color, color_rgb, cv::COLOR_BGR2RGB);
-        cv::Mat img_out = YoloV8Detector::DrawDetection(color_rgb, detections_for_display);
-        cv::imshow("Detection", img_out);
+        cv::Mat overlay = DrawDebugOverlay(color, depth_float, detections_for_display, detection_msg);
 
-        // color jet depth_float and show
-        // if (!depth_float.empty()) {
-        //     cv::Mat depth_colormap;
-        //     cv::normalize(depth_float, depth_float, 0, 255, cv::NORM_MINMAX);
-        //     depth_float.convertTo(depth_float, CV_8U);
-        //     cv::applyColorMap(depth_float, depth_colormap, cv::COLORMAP_JET);
-        //     cv::imshow("Depth", depth_colormap);
-        // }
+        // Publish to ROS topic (convert BGR cv::Mat -> sensor_msgs::msg::Image)
+        if (detection_img_pub_) {
+            sensor_msgs::msg::Image img_msg;
+            img_msg.header = detection_msg.header;
+            img_msg.height = overlay.rows;
+            img_msg.width  = overlay.cols;
+            img_msg.encoding = "bgr8";
+            img_msg.is_bigendian = false;
+            img_msg.step = static_cast<uint32_t>(overlay.step);
+            img_msg.data.assign(overlay.datastart, overlay.dataend);
+            detection_img_pub_->publish(img_msg);
+        }
 
+        // Also display locally if a display is available
+        cv::imshow("Detection", overlay);
         cv::waitKey(1);
     }
 

@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/brain/rosidl_generator_cpp/brain/msg/detail/kick__traits.hpp

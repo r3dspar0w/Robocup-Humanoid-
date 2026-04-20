@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/game_controller_interface/rosidl_generator_py/game_controller_interface/_game_controller_interface_s.ep.rosidl_typesupport_c.c

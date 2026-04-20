@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/game_controller_interface/rosidl_generator_py/game_controller_interface/msg/_game_control_data.py

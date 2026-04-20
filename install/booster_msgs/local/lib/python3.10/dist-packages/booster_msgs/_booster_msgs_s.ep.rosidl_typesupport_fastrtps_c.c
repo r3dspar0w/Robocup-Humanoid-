@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/booster_msgs/rosidl_generator_py/booster_msgs/_booster_msgs_s.ep.rosidl_typesupport_fastrtps_c.c

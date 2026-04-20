@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/brain/ament_cmake_core/brainConfig-version.cmake

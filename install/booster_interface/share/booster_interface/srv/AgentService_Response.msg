@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/booster_interface/rosidl_cmake/srv/AgentService_Response.msg

@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_typesupport_fastrtps_cpp/vision_interface/msg/detail/segmentation_result__rosidl_typesupport_fastrtps_cpp.hpp

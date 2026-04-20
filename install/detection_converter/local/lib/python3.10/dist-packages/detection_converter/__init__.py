@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/src/detection_converter/detection_converter/__init__.py

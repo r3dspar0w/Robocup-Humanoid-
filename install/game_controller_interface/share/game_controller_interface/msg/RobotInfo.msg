@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/src/interface/game_controller_interface/msg/RobotInfo.msg

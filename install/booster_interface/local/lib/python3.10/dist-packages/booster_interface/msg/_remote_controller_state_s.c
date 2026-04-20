@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/booster_interface/rosidl_generator_py/booster_interface/msg/_remote_controller_state_s.c

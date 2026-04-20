@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/brain/rosidl_generator_py/brain/_brain_s.ep.rosidl_typesupport_introspection_c.c

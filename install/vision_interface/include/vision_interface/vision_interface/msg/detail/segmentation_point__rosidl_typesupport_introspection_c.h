@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_typesupport_introspection_c/vision_interface/msg/detail/segmentation_point__rosidl_typesupport_introspection_c.h

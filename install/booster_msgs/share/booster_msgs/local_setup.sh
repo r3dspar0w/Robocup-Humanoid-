@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/booster_msgs/ament_cmake_environment_hooks/local_setup.sh

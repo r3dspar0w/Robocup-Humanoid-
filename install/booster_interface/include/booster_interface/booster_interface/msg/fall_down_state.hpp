@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/booster_interface/rosidl_generator_cpp/booster_interface/msg/fall_down_state.hpp

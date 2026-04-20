@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_generator_cpp/vision_interface/msg/detail/detected_object__struct.hpp

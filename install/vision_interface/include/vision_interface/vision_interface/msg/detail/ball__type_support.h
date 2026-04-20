@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/vision_interface/rosidl_generator_c/vision_interface/msg/detail/ball__type_support.h

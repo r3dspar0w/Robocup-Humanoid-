@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/booster_interface/rosidl_generator_py/booster_interface/msg/_button_event_msg_s.c

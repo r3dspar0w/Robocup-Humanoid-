@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/brain/rosidl_typesupport_introspection_c/brain/msg/rosidl_typesupport_introspection_c__visibility_control.h

@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/vision_interface/ament_cmake_export_libraries/ament_cmake_export_libraries-extras.cmake

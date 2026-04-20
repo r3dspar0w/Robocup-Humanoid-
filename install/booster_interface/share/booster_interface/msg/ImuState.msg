@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface/msg/ImuState.msg

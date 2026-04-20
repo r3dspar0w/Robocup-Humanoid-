@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/booster_msgs/ament_cmake_export_include_directories/ament_cmake_export_include_directories-extras.cmake

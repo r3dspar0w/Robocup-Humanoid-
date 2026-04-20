@@ -1,1 +1,0 @@
-ament_cmake_symlink_install_targets("TARGET_FILES" "/home/booster/Workspace/robocup_demo/build/vision/src/pose_estimator/libbooster_vision_pose_estimator.so" "TARGETS" "booster_vision_pose_estimator" "DESTINATION" "lib")

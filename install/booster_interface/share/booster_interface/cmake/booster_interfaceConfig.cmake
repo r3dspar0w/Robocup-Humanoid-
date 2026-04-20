@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/booster_interface/ament_cmake_core/booster_interfaceConfig.cmake

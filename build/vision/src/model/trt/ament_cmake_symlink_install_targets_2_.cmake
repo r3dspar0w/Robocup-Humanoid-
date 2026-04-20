@@ -1,1 +1,0 @@
-ament_cmake_symlink_install_targets("TARGET_FILES" "/home/booster/Workspace/robocup_demo/build/vision/src/model/trt/yolov8_det" "/home/booster/Workspace/robocup_demo/build/vision/src/model/trt/yolov8_seg" "TARGETS" "yolov8_det" "yolov8_seg" "DESTINATION" "lib/vision")

@@ -1,4 +1,0 @@
-Invoking command in '/home/booster/Workspace/robocup_demo/build/vision_interface': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/vision_interface -- -j5 -l5
-Invoked command in '/home/booster/Workspace/robocup_demo/build/vision_interface' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/booster/Workspace/robocup_demo/build/vision_interface -- -j5 -l5
-Invoking command in '/home/booster/Workspace/robocup_demo/build/vision_interface': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/booster/Workspace/robocup_demo/build/vision_interface
-Invoked command in '/home/booster/Workspace/robocup_demo/build/vision_interface' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/booster/Workspace/robocup_demo/build/vision_interface

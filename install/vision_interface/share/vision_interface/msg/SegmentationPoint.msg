@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/src/interface/vision_interface/msg/SegmentationPoint.msg

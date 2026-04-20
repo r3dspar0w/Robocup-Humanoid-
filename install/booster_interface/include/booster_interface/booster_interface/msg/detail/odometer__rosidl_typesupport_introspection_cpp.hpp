@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/booster_interface/rosidl_typesupport_introspection_cpp/booster_interface/msg/detail/odometer__rosidl_typesupport_introspection_cpp.hpp

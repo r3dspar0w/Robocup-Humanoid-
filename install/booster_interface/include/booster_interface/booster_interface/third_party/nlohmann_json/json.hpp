@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/src/interface/booster_ros2_interface/include/booster_interface/booster_interface/third_party/nlohmann_json/json.hpp

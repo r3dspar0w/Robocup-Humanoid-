@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/booster_msgs/rosidl_cmake/rosidl_cmake_export_typesupport_targets-extras.cmake

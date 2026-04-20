@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/src/brain/msg/Kick.msg

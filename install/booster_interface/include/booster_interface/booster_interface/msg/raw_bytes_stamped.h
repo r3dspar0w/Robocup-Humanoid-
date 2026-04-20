@@ -1,1 +1,0 @@
-/home/booster/Workspace/robocup_demo/build/booster_interface/rosidl_generator_c/booster_interface/msg/raw_bytes_stamped.h

@@ -1,3 +1,0 @@
-source;share/detection_converter/environment/ament_prefix_path.sh
-source;share/detection_converter/environment/path.sh
-source;share/detection_converter/environment/pythonpath.sh
