@@ -590,9 +590,8 @@ void VisionNode::ProcessData(SyncedDataBlock &synced_data, vision_interface::msg
             detection_img_pub_->publish(img_msg);
         }
 
-        // Also display locally if a display is available
-        cv::imshow("Detection", overlay);
-        cv::waitKey(1);
+        // cv::imshow omitted — robot runs headless (no GTK display).
+        // View the annotated frame via ROS: ros2 run rqt_image_view rqt_image_view
     }
 
     if (save_data_) {

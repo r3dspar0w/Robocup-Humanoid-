@@ -12,7 +12,7 @@ export FASTRTPS_DEFAULT_PROFILES_FILE=/opt/booster/BoosterRos2/fastdds_profile_u
 
 echo "[START ROBOCUP NODES]"
 echo "[START VISION]"
-nohup ros2 launch vision launch.py > vision.log 2>&1 &
+nohup ros2 launch vision launch.py show_det:=true > vision.log 2>&1 &
 echo "[START BRAIN]"
 nohup ros2 launch brain launch.py "$@"  > brain.log 2>&1 &
 echo "[START GAME_CONTROLLER]"
