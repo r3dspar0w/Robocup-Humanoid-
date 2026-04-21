@@ -1,62 +1,40 @@
-
-
-
 camera:
-  # color_topic: "/camera/robot0_rgbd_camera/rgb/image_compressed" # sim
-  # depth_topic: "/camera/robot0_rgbd_camera/depth/image_raw" # sim
-  # intrin_topic: "/camera/robot0_rgbd_camera/rgb/camera_info" # sim
-
-  # color_topic: "/StereoNetNode/rectified_image" # d-robotics
-  # depth_topic: "/StereoNetNode/stereonet_depth" # d-robotics
-  # intrin_topic: "/StereoNetNode/stereonet_depth/camera_info" # d-robotics
-
-  # color_topic: "/camera/color/image_raw" # orbbec
-  # depth_topic: "/camera/depth/image_raw" # orbbec
-  # intrin_topic: "/camera/color/camera_info" # orbbec
-
-  color_topic: "/camera/camera/color/image_raw" # realsense
-  depth_topic: "/camera/camera/aligned_depth_to_color/image_raw" # realsense
-  intrin_topic: "/camera/camera/color/camera_info" # realsense
-
-  # color_topic: "/zed/zed_node/left/image_rect_color" # zed
-  # depth_topic: "/zed/zed_node/depth/depth_registered" # zed
-  # intrin_topic: "/zed/zed_node/left/camera_info" # zedF
+  color_topic: /camera/camera/color/image_raw
+  depth_topic: /camera/camera/aligned_depth_to_color/image_raw
+  intrin_topic: /camera/camera/color/camera_info
   intrin:
-    fx: 206.445511
-    fy: 206.445511
-    cx: 224.958221
-    cy: 242.717239
+    fx: 647.207275
+    fy: 646.288025
+    cx: 650.817383
+    cy: 367.851227
     distortion_model: 0
     distortion_coeffs:
       []
   extrin:
-    # cam(x right y down z forward) -> head(x forward y left z up)
-    # Note: pitch compensation is done in code, here we only put the real offset of
     -
-      - 0.0753363073
-      - 0.0190046262
-      - 0.996977091
-      - -0.0122268423
+      - 0.000261429086
+      - -0.00720987096
+      - 0.999973953
+      - -0.00187119353
     -
-      - -0.99715662
-      - -0.000328667404
-      - 0.0753561407
-      - 0.0440084077
+      - -0.99998641
+      - 0.00521431491
+      - 0.000299027888
+      - -0.0300600827
     -
-      - 0.00175978895
-      - -0.999819338
-      - 0.018925827
-      - -0.0283811111
+      - -0.00521633541
+      - -0.999960423
+      - -0.00720840972
+      - -0.0137843648
     -
       - 0
       - 0
       - 0
       - 1
-  pitch_compensation: 0.03
+  pitch_compensation: 0
   yaw_compensation: 0
   z_compensation: 0
 detection_model:
-  #model_path: ./src/vision/model/best_orin_10.3.engine
   model_path: /home/booster/Workspace/Robocup-Humanoid-/src/vision/model/best_orin_10.3.engine
   confidence_threshold: 0.2
   nms_threshold: 0.4
@@ -77,7 +55,7 @@ segmentation_model:
   model_path: /home/booster/Workspace/Robocup-Humanoid-/src/vision/model/best_seg_orin_10.3.engine
   confidence_threshold: 0.3
   nms_threshold: 0.9
-use_depth: true 
+use_depth: true
 ball_pose_estimator:
   use_depth: ture
   radius: 0.109
@@ -102,10 +80,9 @@ calibration:
     zero_translation: true
     field_marker_path: /home/booster/Workspace/Robocup-Humanoid-/src/vision/config/field.yaml
   handeye:
-    calibration_time: 2000-01-01-09-29-08
-    reprojection_error: 3.5616553263245252
+    calibration_time: 2026-04-21-15-14-27
+    reprojection_error: 3.5257067920115368
 misc:
   save_data_nonstationary: true
-robot_name: "" # If there are multiple robots, specify the name, e.g., "robot0", "robot1", etc. Leave empty for a single robot
+robot_name: ""
 show_det: 1
-
