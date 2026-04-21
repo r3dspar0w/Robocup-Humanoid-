@@ -1068,25 +1068,27 @@ NodeStatus Adjust::tick()
 
 NodeStatus CalcKickDir::tick()
 {
-    double crossThreshold;
-    getInput("cross_threshold", crossThreshold);
+//    double crossThreshold;
+//    getInput("cross_threshold", crossThreshold);
 
-    string lastKickType = brain->data->kickType;
-    if (lastKickType == "cross") crossThreshold += 0.1;
+//    string lastKickType = brain->data->kickType;
+//    if (lastKickType == "cross") crossThreshold += 0.1;
 
-    auto gpAngles = brain->getGoalPostAngles(0.0);
-    auto thetal = gpAngles[0]; auto thetar = gpAngles[1];
+//    auto gpAngles = brain->getGoalPostAngles(0.0);
+//    auto thetal = gpAngles[0]; auto thetar = gpAngles[1];
+    
     auto bPos = brain->data->ball.posToField;
     auto fd = brain->config->fieldDimensions;
 
-    if (thetal - thetar < crossThreshold && brain->data->ball.posToField.x > fd.circleRadius) {
-        brain->data->kickType = "cross";
-        brain->data->kickDir = atan2(
-            - bPos.y,
-            fd.length/2 - fd.penaltyDist/2 - bPos.x
-        );
-    }
-    else if (brain->isDefensing()) {
+//    if (thetal - thetar < crossThreshold && brain->data->ball.posToField.x > fd.circleRadius) {
+//        brain->data->kickType = "cross";
+//        brain->data->kickDir = atan2(
+//            - bPos.y,
+//            fd.length/2 - fd.penaltyDist/2 - bPos.x
+//        );
+//    }
+//    else
+    if (brain->isDefensing()) {
         brain->data->kickType = "block";
         brain->data->kickDir = atan2(
             bPos.y,
@@ -1197,8 +1199,9 @@ NodeStatus StrikerDecide::tick() {
         && !avoidKick
         && ball.range < 1.5
     ) {
-        if (brain->data->kickType == "cross") newDecision = "cross";
-        else newDecision = "kick";      
+//        if (brain->data->kickType == "cross") newDecision = "cross";
+//        else newDecision = "kick";
+        newDecision = "kick";  
         brain->data->isFreekickKickingOff = false; 
     }
     else
