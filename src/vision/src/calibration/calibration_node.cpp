@@ -7,6 +7,9 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <chrono>
+#include <cerrno>
+#include <cstring>
 
 #include <opencv2/opencv.hpp>
 
@@ -16,6 +19,7 @@
 #include <sensor_msgs/msg/camera_info.hpp>
 #include <image_transport/image_transport.hpp>
 #include <geometry_msgs/msg/pose.hpp>
+#include <builtin_interfaces/msg/time.hpp>
 
 #include <eigen3/Eigen/Dense>
 
@@ -35,7 +39,98 @@
 #include "booster_vision/pose_estimator/hungarian_matching.hpp"
 #include "booster_vision/model/detector.h"
 
+#include <fcntl.h>
+#include <termios.h>
+#include <unistd.h>
+
 namespace booster_vision {
+
+namespace {
+
+bool HasGuiDisplay() {
+    const char *display = std::getenv("DISPLAY");
+    const char *wayland_display = std::getenv("WAYLAND_DISPLAY");
+    return (display && display[0] != '\0') || (wayland_display && wayland_display[0] != '\0');
+}
+
+class TerminalKeyReader {
+public:
+    TerminalKeyReader() = default;
+
+    ~TerminalKeyReader() {
+        Restore();
+    }
+
+    bool Init() {
+        if (initialized_) {
+            return enabled_;
+        }
+
+        initialized_ = true;
+        if (!isatty(STDIN_FILENO)) {
+            return false;
+        }
+
+        if (tcgetattr(STDIN_FILENO, &original_termios_) != 0) {
+            return false;
+        }
+
+        termios raw = original_termios_;
+        raw.c_lflag &= static_cast<unsigned int>(~(ICANON | ECHO));
+        raw.c_cc[VMIN] = 0;
+        raw.c_cc[VTIME] = 0;
+        if (tcsetattr(STDIN_FILENO, TCSANOW, &raw) != 0) {
+            return false;
+        }
+
+        original_flags_ = fcntl(STDIN_FILENO, F_GETFL, 0);
+        if (original_flags_ < 0) {
+            Restore();
+            return false;
+        }
+
+        if (fcntl(STDIN_FILENO, F_SETFL, original_flags_ | O_NONBLOCK) != 0) {
+            Restore();
+            return false;
+        }
+
+        enabled_ = true;
+        return true;
+    }
+
+    int ReadKey() {
+        if (!enabled_) {
+            return -1;
+        }
+
+        unsigned char ch = 0;
+        const ssize_t bytes_read = read(STDIN_FILENO, &ch, 1);
+        if (bytes_read == 1) {
+            return static_cast<int>(ch);
+        }
+        if (bytes_read < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+            Restore();
+        }
+        return -1;
+    }
+
+private:
+    void Restore() {
+        if (!enabled_) {
+            return;
+        }
+        tcsetattr(STDIN_FILENO, TCSANOW, &original_termios_);
+        fcntl(STDIN_FILENO, F_SETFL, original_flags_);
+        enabled_ = false;
+    }
+
+    bool initialized_ = false;
+    bool enabled_ = false;
+    int original_flags_ = -1;
+    termios original_termios_{};
+};
+
+} // namespace
 
 // calibratiion node
 class CalibrationNode : public rclcpp::Node {
@@ -52,8 +147,16 @@ public:
     void RunExtrinsicOffsetCalibrationProcess(const SyncedDataBlock &data_block);
 
 private:
+    int ReadInteractionKey(int gui_wait_ms);
+    bool HasValidTimestamps(const SyncedDataBlock &data_block, const char *context) const;
+    double GetTimestampOrNow(const builtin_interfaces::msg::Time &stamp, const char *source);
+
     bool is_offline_ = false;
     bool new_log_path_ = true;
+    bool headless_mode_ = false;
+    bool terminal_input_enabled_ = false;
+    bool warned_missing_gui_ = false;
+    bool warned_zero_color_stamp_ = false;
 
     int board_w_ = 0;
     int board_h_ = 0;
@@ -96,6 +199,8 @@ private:
     // for offset calibration
     double exclude_distance_;
     bool zero_translation_;
+
+    TerminalKeyReader terminal_key_reader_;
 };
 
 CalibrationNode::CalibrationNode(const std::string &node_name) :
@@ -127,6 +232,16 @@ void CalibrationNode::Init(const std::string cfg_path, bool is_offline, std::str
         p_eye2head_ = as_or<Pose>(cfg_node_["camera"]["extrin"], Pose());
     }
     std::cout << "intrinsics from yaml: \n" << intr_ << std::endl;
+
+    headless_mode_ = !HasGuiDisplay();
+    if (headless_mode_) {
+        warned_missing_gui_ = true;
+        std::cout << "no GUI display detected, using terminal controls for calibration (s/c/r/q/h)" << std::endl;
+        terminal_input_enabled_ = terminal_key_reader_.Init();
+        if (!terminal_input_enabled_) {
+            std::cout << "terminal key input is unavailable, calibration will keep running without interactive controls" << std::endl;
+        }
+    }
 
     calibration_mode_ = calibration_mode;
     if (calibration_mode_ != "handeye") {
@@ -188,6 +303,38 @@ void CalibrationNode::Init(const std::string cfg_path, bool is_offline, std::str
     }
 }
 
+int CalibrationNode::ReadInteractionKey(int gui_wait_ms) {
+    if (!headless_mode_) {
+        return cv::waitKey(gui_wait_ms);
+    }
+
+    if (gui_wait_ms > 0) {
+        rclcpp::sleep_for(std::chrono::milliseconds(gui_wait_ms));
+    }
+    return terminal_key_reader_.ReadKey();
+}
+
+bool CalibrationNode::HasValidTimestamps(const SyncedDataBlock &data_block, const char *context) const {
+    if (data_block.color_data.timestamp <= 0.0 || data_block.pose_data.timestamp <= 0.0) {
+        std::cerr << context << " skipped because of invalid timestamps, color: "
+                  << data_block.color_data.timestamp << ", pose: "
+                  << data_block.pose_data.timestamp << std::endl;
+        return false;
+    }
+    return true;
+}
+
+double CalibrationNode::GetTimestampOrNow(const builtin_interfaces::msg::Time &stamp, const char *source) {
+    if (stamp.sec == 0 && stamp.nanosec == 0) {
+        if (!warned_zero_color_stamp_) {
+            std::cerr << source << " timestamp is zero, falling back to node receive time for synchronization" << std::endl;
+            warned_zero_color_stamp_ = true;
+        }
+        return static_cast<double>(this->get_clock()->now().nanoseconds()) * 1e-9;
+    }
+    return stamp.sec + static_cast<double>(stamp.nanosec) * 1e-9;
+}
+
 void CalibrationNode::RunExtrinsicCalibrationProcess(const SyncedDataBlock &data_block) {
     if (!is_offline_ && new_log_path_) {
         std::string log_root = std::string(std::getenv("HOME")) + "/Workspace/calibration_log/handeye/" + getTimeString();
@@ -196,6 +343,9 @@ void CalibrationNode::RunExtrinsicCalibrationProcess(const SyncedDataBlock &data
         new_log_path_ = false;
     }
     auto img = data_block.color_data.data;
+    if (!HasValidTimestamps(data_block, "handeye calibration")) {
+        return;
+    }
     double timestamp = data_block.color_data.timestamp;
     double color_pose_timediff = std::abs(data_block.pose_data.timestamp - timestamp) * 1000;
     if (color_pose_timediff > sync_time_diff_ms_) {
@@ -225,10 +375,12 @@ void CalibrationNode::RunExtrinsicCalibrationProcess(const SyncedDataBlock &data
     // draw valid area
     cv::Rect valid_area(img.cols * 0.15, img.rows * 0.15, img.cols * 0.7, img.rows * 0.7);
     cv::rectangle(display_img, valid_area, cv::Scalar(0, 0, 255), 2);
-    cv::imshow("chessboard", display_img);
+    if (!headless_mode_) {
+        cv::imshow("chessboard", display_img);
+    }
 
     int wait_time = is_offline_ ? 0 : 10;
-    const char key = cv::waitKey(wait_time);
+    const char key = static_cast<char>(ReadInteractionKey(wait_time));
     switch (key) {
     case 's': {
         std::cout << "select current snap short for calibration!" << std::endl;
@@ -442,6 +594,9 @@ void CalibrationNode::RunExtrinsicOffsetCalibrationProcess(const SyncedDataBlock
     auto img = data_block.color_data.data;
     auto p_head2base = data_block.pose_data.data;
     auto p_eye2base = p_head2base * p_eye2head_;
+    if (!HasValidTimestamps(data_block, "offset calibration")) {
+        return;
+    }
     double timestamp = data_block.color_data.timestamp;
     double color_pose_timediff = std::abs(data_block.pose_data.timestamp - timestamp) * 1000;
     if (color_pose_timediff > sync_time_diff_ms_) {
@@ -470,10 +625,12 @@ void CalibrationNode::RunExtrinsicOffsetCalibrationProcess(const SyncedDataBlock
     auto display_img = YoloV8Detector::DrawDetection(img, detections);
     std::string progress_status_text = std::to_string(cali_data_.size()) + " frames collected";
     cv::putText(display_img, progress_status_text, cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 0.7, cv::Scalar(0, 0, 255), 2);
-    cv::imshow("detection", display_img);
+    if (!headless_mode_) {
+        cv::imshow("detection", display_img);
+    }
 
     int wait_time = is_offline_ ? 0 : 10;
-    const char key = cv::waitKey(wait_time);
+    const char key = static_cast<char>(ReadInteractionKey(wait_time));
     switch (key) {
     case 's': {
         std::cout << "select current snap short for calibration!" << std::endl;
@@ -679,7 +836,7 @@ void CalibrationNode::ColorCallback(const sensor_msgs::msg::Image::ConstSharedPt
         return;
     }
 
-    double timestamp = msg->header.stamp.sec + static_cast<double>(msg->header.stamp.nanosec) * 1e-9;
+    double timestamp = GetTimestampOrNow(msg->header.stamp, "color image");
     auto data_block = data_syncer_->getSyncedDataBlock(ColorDataBlock(img, timestamp));
     if (calibration_mode_ == "handeye") {
         RunExtrinsicCalibrationProcess(data_block);
