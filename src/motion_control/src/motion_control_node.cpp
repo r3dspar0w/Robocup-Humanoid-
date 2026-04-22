@@ -35,12 +35,27 @@ constexpr size_t kJointCount = booster::robot::b1::kJointCnt;
 constexpr size_t kPolicyInputSize = 51;
 constexpr size_t kPolicyControlledJointCount = 13;
 constexpr size_t kPolicyOutputSize = 14;
-constexpr float kTwoPi = 6.2831853071795864769F;
+constexpr float kPi = 3.14159265358979323846F;
+constexpr float kTwoPi = 2.0F * kPi;
 constexpr float kCommandDeadband = 1e-4F;
 
 using JointArray = std::array<float, kJointCount>;
 using PolicyArray = std::array<float, kPolicyOutputSize>;
 using ControlledJointArray = std::array<float, kPolicyControlledJointCount>;
+
+struct ClampReport
+{
+  size_t clamped_count{0};
+  size_t nonfinite_count{0};
+  size_t first_joint{kJointCount};
+  float requested{0.0F};
+  float clamped{0.0F};
+};
+
+constexpr float deg_to_rad(float degrees)
+{
+  return degrees * kPi / 180.0F;
+}
 
 JointArray stand_pose()
 {
@@ -51,6 +66,34 @@ JointArray stand_pose()
     0.0F,
     -0.20F, 0.0F, 0.0F, 0.40F, -0.35F, 0.03F,
     -0.20F, 0.0F, 0.0F, 0.40F, -0.35F, -0.03F
+  };
+}
+
+JointArray joint_lower_limits()
+{
+  return {
+    deg_to_rad(-58.0F), deg_to_rad(-18.0F),
+    deg_to_rad(-188.0F), deg_to_rad(-114.6F), deg_to_rad(-120.0F), deg_to_rad(-128.0F),
+    deg_to_rad(-188.0F), deg_to_rad(-88.0F), deg_to_rad(-2.0F), deg_to_rad(-128.0F),
+    deg_to_rad(-58.0F),
+    deg_to_rad(-118.0F), deg_to_rad(-32.4F), deg_to_rad(-58.0F), deg_to_rad(-11.4F),
+    deg_to_rad(-49.8F), deg_to_rad(-25.2F),
+    deg_to_rad(-118.0F), deg_to_rad(-88.0F), deg_to_rad(-58.0F), deg_to_rad(-11.4F),
+    deg_to_rad(-49.8F), deg_to_rad(-25.2F)
+  };
+}
+
+JointArray joint_upper_limits()
+{
+  return {
+    deg_to_rad(58.0F), deg_to_rad(54.5F),
+    deg_to_rad(68.0F), deg_to_rad(88.0F), deg_to_rad(2.0F), deg_to_rad(128.0F),
+    deg_to_rad(68.0F), deg_to_rad(114.6F), deg_to_rad(120.0F), deg_to_rad(128.0F),
+    deg_to_rad(58.0F),
+    deg_to_rad(118.0F), deg_to_rad(88.0F), deg_to_rad(58.0F), deg_to_rad(123.0F),
+    deg_to_rad(20.0F), deg_to_rad(25.2F),
+    deg_to_rad(118.0F), deg_to_rad(32.4F), deg_to_rad(58.0F), deg_to_rad(123.0F),
+    deg_to_rad(20.0F), deg_to_rad(25.2F)
   };
 }
 
@@ -432,6 +475,7 @@ private:
 
     enabled_ = enable;
     logged_first_low_cmd_ = false;
+    initialized_from_low_state_ = false;
     latest_cmd_vel_ = geometry_msgs::msg::Twist{};
     last_requested_offsets_.fill(0.0F);
     phase_ = 0.0F;
@@ -465,9 +509,7 @@ private:
     if (!low_state) {
       RCLCPP_WARN_THROTTLE(
         get_logger(), *get_clock(), 2000,
-        "No LowState received yet on '%s'; holding stand pose", low_state_topic_.c_str());
-      target_pose_ = stand_pose_;
-      publish_low_cmd();
+        "No LowState received yet on '%s'; not publishing LowCmd", low_state_topic_.c_str());
       return;
     }
 
@@ -475,10 +517,15 @@ private:
     if (state_age > 0.5) {
       RCLCPP_WARN_THROTTLE(
         get_logger(), *get_clock(), 2000,
-        "Latest LowState is stale (%.3fs old); holding stand pose", state_age);
-      target_pose_ = stand_pose_;
-      publish_low_cmd();
+        "Latest LowState is stale (%.3fs old); not publishing LowCmd", state_age);
       return;
+    }
+
+    if (!initialized_from_low_state_) {
+      current_pose_ = low_state->q;
+      target_pose_ = low_state->q;
+      initialized_from_low_state_ = true;
+      RCLCPP_INFO(get_logger(), "Initialized LowCmd targets from measured LowState joints");
     }
 
     if (!policy_) {
@@ -529,11 +576,24 @@ private:
 
   void publish_low_cmd()
   {
+    JointArray safe_target = target_pose_;
+    const auto clamp_report = clamp_joint_targets(safe_target);
+    if (clamp_report.clamped_count > 0 || clamp_report.nonfinite_count > 0) {
+      RCLCPP_WARN_THROTTLE(
+        get_logger(), *get_clock(), 2000,
+        "Clamped LowCmd joint targets to B-Human T1 limits: clamped=%zu nonfinite=%zu "
+        "first_joint=%zu requested=%.3f clamped=%.3f",
+        clamp_report.clamped_count, clamp_report.nonfinite_count, clamp_report.first_joint,
+        clamp_report.requested, clamp_report.clamped);
+    }
+
     const float max_delta =
       static_cast<float>(max_joint_velocity_rad_s_ / std::max(1.0, publish_hz_));
     for (size_t i = 0; i < kJointCount; ++i) {
-      const float error = target_pose_[i] - current_pose_[i];
+      current_pose_[i] = legal_joint_value(i, current_pose_[i], stand_pose_[i]);
+      const float error = safe_target[i] - current_pose_[i];
       current_pose_[i] += std::clamp(error, -max_delta, max_delta);
+      current_pose_[i] = legal_joint_value(i, current_pose_[i], stand_pose_[i]);
 
       auto & motor = low_cmd_.motor_cmd()[i];
       motor.q(current_pose_[i]);
@@ -553,6 +613,38 @@ private:
         "Publishing ONNX LowCmd at %.1f Hz with policy_hz=%.1f and action_scale=%.3f",
         publish_hz_, policy_hz_, action_scale_);
     }
+  }
+
+  ClampReport clamp_joint_targets(JointArray & targets) const
+  {
+    ClampReport report;
+    for (size_t i = 0; i < kJointCount; ++i) {
+      const float requested = targets[i];
+      if (!std::isfinite(requested)) {
+        targets[i] = legal_joint_value(i, current_pose_[i], stand_pose_[i]);
+        ++report.nonfinite_count;
+      } else {
+        targets[i] = legal_joint_value(i, requested, stand_pose_[i]);
+      }
+
+      if (targets[i] != requested || !std::isfinite(requested)) {
+        ++report.clamped_count;
+        if (report.first_joint == kJointCount) {
+          report.first_joint = i;
+          report.requested = requested;
+          report.clamped = targets[i];
+        }
+      }
+    }
+    return report;
+  }
+
+  float legal_joint_value(size_t joint, float value, float fallback) const
+  {
+    if (!std::isfinite(value)) {
+      value = std::isfinite(fallback) ? fallback : 0.0F;
+    }
+    return std::clamp(value, joint_lower_limits_[joint], joint_upper_limits_[joint]);
   }
 
   std::array<float, kPolicyInputSize> build_observation(const LowStateSnapshot & state) const
@@ -711,9 +803,12 @@ private:
   bool return_to_prepare_on_disable_{false};
   bool enabled_{false};
   bool logged_first_low_cmd_{false};
+  bool initialized_from_low_state_{false};
 
   geometry_msgs::msg::Twist latest_cmd_vel_;
   const JointArray stand_pose_{stand_pose()};
+  const JointArray joint_lower_limits_{joint_lower_limits()};
+  const JointArray joint_upper_limits_{joint_upper_limits()};
   JointArray target_pose_;
   JointArray current_pose_;
   JointArray kp_;
