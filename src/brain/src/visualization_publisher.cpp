@@ -765,8 +765,6 @@ visualization_msgs::msg::Marker VisualizationPublisher::createDecisionInfoMarker
         r = 1.0f; g = 1.0f; b = 0.0f;  // Yellow
     } else if (decision == "kick" || decision == "cross") {
         r = 0.0f; g = 1.0f; b = 0.0f;  // Green
-    } else if (decision == "intercept") {
-        r = 1.0f; g = 0.5f; b = 0.0f;  // Orange
     } else if (decision == "retreat") {
         r = 1.0f; g = 0.0f; b = 1.0f;  // Purple
     }
