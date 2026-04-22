@@ -1098,6 +1098,20 @@ void Brain::joystickCallback(const booster_interface::msg::RemoteControllerState
 
 void Brain::gameControlCallback(const game_controller_interface::msg::GameControlData &msg)
 {
+    static int game_controller_receive_count = 0;
+    game_controller_receive_count += 1;
+
+    log->strategy(
+        "game_controller",
+        format("Received #%d packet=%d source=%s:%u state=%d secondary=%d kickoff_team=%d",
+            game_controller_receive_count,
+            static_cast<int>(msg.packet_number),
+            msg.source_ip.empty() ? "unknown" : msg.source_ip.c_str(),
+            static_cast<unsigned int>(msg.source_port),
+            static_cast<int>(msg.state),
+            static_cast<int>(msg.secondary_state),
+            static_cast<int>(msg.kick_off_team)));
+
     if (communication && !msg.source_ip.empty()) {
         communication->updateGameControllerEndpoint(msg.source_ip, msg.source_port);
     }

@@ -17,6 +17,10 @@ def generate_launch_description():
                     # The port to listen on, default is the GameController broadcast port 3838
                     "port": 3838,
 
+                    # Minimum interval between ROS publishes after UDP packets are received.
+                    # Set to 0 to publish every valid GameController packet.
+                    "min_publish_interval_ms": 500,
+
                     # control if to enable IP white list check, default False, if True, only packets from IPs in ip_white_list will be accepted
                     "enable_ip_white_list": False,
 

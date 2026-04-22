@@ -14,17 +14,20 @@ GameControllerNode::GameControllerNode(string name) : rclcpp::Node(name)
     declare_parameter<int>("port", 3838);
     declare_parameter<bool>("enable_ip_white_list", false);
     declare_parameter<vector<string>>("ip_white_list", vector<string>{});
+    declare_parameter<int>("min_publish_interval_ms", 500);
 
     get_parameter("port", _port);
     RCLCPP_INFO(get_logger(), "[get_parameter] port: %d", _port);
     get_parameter("enable_ip_white_list", _enable_ip_white_list);
     RCLCPP_INFO(get_logger(), "[get_parameter] enable_ip_white_list: %d", _enable_ip_white_list);
     get_parameter("ip_white_list", _ip_white_list);
+    get_parameter("min_publish_interval_ms", _min_publish_interval_ms);
     RCLCPP_INFO(get_logger(), "[get_parameter] ip_white_list(len=%ld)", _ip_white_list.size());
     for (size_t i = 0; i < _ip_white_list.size(); i++)
     {
         RCLCPP_INFO(get_logger(), "[get_parameter]     --[%ld]: %s", i, _ip_white_list[i].c_str());
     }
+    RCLCPP_INFO(get_logger(), "[get_parameter] min_publish_interval_ms: %d", _min_publish_interval_ms);
 
     _publisher = create_publisher<game_controller_interface::msg::GameControlData>("/booster_soccer/game_controller", 10);
 }
@@ -118,7 +121,20 @@ void GameControllerNode::spin()
         msg.source_ip = remote_ip;
         msg.source_port = remote_port;
 
+        const auto now = std::chrono::steady_clock::now();
+        const bool should_publish =
+            !_has_published_once ||
+            _min_publish_interval_ms <= 0 ||
+            std::chrono::duration_cast<std::chrono::milliseconds>(now - _last_publish_time).count() >= _min_publish_interval_ms;
+
+        if (!should_publish)
+        {
+            continue;
+        }
+
         _publisher->publish(msg);
+        _last_publish_time = now;
+        _has_published_once = true;
 
         RCLCPP_INFO(
             get_logger(),
