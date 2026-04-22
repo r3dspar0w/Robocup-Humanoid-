@@ -49,6 +49,8 @@
 #include "robot_client.h"
 #include "visualization_publisher.h"
 
+#include "std_msgs/msg/string.hpp"
+
 using namespace std;
 
 /**
@@ -167,6 +169,8 @@ public:
     void publishTeammatesPoses();
 
     void pubKickMsg();
+
+    void speak(string text, bool allowRepeat = false);
 
     // ------------------------------------------------------ SUB CALLBACKS ------------------------------------------------------
 
@@ -287,6 +291,7 @@ private:
     rclcpp::Publisher<geometry_msgs::msg::Point>::SharedPtr pubBallPosition;
     rclcpp::Publisher<brain::msg::Kick>::SharedPtr pubKickBall;
     rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr pubTeammatesPoses;
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pubSpeak;
 
     // ------------------------------------------------------ debug logs related ------------------------------------------------------
     void logLags();
