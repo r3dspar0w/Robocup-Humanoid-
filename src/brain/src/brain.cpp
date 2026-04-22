@@ -1667,9 +1667,21 @@ vector<GameObject> Brain::getGameObjects(const vision_interface::msg::Detections
         gObj.boundingBox.ymin = obj.ymin;
         gObj.confidence = obj.confidence;
 
-        // Do not use depth measurement, directly use projection distance
-        gObj.posToRobot.x = obj.position_projection[0];
-        gObj.posToRobot.y = obj.position_projection[1];
+        // Distance-Based Trust/Fusion Logic
+        const float kDepthTrustThreshold = 3.0f;
+        bool is_robot = (obj.label == "Opponent" || obj.label == "Teammate" || obj.label == "Goalpost");
+        bool depth_valid = (obj.position[0] != 0.0f || obj.position[1] != 0.0f);
+        float D = std::sqrt(obj.position[0] * obj.position[0] + obj.position[1] * obj.position[1]);
+
+        if (is_robot && depth_valid && D < kDepthTrustThreshold) {
+            // Trust D: FOV truncated at close range
+            gObj.posToRobot.x = obj.position[0];
+            gObj.posToRobot.y = obj.position[1];
+        } else {
+            // Trust P: full body visible, or no valid depth
+            gObj.posToRobot.x = obj.position_projection[0];
+            gObj.posToRobot.y = obj.position_projection[1];
+        }
 
         // Calculate angles
         gObj.range = norm(gObj.posToRobot.x, gObj.posToRobot.y);
