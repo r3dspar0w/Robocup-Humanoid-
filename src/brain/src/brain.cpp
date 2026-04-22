@@ -1098,6 +1098,10 @@ void Brain::joystickCallback(const booster_interface::msg::RemoteControllerState
 
 void Brain::gameControlCallback(const game_controller_interface::msg::GameControlData &msg)
 {
+    if (communication && !msg.source_ip.empty()) {
+        communication->updateGameControllerEndpoint(msg.source_ip, msg.source_port);
+    }
+
     if (get_parameter(GAME_AGENT_MODE_PARAM).as_bool()) {
         prtWarn("Agent mode, ignore game control");
         return;

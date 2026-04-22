@@ -87,6 +87,7 @@ void GameControllerNode::spin()
         }
 
         string remote_ip = inet_ntoa(remote_addr.sin_addr);
+        const uint16_t remote_port = ntohs(remote_addr.sin_port);
 
         if (ret != sizeof(data))
         {
@@ -112,11 +113,19 @@ void GameControllerNode::spin()
             continue;
         }
 
+        msg = game_controller_interface::msg::GameControlData();
         handle_packet(data, msg);
+        msg.source_ip = remote_ip;
+        msg.source_port = remote_port;
 
         _publisher->publish(msg);
 
-        RCLCPP_INFO(get_logger(), "handle packet successfully ip=%s, packet_number=%d", remote_ip.c_str(), data.packetNumber);
+        RCLCPP_INFO(
+            get_logger(),
+            "handle packet successfully ip=%s:%u, packet_number=%d",
+            remote_ip.c_str(),
+            static_cast<unsigned int>(remote_port),
+            data.packetNumber);
     }
 }
 

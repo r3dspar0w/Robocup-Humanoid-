@@ -15,3 +15,5 @@ uint16 drop_in_time           # number of seconds passed since the last drop in.
 uint16 secs_remaining        # estimate of number of seconds remaining in the half
 uint16 secondary_time        # number of seconds shown as secondary time (remaining ready, until free ball, etc)
 TeamInfo[2] teams
+string source_ip             # sender IP of the GameController packet that produced this message
+uint16 source_port           # sender UDP port of the GameController packet that produced this message

@@ -1,6 +1,8 @@
 #include "brain.h"
 #include "brain_communication.h"
 
+#include <sstream>
+
 /*
 It handles 3 Critical things:
     1. Game Controller Communication
@@ -13,6 +15,32 @@ This is what enables:
     3. Avoid Multiple Robots Chasing the same ball
     4. Leader Election
 */
+
+namespace {
+bool buildGameControllerAddress(const std::string &ip, uint16_t port, sockaddr_in &addr)
+{
+    if (ip.empty() || ip == "0.0.0.0")
+    {
+        return false;
+    }
+
+    sockaddr_in resolved{};
+    resolved.sin_family = AF_INET;
+    resolved.sin_port = htons(port);
+    if (inet_pton(AF_INET, ip.c_str(), &resolved.sin_addr) != 1)
+    {
+        return false;
+    }
+
+    if (resolved.sin_addr.s_addr == htonl(INADDR_ANY))
+    {
+        return false;
+    }
+
+    addr = resolved;
+    return true;
+}
+}
 
 // -------------------- Things to include inside -----------------------
 /*
@@ -127,13 +155,33 @@ void BrainCommunication::initGameControllerUnicast()
             << RESET_CODE << endl;
         throw std::runtime_error(strerror(errno));
         }
-        // Configure target address
+
+        // Configure the initial fallback target from static config.
         string gamecontrol_ip = brain->config->get_game_control_ip();
-        cout << GREEN_CODE << format("GameControl IP: %s", gamecontrol_ip.c_str())
-            << RESET_CODE << endl;
-        _gcsaddr.sin_family = AF_INET;
-        _gcsaddr.sin_addr.s_addr = inet_addr(gamecontrol_ip.c_str());
-        _gcsaddr.sin_port = htons(GAMECONTROLLER_RETURN_PORT);
+        sockaddr_in initial_addr{};
+        if (buildGameControllerAddress(gamecontrol_ip, GAMECONTROLLER_RETURN_PORT, initial_addr))
+        {
+            std::lock_guard<std::mutex> lock(_gcsaddr_mutex);
+            _gcsaddr = initial_addr;
+            _game_controller_target_ip = gamecontrol_ip;
+            _game_controller_target_port = GAMECONTROLLER_RETURN_PORT;
+            RCLCPP_INFO(
+                brain->get_logger(),
+                "GameController return fallback target: %s:%u",
+                _game_controller_target_ip.c_str(),
+                static_cast<unsigned int>(_game_controller_target_port));
+        }
+        else
+        {
+            RCLCPP_WARN(
+                brain->get_logger(),
+                "Configured game_control_ip '%s' is not a valid return target; waiting for inbound GameController packets to discover the active controller",
+                gamecontrol_ip.c_str());
+            brain->log->strategy(
+                "game_controller",
+                format("No valid configured GameController return target from game_control_ip=%s; waiting for inbound referee packets",
+                    gamecontrol_ip.c_str()));
+        }
 
         _unicast_gamecontrol_flag.store(true);
         _gamecontrol_unicast_thread = std::thread([this](){ this->unicastToGameController(); });
@@ -142,6 +190,40 @@ void BrainCommunication::initGameControllerUnicast()
     {
         std::cerr << e.what() << '\n';
     }
+}
+
+void BrainCommunication::updateGameControllerEndpoint(const std::string &ip, uint16_t source_port)
+{
+    sockaddr_in updated_addr{};
+    if (!buildGameControllerAddress(ip, GAMECONTROLLER_RETURN_PORT, updated_addr))
+    {
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(_gcsaddr_mutex);
+    if (_game_controller_target_ip == ip && _game_controller_target_port == GAMECONTROLLER_RETURN_PORT)
+    {
+        return;
+    }
+
+    _gcsaddr = updated_addr;
+    _game_controller_target_ip = ip;
+    _game_controller_target_port = GAMECONTROLLER_RETURN_PORT;
+
+    RCLCPP_INFO(
+        brain->get_logger(),
+        "Updated GameController return target to %s:%u from inbound referee packet %s:%u",
+        _game_controller_target_ip.c_str(),
+        static_cast<unsigned int>(_game_controller_target_port),
+        ip.c_str(),
+        static_cast<unsigned int>(source_port));
+    brain->log->strategy(
+        "game_controller",
+        format("Updated return target to %s:%u from inbound GameController packet %s:%u",
+            _game_controller_target_ip.c_str(),
+            static_cast<unsigned int>(_game_controller_target_port),
+            ip.c_str(),
+            static_cast<unsigned int>(source_port)));
 }
 
 void BrainCommunication::clearupGameControllerUnicast()
@@ -278,17 +360,87 @@ void BrainCommunication::clearupDiscoveryReceiver()
 }
 
 void BrainCommunication::unicastToGameController() {
+    rclcpp::Time last_missing_target_log = brain->get_clock()->now();
+    std::string last_logged_target;
     while (_unicast_gamecontrol_flag.load(std::memory_order_relaxed))
     {
         gc_return_data.team = brain->config->get_team_id();
         gc_return_data.player = brain->config->get_player_id(); // return data id is 1,2,3,4
         gc_return_data.message = GAMECONTROLLER_RETURN_MSG_ALIVE;
 
-        int ret = sendto(_gc_send_socket, &gc_return_data, sizeof(gc_return_data), 0, (sockaddr *)&_gcsaddr, sizeof(_gcsaddr));
+        sockaddr_in target_addr{};
+        std::string target_ip;
+        uint16_t target_port = GAMECONTROLLER_RETURN_PORT;
+        {
+            std::lock_guard<std::mutex> lock(_gcsaddr_mutex);
+            target_addr = _gcsaddr;
+            target_ip = _game_controller_target_ip;
+            target_port = _game_controller_target_port;
+        }
+
+        if (target_ip.empty())
+        {
+            auto now = brain->get_clock()->now();
+            if ((now - last_missing_target_log).nanoseconds() >= 5LL * 1000 * 1000 * 1000)
+            {
+                RCLCPP_WARN(
+                    brain->get_logger(),
+                    "GameController return target is unknown; no heartbeat sent yet. Waiting for a valid GameController packet or a valid configured game_control_ip");
+                brain->log->strategy(
+                    "game_controller",
+                    "Return target unknown; skipping heartbeat until a valid GameController endpoint is known");
+                last_missing_target_log = now;
+            }
+            this_thread::sleep_for(chrono::milliseconds(BROADCAST_GAME_CONTROL_INTERVAL_MS));
+            continue;
+        }
+
+        int ret = sendto(_gc_send_socket, &gc_return_data, sizeof(gc_return_data), 0, (sockaddr *)&target_addr, sizeof(target_addr));
         if (ret < 0)
         {
-            cout << RED_CODE << format("gc sendto failed: %s", strerror(errno))
-                << RESET_CODE << endl;
+            RCLCPP_ERROR(
+                brain->get_logger(),
+                "GameController sendto failed for %s:%u: %s",
+                target_ip.c_str(),
+                static_cast<unsigned int>(target_port),
+                strerror(errno));
+            brain->log->strategy(
+                "game_controller",
+                format("FAILED send #%d team=%d player=%d message=%d target=%s:%u error=%s",
+                    _game_controller_send_count + 1,
+                    gc_return_data.team,
+                    gc_return_data.player,
+                    gc_return_data.message,
+                    target_ip.c_str(),
+                    static_cast<unsigned int>(target_port),
+                    strerror(errno)));
+        }
+        else
+        {
+            _game_controller_send_count += 1;
+            brain->log->strategy(
+                "game_controller",
+                format("Sent #%d team=%d player=%d message=%d target=%s:%u bytes=%d",
+                    _game_controller_send_count,
+                    gc_return_data.team,
+                    gc_return_data.player,
+                    gc_return_data.message,
+                    target_ip.c_str(),
+                    static_cast<unsigned int>(target_port),
+                    ret));
+
+            std::ostringstream target_key;
+            target_key << target_ip << ":" << target_port;
+            if (last_logged_target != target_key.str())
+            {
+                last_logged_target = target_key.str();
+                RCLCPP_INFO(
+                    brain->get_logger(),
+                    "GameController heartbeat enabled for team=%d player=%d -> %s",
+                    gc_return_data.team,
+                    gc_return_data.player,
+                    last_logged_target.c_str());
+            }
         }
         this_thread::sleep_for(chrono::milliseconds(BROADCAST_GAME_CONTROL_INTERVAL_MS));
     }

@@ -1,6 +1,11 @@
 #pragma once
 
 #include <string>
+#include <atomic>
+#include <cstdint>
+#include <map>
+#include <mutex>
+#include <thread>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -27,6 +32,7 @@ public:
     
     void initCommunication();
     bool isTeamChanged();
+    void updateGameControllerEndpoint(const std::string &ip, uint16_t source_port = GAMECONTROLLER_DATA_PORT);
 
 private:
     Brain *brain;
@@ -37,7 +43,11 @@ private:
     void clearupGameControllerUnicast();
     std::atomic<bool> _unicast_gamecontrol_flag = false;
     int _gc_send_socket = -1;
-    sockaddr_in _gcsaddr;
+    sockaddr_in _gcsaddr{};
+    std::mutex _gcsaddr_mutex;
+    std::string _game_controller_target_ip;
+    uint16_t _game_controller_target_port = GAMECONTROLLER_RETURN_PORT;
+    int _game_controller_send_count = 0;
     HlRoboCupGameControlReturnData gc_return_data;
     static constexpr int BROADCAST_GAME_CONTROL_INTERVAL_MS = 1000;
 
