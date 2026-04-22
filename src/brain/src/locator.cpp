@@ -278,12 +278,18 @@ LocateResult Locator::locateRobot(vector<FieldMarker> markers_r, PoseBox2D const
     res.residual = bigEnoughNum;
     bestResidual = bigEnoughNum;
     bestPose = Pose2D{0.0, 0.0, 0.0};
+    lastLocateSuccess = false;
+    lastMarkerCount = static_cast<int>(markers_r.size());
+    lastLocateCode = 0;
+    lastResidual = bigEnoughNum;
+    lastConfidence = 0.0;
 
     if (markers_r.size() < minMarkerCnt)
     {
         res.success = false;
         res.code = 4;
         res.msecs = msecsSince(start_time);
+        lastLocateCode = res.code;
         return res;
     }
 
@@ -298,12 +304,15 @@ LocateResult Locator::locateRobot(vector<FieldMarker> markers_r, PoseBox2D const
         res.success = false;
         res.code = 5;
         res.msecs = msecsSince(start_time);
+        lastLocateCode = res.code;
         return res;
     }
 
     for (int i = 0; i < maxIteration; i++)
     {
         res.residual = bestResidual / markers_r.size();
+        lastResidual = res.residual;
+        lastConfidence = residualToConfidence(res.residual);
         if (isConverged())
         {
             if (res.residual > residualTolerance)
@@ -311,6 +320,7 @@ LocateResult Locator::locateRobot(vector<FieldMarker> markers_r, PoseBox2D const
                 res.success = false;
                 res.code = 2;
                 res.msecs = msecsSince(start_time);
+                lastLocateCode = res.code;
                 return res;
             }
             res.success = true;
@@ -318,6 +328,8 @@ LocateResult Locator::locateRobot(vector<FieldMarker> markers_r, PoseBox2D const
             res.pose = bestPose;
             res.pose.theta = toPInPI(res.pose.theta);
             res.msecs = msecsSince(start_time);
+            lastLocateSuccess = true;
+            lastLocateCode = res.code;
             return res;
         }
 
@@ -326,6 +338,7 @@ LocateResult Locator::locateRobot(vector<FieldMarker> markers_r, PoseBox2D const
             res.success = false;
             res.code = 1;
             res.msecs = msecsSince(start_time);
+            lastLocateCode = res.code;
             return res;
         }
 
@@ -334,6 +347,7 @@ LocateResult Locator::locateRobot(vector<FieldMarker> markers_r, PoseBox2D const
             res.success = false;
             res.code = 5;
             res.msecs = msecsSince(start_time);
+            lastLocateCode = res.code;
             return res;
         }
     }
@@ -341,6 +355,7 @@ LocateResult Locator::locateRobot(vector<FieldMarker> markers_r, PoseBox2D const
     res.success = false;
     res.code = 3;
     res.msecs = msecsSince(start_time);
+    lastLocateCode = res.code;
     return res;
 }
 
