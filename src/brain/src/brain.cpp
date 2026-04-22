@@ -264,6 +264,12 @@ void Brain::init()
 
     // Publish field dimensions information (called after publisher creation)
     publishFieldDimensions();
+
+    // Speak startup identity once after config, tree, client, communication, and publishers are ready
+    speak(
+        "team " + std::to_string(config->get_team_id()) + " " + config->get_player_role() + " ok",
+        true
+    );
 }
 
 void Brain::loadConfig()
@@ -1129,6 +1135,17 @@ void Brain::gameControlCallback(const game_controller_interface::msg::GameContro
     tree->setEntry<string>("gc_game_state", gameState);
     bool isKickOffSide = (msg.kick_off_team == teamId); // Whether our team is the kickoff side
     tree->setEntry<bool>("gc_is_kickoff_side", isKickOffSide);
+
+    // Speak game state changes once
+    if (config->soundEnable && config->soundPack == "espeak" && gameState != lastGameState) {
+        if (gameState == "READY") {
+            speak("ready", true);
+        } else if (gameState == "SET") {
+            speak("set", true);
+        } else if (gameState == "PLAY") {
+            speak("play", true);
+        }
+    }
 
     // Handle secondary game state
     string gameSubStateType;
