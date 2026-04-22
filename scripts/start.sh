@@ -19,6 +19,6 @@ echo "[START GAME_CONTROLLER]"
 nohup ros2 launch game_controller launch.py > game_controller.log 2>&1 &
 echo "[DONE]"
 
-
+espeak "started" >/dev/null 2>&1 || echo "Started"
 
     
