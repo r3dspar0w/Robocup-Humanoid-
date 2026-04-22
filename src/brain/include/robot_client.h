@@ -3,6 +3,10 @@
 #include <iostream>
 #include <string>
 
+#include "rclcpp/rclcpp.hpp"
+#include "geometry_msgs/msg/twist.hpp"
+#include "std_msgs/msg/bool.hpp"
+
 #include "booster_interface/srv/rpc_service.hpp"
 #include "booster_interface/msg/booster_api_req_msg.hpp"
 #include "booster_msgs/msg/rpc_req_msg.hpp"
@@ -123,8 +127,11 @@ public:
 private:
     int call(booster_interface::msg::BoosterApiReqMsg msg);
     rclcpp::Publisher<booster_msgs::msg::RpcReqMsg>::SharedPtr publisher;
+    rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr motionControlCmdVelPublisher;
+    rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr motionControlEnableSubscriber;
     Brain *brain;
     double _vx, _vy, _vtheta;
     rclcpp::Time _lastCmdTime;
     rclcpp::Time _lastNonZeroCmdTime;
+    bool motionControlEnabled = false;
 };
