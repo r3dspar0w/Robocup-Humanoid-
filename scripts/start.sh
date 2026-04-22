@@ -18,3 +18,5 @@ nohup ros2 launch brain launch.py "$@"  > brain.log 2>&1 &
 echo "[START GAME_CONTROLLER]"
 nohup ros2 launch game_controller launch.py > game_controller.log 2>&1 &
 echo "[DONE]"
+
+espeak "starting" >/dev/null 2>&1 || echo "Started"
