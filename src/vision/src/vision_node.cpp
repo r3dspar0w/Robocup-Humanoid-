@@ -382,8 +382,8 @@ static cv::Mat DrawDebugOverlay(
         }
 
         // Pos_Depth label (green) — only if non-zero
-        const auto &pd = obj.position;
         int next_y = py;
+        const auto &pd = obj.position;
         if (pd[0] != 0.0f || pd[1] != 0.0f) {
             std::ostringstream oss_d;
             oss_d << "D:[" << std::fixed << std::setprecision(1) << pd[0] << "," << pd[1] << "]m";
@@ -399,28 +399,30 @@ static cv::Mat DrawDebugOverlay(
             next_y = dy;
         }
 
-        // Used/Fused label (cyan) — Distance-Based Trust Logic
+        // Fused value label (cyan)
         const float kDepthTrustThreshold = 3.0f;
         bool is_robot = (obj.label == "Opponent" || obj.label == "Teammate" || obj.label == "Goalpost");
         bool depth_valid = (pd[0] != 0.0f || pd[1] != 0.0f);
-        float D = std::sqrt(pd[0] * pd[0] + pd[1] * pd[1]);
-        
-        float used_x = pp[0];
-        float used_y = pp[1];
-        if (is_robot && depth_valid && D < kDepthTrustThreshold) {
-            used_x = pd[0];
-            used_y = pd[1];
+        float dist_D = std::hypot(pd[0], pd[1]);
+
+        float fused_x, fused_y;
+        if (is_robot && depth_valid && dist_D < kDepthTrustThreshold) {
+            fused_x = pd[0];
+            fused_y = pd[1];
+        } else {
+            fused_x = pp[0];
+            fused_y = pp[1];
         }
 
-        std::ostringstream oss_u;
-        oss_u << "U:[" << std::fixed << std::setprecision(1) << used_x << "," << used_y << "]m";
-        int baseline_u = 0;
-        cv::Size sz_u = cv::getTextSize(oss_u.str(), cv::FONT_HERSHEY_SIMPLEX, 0.38, 1, &baseline_u);
-        int uy = next_y + sz_u.height + 3;
-        if (uy + sz_u.height + 2 < img_out.rows) {
-            cv::rectangle(img_out, cv::Rect(px, uy - sz_u.height - 1, sz_u.width + 4, sz_u.height + 3),
+        std::ostringstream oss_f;
+        oss_f << "F:[" << std::fixed << std::setprecision(1) << fused_x << "," << fused_y << "]m";
+        int baseline_f = 0;
+        cv::Size sz_f = cv::getTextSize(oss_f.str(), cv::FONT_HERSHEY_SIMPLEX, 0.38, 1, &baseline_f);
+        int fy = next_y + sz_f.height + 3;
+        if (fy + sz_f.height + 2 < img_out.rows) {
+            cv::rectangle(img_out, cv::Rect(px, fy - sz_f.height - 1, sz_f.width + 4, sz_f.height + 3),
                           cv::Scalar(0, 0, 0), cv::FILLED);
-            cv::putText(img_out, oss_u.str(), {px + 2, uy + 1},
+            cv::putText(img_out, oss_f.str(), {px + 2, fy + 1},
                         cv::FONT_HERSHEY_SIMPLEX, 0.38, cv::Scalar(255, 255, 0), 1, cv::LINE_AA);
         }
 
