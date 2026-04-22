@@ -31,7 +31,7 @@ camera:
       - 0
       - 0
       - 1
-  pitch_compensation: 0
+  pitch_compensation: 0.03
   yaw_compensation: 0
   z_compensation: 0
 detection_model:
