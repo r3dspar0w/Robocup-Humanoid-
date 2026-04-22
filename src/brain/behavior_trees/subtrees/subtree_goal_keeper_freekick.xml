@@ -11,7 +11,7 @@
          <GoToReadyPosition _while="!ball_location_known" />
 
          <!-- If ball is known, BLOCK THE GOAL -->
-         <GoToGoalBlockingPosition _while="ball_location_known" mode="block" dist_tolerance="0.20" theta_tolerance="0.35" vx_limit="0.8" vy_limit="0.35" vtheta_limit="1.2" />
+         <GoToGoalBlockingPosition _while="ball_location_known" />
 
          <!-- Constantly updates position -->
          <SelfLocate mode="trust_direction" _while="odom_calibrated" />
