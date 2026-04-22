@@ -69,6 +69,7 @@ private:
     std::string depth_topic_;
     std::string intrin_topic_;
     std::string img_log_path_;
+    std::string team_color_ = "red";
 
     Intrinsics intr_;
     Pose p_eye2head_;

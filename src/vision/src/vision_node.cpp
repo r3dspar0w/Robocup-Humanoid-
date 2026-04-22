@@ -1,6 +1,8 @@
 #include "booster_vision/vision_node.h"
 
+#include <algorithm>
 #include <cstdlib>
+#include <cctype>
 #include <functional>
 #include <filesystem>
 #include <iostream>
@@ -24,6 +26,16 @@
 #include "booster_vision/img_bridge.h"
 
 namespace booster_vision {
+
+namespace {
+
+std::string NormalizeColorName(std::string value) {
+    std::transform(value.begin(), value.end(), value.begin(),
+                   [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+    return value;
+}
+
+} // namespace
 
 VisionNode::VisionNode(const std::string &node_name, const rclcpp::NodeOptions &options) :
     rclcpp::Node(node_name, options) {
@@ -201,6 +213,8 @@ void VisionNode::Init(const std::string &cfg_template_path, const std::string &c
     if (node["robot_color_classifier"]) {
         color_classifier_ = std::make_shared<ColorClassifier>();
         color_classifier_->Init(node["robot_color_classifier"]);
+        team_color_ = NormalizeColorName(as_or<std::string>(node["robot_color_classifier"]["team_color"], "red"));
+        std::cout << "robot team color: " << team_color_ << std::endl;
     }
 
     // init pose estimator
@@ -521,14 +535,18 @@ void VisionNode::ProcessData(SyncedDataBlock &synced_data, vision_interface::msg
         if ((color_classifier_ != nullptr) && (detection.class_name == "Opponent")) {
             // get a crop of the image given detection.bbox
             cv::Mat crop = color(detection.bbox);
-            std::string robot_color_str = color_classifier_->Classify(crop);
+            std::string robot_color_str = NormalizeColorName(color_classifier_->Classify(crop));
             // add robot color to detection_obj
             detection_obj.color = robot_color_str;
+            if (!team_color_.empty() && robot_color_str == team_color_) {
+                detection_obj.label = "Teammate";
+                detection.class_name = detection_obj.label;
+            }
         }
 
         // log detail semantic and spatial information
         std::cout << "[Detection Log] " << detection_obj.label;
-        if (detection_obj.label == "Opponent" && !detection_obj.color.empty()) {
+        if ((detection_obj.label == "Opponent" || detection_obj.label == "Teammate") && !detection_obj.color.empty()) {
             std::cout << " (Color: " << detection_obj.color << ")";
         }
         std::cout << " (Conf: " << std::fixed << std::setprecision(1) << detection_obj.confidence << "%)"

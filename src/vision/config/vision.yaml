@@ -55,6 +55,15 @@ segmentation_model:
   model_path: /home/booster/Workspace/robocup_demo/src/vision/model/best_seg_orin_10.3.engine
   confidence_threshold: 0.3
   nms_threshold: 0.9
+robot_color_classifier:
+  team_color: red
+  red_bounds:
+    - [0, 80, 50, 20, 255, 255]
+    - [160, 80, 100, 179, 255, 255]
+  blue_bounds:
+    - [100, 140, 50, 140, 255, 255]
+  green_bounds:
+    - [30, 45, 45, 80, 255, 255]
 use_depth: true
 ball_pose_estimator:
   use_depth: true

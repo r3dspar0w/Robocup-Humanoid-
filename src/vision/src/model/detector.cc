@@ -62,6 +62,7 @@ cv::Mat YoloV8Detector::DrawDetection(const cv::Mat &img, const std::vector<Dete
     for (const auto &detection : detections) {
         const cv::Rect &bbox = detection.bbox;
         cv::Scalar color = get_color(detection.class_id);
+        const std::string class_label = detection.class_name.empty() ? kClassLabels[detection.class_id] : detection.class_name;
 
         // — main bounding box (2 px thick) —
         cv::rectangle(img_out, bbox, color, 2);
@@ -88,7 +89,7 @@ cv::Mat YoloV8Detector::DrawDetection(const cv::Mat &img, const std::vector<Dete
 
         // — label pill (filled rounded rectangle behind text) —
         std::stringstream ss;
-        ss << kClassLabels[detection.class_id] << " "
+        ss << class_label << " "
            << std::fixed << std::setprecision(1) << detection.confidence * 100.0f << "%";
         std::string label = ss.str();
         int baseline = 0;
