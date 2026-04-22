@@ -392,6 +392,7 @@ void Brain::handleCooperation() {
     string selfRole = config->get_player_role();
 
     vector<int> aliveTmIdxs = {}; // Indices of all alive teammates, excluding self
+    vector<int> recentBallTmIdxs = {}; // Teammates with recent global-ball messages
 
     // Update own status
     data->tmImAlive = 
@@ -428,6 +429,14 @@ void Brain::handleCooperation() {
             log->log_scalar("tm_status",format("tm_alive_scalar_%d", i + 1), data->tmStatus[i].cost);
             log->log_scalar("tm_status",format("tm_lead_scalar_%d", i + 1), data->tmStatus[i].isLead ? 1 : 0);
         }
+
+        if (
+            data->penalty[i] == PENALTY_NONE
+            && msecsSince(data->tmStatus[i].timeLastCom) <= COM_TIMEOUT
+            && data->tmStatus[i].ballLocationKnown
+        ) {
+            recentBallTmIdxs.push_back(i);
+        }
     }
     log_(format("alive TM Count: %d", aliveTmIdxs.size()));
 
@@ -441,9 +450,9 @@ void Brain::handleCooperation() {
     const double RANGE_THRESHOLD = config->get_tm_ball_dist_threshold(); 
     int trustedTMIdx = -1;
     double minRange = 1e6;
-    log_(format("Find ball info among %d alive TMs", aliveTmIdxs.size()));
-    for (int i = 0; i < aliveTmIdxs.size(); i++) {
-        auto status = data->tmStatus[aliveTmIdxs[i]];
+    log_(format("Find ball info among %d recent ball TMs", recentBallTmIdxs.size()));
+    for (int i = 0; i < recentBallTmIdxs.size(); i++) {
+        auto status = data->tmStatus[recentBallTmIdxs[i]];
         log_(format("TM %d, ballDetected: %d, ballRange: %.1f", i + 1, status.ballDetected, status.ballRange));
         if (status.ballDetected && status.ballRange < minRange) {
             log_(format("tm ball range(%.1f) < minRange(%.1f)", status.ballRange, minRange));
@@ -451,7 +460,7 @@ void Brain::handleCooperation() {
             if (dist > RANGE_THRESHOLD) {
                 log_(format("tm ball dist to me(%.1f) > threshold(%.1f), TM %d can be trusted", dist, RANGE_THRESHOLD, i+ 1));
                 minRange = status.ballRange;
-                trustedTMIdx = aliveTmIdxs[i];
+                trustedTMIdx = recentBallTmIdxs[i];
             }  else {
                 log_(format("tm ball dist to me(%.1f) < threshold(%.1f), TM %d can NOT be trusted", dist, RANGE_THRESHOLD, i+ 1));
             }

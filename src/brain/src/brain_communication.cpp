@@ -7,13 +7,12 @@
 It handles 3 Critical things:
     1. Game Controller Communication
     2. Discovery -> Robot find teammates on this network
-    3. Team Communication -> Robot share game state (ball, roles and decisions)
+    3. Team Communication -> Robot share global ball observations
 
 This is what enables:
-    1. Role Switching (Striker <---> Goal Keeper)
-    2. Passing Decisions
-    3. Avoid Multiple Robots Chasing the same ball
-    4. Leader Election
+    1. Referee heartbeat / return messages
+    2. Sharing global ball position between teammates
+    3. Using teammate ball observations when the local robot loses sight of the ball
 */
 
 namespace {
@@ -88,9 +87,12 @@ BrainCommunication::~BrainCommunication()
     _broadcast_discovery_flag.store(false);
     _receive_discovery_flag.store(false);
     // Send an empty packet to unblock send and receive threads
-    int ret = sendto(_discovery_send_socket, nullptr, 0, 0, (sockaddr *)&local_addr, sizeof(local_addr));
-    if (ret < 0){
-        RCLCPP_ERROR(brain->get_logger(), "Failed to send empty packet to self to unblock discovery send socket: %s", strerror(errno));
+    int ret = 0;
+    if (_discovery_send_socket >= 0) {
+        ret = sendto(_discovery_send_socket, nullptr, 0, 0, (sockaddr *)&local_addr, sizeof(local_addr));
+        if (ret < 0){
+            RCLCPP_ERROR(brain->get_logger(), "Failed to send empty packet to self to unblock discovery send socket: %s", strerror(errno));
+        }
     }
     clearupDiscoveryBroadcast();
     clearupDiscoveryReceiver();
@@ -99,9 +101,11 @@ BrainCommunication::~BrainCommunication()
     _receive_communication_flag.store(false);
     // Send an empty packet to unblock send and receive threads
     local_addr.sin_port = htons(_unicast_udp_port);
-    ret = sendto(_unicast_socket, nullptr, 0, 0, (sockaddr *)&local_addr, sizeof(local_addr));
-    if (ret < 0) {
-       RCLCPP_ERROR(brain->get_logger(), "Failed to send empty packet to self to unblock communication send socket: %s", strerror(errno));
+    if (_unicast_socket >= 0) {
+        ret = sendto(_unicast_socket, nullptr, 0, 0, (sockaddr *)&local_addr, sizeof(local_addr));
+        if (ret < 0) {
+           RCLCPP_ERROR(brain->get_logger(), "Failed to send empty packet to self to unblock communication send socket: %s", strerror(errno));
+        }
     }
     clearupCommunicationUnicast();
     clearupCommunicationReceiver();
@@ -118,13 +122,12 @@ void BrainCommunication::initCommunication()
         _discovery_udp_port = 20000 + teamId;
         _unicast_udp_port = 30000 + teamId;
 
-        initDiscoveryBroadcast();
-        initDiscoveryReceiver();
-        RCLCPP_INFO(brain->get_logger(), "InitCommunication Discovery enabled. UDP port: %d", _discovery_udp_port);
-
         initCommunicationUnicast();
         initCommunicationReceiver();
-        RCLCPP_INFO(brain->get_logger(), "InitCommunication Communication enabled. UDP port: %d", _unicast_udp_port);
+        RCLCPP_INFO(brain->get_logger(), "InitCommunication Ball broadcast enabled. UDP port: %d", _unicast_udp_port);
+        brain->log->strategy(
+            "team_ball",
+            format("Ball-sharing broadcast enabled on UDP port %d; discovery/alive broadcast disabled", _unicast_udp_port));
     }
     else
     {
@@ -544,7 +547,15 @@ void BrainCommunication::initCommunicationUnicast() {
             throw std::runtime_error("Failed to create unicast socket");
         }
 
+        int broadcast = 1;
+        if (setsockopt(_unicast_socket, SOL_SOCKET, SO_BROADCAST, &broadcast, sizeof(broadcast)) < 0) {
+            cout << RED_CODE << format("Failed to set SO_BROADCAST: %s", strerror(errno))
+                << RESET_CODE << endl;
+            throw std::runtime_error("Failed to enable broadcast on communication socket");
+        }
+
         _unicast_saddr.sin_family = AF_INET;
+        _unicast_saddr.sin_addr.s_addr = INADDR_BROADCAST;
         _unicast_saddr.sin_port = htons(_unicast_udp_port);
 
         _unicast_communication_flag.store(true);
@@ -558,64 +569,38 @@ void BrainCommunication::initCommunicationUnicast() {
     
 }
 
-// --------- This is the core data your Behavioral tree depends on -------------
-/*
-    Your Behavioral Tree can:
-        - Decide who to go for ball
-        - Decide who becomes the leader
-        - Decide Passing vs Shooting
-        - Decide Positioning
-*/
+// --------- Team ball broadcast: send only the global ball observation ---------
 void BrainCommunication::unicastCommunication() {
     auto log = [=](string msg) {
         brain->log->debug("sendMsg", msg);
     };
     while (_unicast_communication_flag) {
-        cleanupExpiredTeammates();
         TeamCommunicationMsg msg;
         msg.validation = VALIDATION_COMMUNICATION;
         msg.communicationId = _team_communication_msg_id++;
         msg.teamId = brain->config->get_team_id();
         msg.playerId = brain->config->get_player_id();
-        
-        string role = brain->tree->getEntry<string>("player_role");
-        if (role == "striker") {
-            msg.playerRole = 1;
-        } else if (role == "goal_keeper") {
-            msg.playerRole = 2;
-        } else {
-            msg.playerRole = 3; // Unknown role
-        }
-
-        msg.isAlive = brain->data->tmImAlive;
-        msg.isLead = brain->data->tmImLead;
         msg.ballDetected = brain->data->ballDetected;
-        msg.ballLocationKnown = brain->tree->getEntry<bool>("ball_location_known");
-        msg.ballConfidence = brain->data->ball.confidence;
-        msg.ballRange = brain->data->ball.range;
-        msg.cost = brain->data->tmMyCost;
+        msg.ballDistance = brain->data->ball.range;
         msg.ballPosToField = brain->data->ball.posToField;
-        msg.robotPoseToField = brain->data->robotPoseToField;
-        msg.kickDir = brain->data->kickDir;
-        msg.thetaRb = brain->data->robotBallAngleToField;
-        msg.cmdId = brain->data->tmMyCmdId;
-        msg.cmd = brain->data->tmMyCmd;
-        log(format("ImAlive: %d, ImLead: %d, myCost: %.1f, myCmdId: %d, myCmd: %d", msg.isAlive, msg.isLead, msg.cost, msg.cmdId, msg.cmd));
 
-        std::lock_guard<std::mutex> lock(_teammate_addresses_mutex);
-        for (auto it = _teammate_addresses.begin(); it != _teammate_addresses.end(); ++it) {
-            auto ip = it->second.ip;
+        log(format(
+            "Ball share send id=%d player=%d detected=%d dist=%.2f global=(%.2f, %.2f, %.2f)",
+            msg.communicationId,
+            msg.playerId,
+            msg.ballDetected,
+            msg.ballDistance,
+            msg.ballPosToField.x,
+            msg.ballPosToField.y,
+            msg.ballPosToField.z));
 
-            brain->data->tmIP = inet_ntoa(*(in_addr *)&ip);
-            brain->data->sendId = msg.communicationId;
-            brain->data->sendTime = brain->get_clock()->now();
-            
-            _unicast_saddr.sin_addr.s_addr = ip;
-            int ret = sendto(_unicast_socket, &msg, sizeof(msg), 0, (sockaddr *)&_unicast_saddr, sizeof(_unicast_saddr));
-            if (ret < 0) {
-                cout << RED_CODE << format("sendto failed: %s", strerror(errno))
-                    << RESET_CODE << endl;
-            }
+        brain->data->sendId = msg.communicationId;
+        brain->data->sendTime = brain->get_clock()->now();
+
+        int ret = sendto(_unicast_socket, &msg, sizeof(msg), 0, (sockaddr *)&_unicast_saddr, sizeof(_unicast_saddr));
+        if (ret < 0) {
+            cout << RED_CODE << format("sendto failed: %s", strerror(errno))
+                << RESET_CODE << endl;
         }
         this_thread::sleep_for(chrono::milliseconds(UNICAST_INTERVAL_MS));
     }
@@ -676,7 +661,7 @@ void BrainCommunication::initCommunicationReceiver() {
     }
 }
 
-// ---------------------- Receiving Teammates Info ---------------------------
+// ---------------------- Receiving teammates' global ball info ---------------------------
 void BrainCommunication::spinCommunicationReceiver() {
     auto log = [=](string msg) {
         brain->log->debug("receiveMsg", msg);
@@ -717,8 +702,14 @@ void BrainCommunication::spinCommunicationReceiver() {
         if (msg.playerId == brain->config->get_player_id()) {  // Ignore own messages
             // Handle own messages
             cout << CYAN_CODE <<  format(
-                "communicationId: %d, alive: %d, ballDetected: %d ballRange: %.2f playerId: %d",
-                msg.communicationId, msg.isAlive, msg.ballDetected, msg.ballRange, msg.playerId)
+                "communicationId: %d, ballDetected: %d ballDistance: %.2f globalBall:(%.2f, %.2f, %.2f) playerId: %d",
+                msg.communicationId,
+                msg.ballDetected,
+                msg.ballDistance,
+                msg.ballPosToField.x,
+                msg.ballPosToField.y,
+                msg.ballPosToField.z,
+                msg.playerId)
                 << RESET_CODE << endl;
             brain->data->sendId = msg.communicationId;
             brain->data->sendTime = brain->get_clock()->now();
@@ -737,37 +728,28 @@ void BrainCommunication::spinCommunicationReceiver() {
             continue;
         }
 
-        log(format("TMID: %.d, alive: %d, lead: %d, cost: %.1f, CmdId: %d, Cmd: %d", msg.playerId, msg.isAlive, msg.isLead, msg.cost, msg.cmdId, msg.cmd));
+        log(format(
+            "TMID: %d, ballDetected: %d, ballDistance: %.2f, globalBall=(%.2f, %.2f, %.2f)",
+            msg.playerId,
+            msg.ballDetected,
+            msg.ballDistance,
+            msg.ballPosToField.x,
+            msg.ballPosToField.y,
+            msg.ballPosToField.z));
 
         TMStatus &tmStatus = brain->data->tmStatus[tmIdx];
-        
-        switch(msg.playerRole) {
-            case 1: tmStatus.role = "striker"; break;
-            case 2: tmStatus.role = "goal_keeper"; break;
-            default: tmStatus.role = "unknown"; break;
-        }
-        tmStatus.isAlive = msg.isAlive;
         tmStatus.ballDetected = msg.ballDetected;
-        tmStatus.ballLocationKnown = msg.ballLocationKnown;
-        tmStatus.ballConfidence = msg.ballConfidence;
-        tmStatus.ballRange = msg.ballRange;
-        tmStatus.cost = msg.cost;
-        tmStatus.isLead = msg.isLead;
+        tmStatus.ballLocationKnown = msg.ballDetected;
+        tmStatus.ballConfidence = msg.ballDetected ? 100.0 : 0.0;
+        tmStatus.ballRange = msg.ballDistance;
         tmStatus.ballPosToField = msg.ballPosToField;
-        tmStatus.robotPoseToField = msg.robotPoseToField;
-        tmStatus.kickDir = msg.kickDir;
-        tmStatus.thetaRb = msg.thetaRb;
         tmStatus.timeLastCom = brain->get_clock()->now();
-        tmStatus.cmd = msg.cmd;
-        tmStatus.cmdId = msg.cmdId;
-
-        // Check if a new command has been received
-        if (msg.cmdId > brain->data->tmCmdId) {
-            brain->data->tmCmdId = msg.cmdId;
-            brain->data->tmReceivedCmd = msg.cmd;
-            brain->data->tmLastCmdChangeTime = brain->get_clock()->now();
-            log(format("Received new command from teammate %d: %d", msg.playerId, msg.cmd));
-        }
+        tmStatus.isAlive = false;
+        tmStatus.isLead = false;
+        tmStatus.cost = 1e5;
+        tmStatus.role = "ball_only";
+        tmStatus.cmd = 0;
+        tmStatus.cmdId = 0;
 
     }
 }

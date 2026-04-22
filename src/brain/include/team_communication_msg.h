@@ -10,20 +10,9 @@ struct TeamCommunicationMsg
     int communicationId;
     int teamId;
     int playerId;
-    int playerRole; // 1: striker, 2: goal_keeper, 3: unknown
-    bool isAlive; // Whether on the field and not currently penalized
-    bool isLead; // Whether in ball-control state
     bool ballDetected;
-    bool ballLocationKnown;
-    double ballConfidence;
-    double ballRange;
-    double cost; // Estimated cost to reach/kick the ball from current state
-    Point ballPosToField;
-    Pose2D robotPoseToField;
-    double kickDir;
-    double thetaRb;
-    int cmdId; // Each player increments cmdId when publishing; used to indicate message order.
-    int cmd; // Encoded command: hundreds digit=1 means self requests ball control; tens digit=1 means goalkeeper requests substitution, units digit stores substitute playerId. e.g. 100 = self requests ball control; 011 = goalkeeper goes out and requests player 1 to substitute.
+    double ballDistance; // Distance from the sender robot to the ball
+    Point ballPosToField; // Ball position in global / field coordinates
 };
 
 struct TeamDiscoveryMsg
