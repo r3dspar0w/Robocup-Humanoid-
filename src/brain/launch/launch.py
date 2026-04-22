@@ -60,7 +60,6 @@ def handle_configuration(context, *args, **kwargs):
     if sim in ['true', 'True', '1']:
         config['use_sim_time'] = True
 
-
     disableCom = context.perform_substitution(LaunchConfiguration('disable_com'))
     if disableCom in ['true', 'True', '1']:
         config['enable_com'] = False

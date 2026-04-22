@@ -12,23 +12,9 @@ void RobotClient::init(string robot_name)
     string suffix = robot_name.empty() ? "" : ("/" + robot_name);
     publisher = brain->create_publisher<booster_msgs::msg::RpcReqMsg>("LocoApiTopic" + suffix + "Req", 10);
     motionControlCmdVelPublisher = brain->create_publisher<geometry_msgs::msg::Twist>("/booster_soccer/rl_motion/cmd_vel", 10);
-    auto motion_control_enable_qos = rclcpp::QoS(1);
-    motion_control_enable_qos.reliable().transient_local();
-    motionControlEnableSubscriber = brain->create_subscription<std_msgs::msg::Bool>(
-        "/booster_soccer/rl_motion/enable",
-        motion_control_enable_qos,
-        [this](const std_msgs::msg::Bool::SharedPtr msg) {
-            motionControlEnabled = msg->data;
-            if (motionControlEnabled) {
-                call(booster_interface::CreateMoveMsg(0.0, 0.0, 0.0));
-            } else if (motionControlCmdVelPublisher) {
-                geometry_msgs::msg::Twist stop;
-                motionControlCmdVelPublisher->publish(stop);
-            }
-            brain->log->log(
-                "RobotClient/motion_control",
-                motionControlEnabled ? "enabled: routing velocity to motion_control_node" : "disabled: routing velocity to old Booster walk");
-        });
+    brain->log->log(
+        "RobotClient/motion_control",
+        "routing all velocity commands to motion_control_node custom policy");
 }
 
 int RobotClient::call(booster_interface::msg::BoosterApiReqMsg msg)
@@ -78,8 +64,10 @@ int RobotClient::RLVisionKick(bool start)
 
 int RobotClient::robocupWalk()
 {
-    std::cout << "RobotClient::robocupWalk CreateChangeModeMsg called" << std::endl;
-    return call(booster_interface::CreateChangeModeMsg(booster::robot::RobotMode::kWalking));
+    std::cout << "RobotClient::robocupWalk returning to custom policy mode" << std::endl;
+    geometry_msgs::msg::Twist stop;
+    motionControlCmdVelPublisher->publish(stop);
+    return call(booster_interface::CreateChangeModeMsg(booster::robot::RobotMode::kCustom));
 }
 
 int RobotClient::enterDamping()
@@ -136,15 +124,12 @@ int RobotClient::setVelocity(double x, double y, double theta, bool applyMinX, b
     if (fabs(_vx) > 1e-3 || fabs(_vy) > 1e-3 || fabs(_vtheta) > 1e-3) _lastNonZeroCmdTime = brain->get_clock()->now();
     brain->log->log("RobotClient/setVelocity_out",
         format("vx: %.2f  vy: %.2f  vtheta: %.2f", x, y, theta));
-    if (motionControlEnabled) {
-        geometry_msgs::msg::Twist cmd;
-        cmd.linear.x = x;
-        cmd.linear.y = y;
-        cmd.angular.z = theta;
-        motionControlCmdVelPublisher->publish(cmd);
-        return 0;
-    }
-    return call(booster_interface::CreateMoveMsg(x, y, theta));
+    geometry_msgs::msg::Twist cmd;
+    cmd.linear.x = x;
+    cmd.linear.y = y;
+    cmd.angular.z = theta;
+    motionControlCmdVelPublisher->publish(cmd);
+    return 0;
 }
 
 int RobotClient::crabWalk(double angle, double speed) {

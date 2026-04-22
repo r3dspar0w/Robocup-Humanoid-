@@ -8,18 +8,20 @@ SDK from wherever it is installed on that machine.
 
 - `motion_control_node`: a ROS 2 node that owns the project-local RL walking command
   topics and publishes Booster `LowCmd` through `sdk_release`.
-- `models/walk/T1.onnx` 
+- `models/walk/walk.onnx`
 
-The node starts disabled and currently holds a safe stand pose. The next step is
-to connect the ONNX observation/action mapping, because the T1 model expects its
-exact 51-input observation vector and 14-output action vector.
+The node subscribes to Booster `rt/low_state`, builds the policy observation,
+runs `walk.onnx`, and publishes Booster `LowCmd`.
+The bundled walk model is checked as a 51-input, 14-output ONNX policy.
+This matches B-Human's `Config/Robots/Default/T1/rlWalkingEngine.cfg` contract
+for `BoosterWalk/T1.onnx`: 13 controlled joints plus one frequency output.
 
 ## SDK path
 
 Do not copy `sdk_release` into this package. Point CMake at the existing SDK:
 
 ```bash
-export BOOSTER_SDK_ROOT=/path/on/this/machine/to/sdk_release/sdk_release
+export BOOSTER_SDK_ROOT=/path/on/this/machine/to/sdk_release
 ```
 
 On your personal computer that might be a local development path. On the robot it
@@ -31,7 +33,7 @@ From `Robocup_demo_zyfy`:
 
 ```bash
 source /opt/ros/humble/setup.bash
-export BOOSTER_SDK_ROOT=/path/to/sdk_release/sdk_release
+export BOOSTER_SDK_ROOT=/path/to/sdk_release
 colcon build --symlink-install --base-paths src --packages-select brain motion_control
 ```
 
@@ -42,8 +44,10 @@ source install/setup.bash
 ros2 launch motion_control motion_control.launch.py network_interface:=<robot_network_interface>
 ```
 
-When using the normal game start script, `motion_control_node` is launched and
-enabled automatically before `brain` starts:
+When using the normal game start script, `motion_control_node` is launched before
+`brain` starts. The brain always routes walking commands to the custom policy
+topic `/booster_soccer/rl_motion/cmd_vel`; there is no fallback velocity route
+through the old Booster walking API.
 
 ```bash
 MOTION_CONTROL_NETWORK_INTERFACE=<robot_network_interface> ./scripts/start.sh
@@ -61,22 +65,9 @@ A plain-text startup timeline is also written to:
 motion_control_events.txt
 ```
 
-Set `MOTION_CONTROL_AUTO_CHANGE_MODE=true` only when you want startup to request
-`RobotMode::kCustom` through `B1LocoClient`.
-
-The node will not publish low-level commands until enabled. This also tells the
-brain to route velocity commands to `motion_control_node` instead of the old
-Booster walking API:
-
-```bash
-./scripts/enable_motion_control.sh
-```
-
-Disable it again with:
-
-```bash
-./scripts/disable_motion_control.sh
-```
+Startup requests `RobotMode::kCustom` through `B1LocoClient` by default so the
+custom policy owns walking. Set `MOTION_CONTROL_AUTO_CHANGE_MODE=false` only for
+debug sessions where you do not want the launch script to change robot mode.
 
 Velocity command topic:
 
@@ -84,5 +75,34 @@ Velocity command topic:
 ros2 topic pub /booster_soccer/rl_motion/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}"
 ```
 
-Use `auto_change_mode:=true` only when you are ready for the node to request
-`RobotMode::kCustom` through `B1LocoClient`.
+Use `auto_change_mode:=false` only when you want to launch the node without
+requesting `RobotMode::kCustom`.
+
+## Policy mapping
+
+Default observation layout:
+
+```text
+projected_gravity(3), gyro(3), cmd_vel(x,y,yaw), walk_cycle(cos,sin),
+joint_pos_error(13), joint_vel*0.1(13), previous_requested_offset(13), raw_frequency(1)
+```
+
+The 14 policy outputs are interpreted as 13 joint target offsets and one learned
+frequency value. The default 13 controlled joints are B-Human's T1
+`useWaist = true` order: waist yaw, left leg, right leg.
+
+```text
+10,11,12,13,14,15,16,17,18,19,20,21,22
+```
+
+If your training used a different joint order, launch with:
+
+```bash
+ros2 launch motion_control motion_control.launch.py controlled_joint_indices:="..."
+```
+
+For first hardware tests, reduce output size with:
+
+```bash
+ros2 launch motion_control motion_control.launch.py action_scale:=0.05 start_enabled:=false
+```
