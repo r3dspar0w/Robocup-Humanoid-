@@ -35,7 +35,7 @@ camera:
   yaw_compensation: 0
   z_compensation: 0
 detection_model:
-  model_path: /home/booster/Workspace/Robocup-Humanoid-/src/vision/model/best_orin_10.3.engine
+  model_path: /home/booster/Workspace/robocup_demo/src/vision/model/best_orin_10.3.engine
   confidence_threshold: 0.2
   nms_threshold: 0.4
   classnames: [Ball, Goalpost, Person, LCross, TCross, XCross, PenaltyPoint, Opponent, BRMarker]
@@ -52,12 +52,12 @@ detection_model:
       Opponent: 0.5
       BRMarker: 0.2
 segmentation_model:
-  model_path: /home/booster/Workspace/Robocup-Humanoid-/src/vision/model/best_seg_orin_10.3.engine
+  model_path: /home/booster/Workspace/robocup_demo/src/vision/model/best_seg_orin_10.3.engine
   confidence_threshold: 0.3
   nms_threshold: 0.9
 use_depth: true
 ball_pose_estimator:
-  use_depth: ture
+  use_depth: true
   radius: 0.109
   down_sample_leaf_size: 0.01
   cluster_distance_threshold: 0.01
