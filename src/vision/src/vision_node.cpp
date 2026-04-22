@@ -295,7 +295,7 @@ void VisionNode::Init(const std::string &cfg_template_path, const std::string &c
     }
 
     detection_pub_ = this->create_publisher<vision_interface::msg::Detections>("/booster_soccer/detection" + topic_suffix, rclcpp::QoS(1));
-    detection_img_pub_ = this->create_publisher<sensor_msgs::msg::Image>("/booster_soccer/debug_image" + topic_suffix, rclcpp::QoS(1));
+    detection_img_pub_ = it_->advertise("/booster_soccer/debug_image" + topic_suffix, 1);
 
     if (node["segmentation_model"]) {
         std::cout << "create sub for segmentor" << std::endl;
@@ -596,7 +596,7 @@ void VisionNode::ProcessData(SyncedDataBlock &synced_data, vision_interface::msg
         cv::Mat overlay = DrawDebugOverlay(color, depth_float, detections_for_display, detection_msg);
 
         // Publish to ROS topic (convert BGR cv::Mat -> sensor_msgs::msg::Image)
-        if (detection_img_pub_) {
+        if (!detection_img_pub_.getTopic().empty()) {
             sensor_msgs::msg::Image img_msg;
             img_msg.header = detection_msg.header;
             img_msg.height = overlay.rows;
@@ -605,7 +605,7 @@ void VisionNode::ProcessData(SyncedDataBlock &synced_data, vision_interface::msg
             img_msg.is_bigendian = false;
             img_msg.step = static_cast<uint32_t>(overlay.step);
             img_msg.data.assign(overlay.datastart, overlay.dataend);
-            detection_img_pub_->publish(img_msg);
+            detection_img_pub_.publish(img_msg);
         }
 
         // cv::imshow omitted — robot runs headless (no GTK display).

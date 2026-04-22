@@ -94,8 +94,8 @@ private:
     rclcpp::Publisher<vision_interface::msg::LineSegments>::SharedPtr field_line_pub_;
     rclcpp::Publisher<vision_interface::msg::Ball>::SharedPtr ball_pub_;
 
-    rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr detection_img_pub_;
-    rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr segmentation_img_pub_;
+    image_transport::Publisher detection_img_pub_;
+    image_transport::Publisher segmentation_img_pub_;
 
     rclcpp::Publisher<geometry_msgs::msg::TransformStamped>::SharedPtr pose_tf_pub_;
     rclcpp::Subscription<geometry_msgs::msg::TransformStamped>::SharedPtr pose_tf_sub_;
