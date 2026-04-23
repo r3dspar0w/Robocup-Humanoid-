@@ -48,6 +48,10 @@ public:
 	
 	void calcFieldMarkers(FieldDimensions fd);
 
+    bool isConverged();
+    
+    // Get particle filter hypotheses for visualization
+    const Eigen::ArrayXXd& getParticles() const { return hypos; }
 
 	LocateResult locateRobot(vector<FieldMarker> markers_r, PoseBox2D constraints, int numParticles = 200, double offsetX = 2.0, double offsetY = 2.0, double offsetTheta = M_PI / 4);
 

@@ -324,11 +324,13 @@ void Brain::tick()
     // Publish visualization markers
     publishVisualizationMarkers();
     
-    // Publish odom to map TF transform
-    publishOdomToMapTF();
+    // Publish map to base_link TF transform
+    publishMapToBaseLinkTF();
     
     // Publish position information
     publishRobotPose();
+    visualizer->publishRobotPoseStamped(data->robotPoseToField.x, data->robotPoseToField.y, data->robotPoseToField.theta, "map");
+    visualizer->publishParticles(locator->getParticles(), "map");
     publishBallPosition();
     publishTeammatesPoses();
     
@@ -2445,63 +2447,64 @@ void Brain::publishVisualizationMarkers()
 {
     visualization_msgs::msg::MarkerArray marker_array;
     visualization_msgs::msg::MarkerArray localization_marker_array;
+    visualization_msgs::msg::MarkerArray field_map_array;
 
     // 1. Publish field map (fixed)
     auto &fd = config->fieldDimensions;
     
     // Center line
-    marker_array.markers.push_back(
-        visualizer->createFieldCenterLineMarker(fd.width, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createFieldCenterLineMarker(fd.width, "map"));
+    auto center_line = visualizer->createFieldCenterLineMarker(fd.width, "map");
+    marker_array.markers.push_back(center_line);
+    localization_marker_array.markers.push_back(center_line);
+    field_map_array.markers.push_back(center_line);
     
     // Center circle
-    marker_array.markers.push_back(
-        visualizer->createFieldCenterCircleMarker(fd.circleRadius, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createFieldCenterCircleMarker(fd.circleRadius, "map"));
+    auto center_circle = visualizer->createFieldCenterCircleMarker(fd.circleRadius, "map");
+    marker_array.markers.push_back(center_circle);
+    localization_marker_array.markers.push_back(center_circle);
+    field_map_array.markers.push_back(center_circle);
     
     // Field boundary
-    marker_array.markers.push_back(
-        visualizer->createFieldBoundaryMarker(fd.length, fd.width, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createFieldBoundaryMarker(fd.length, fd.width, "map"));
+    auto field_boundary = visualizer->createFieldBoundaryMarker(fd.length, fd.width, "map");
+    marker_array.markers.push_back(field_boundary);
+    localization_marker_array.markers.push_back(field_boundary);
+    field_map_array.markers.push_back(field_boundary);
     
     // Our goal area
-    marker_array.markers.push_back(
-        visualizer->createGoalAreaMarker(true, fd.length, fd.goalAreaLength, fd.goalAreaWidth, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createGoalAreaMarker(true, fd.length, fd.goalAreaLength, fd.goalAreaWidth, "map"));
+    auto our_goal_area = visualizer->createGoalAreaMarker(true, fd.length, fd.goalAreaLength, fd.goalAreaWidth, "map");
+    marker_array.markers.push_back(our_goal_area);
+    localization_marker_array.markers.push_back(our_goal_area);
+    field_map_array.markers.push_back(our_goal_area);
     
     // Opponent's goal area
-    marker_array.markers.push_back(
-        visualizer->createGoalAreaMarker(false, fd.length, fd.goalAreaLength, fd.goalAreaWidth, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createGoalAreaMarker(false, fd.length, fd.goalAreaLength, fd.goalAreaWidth, "map"));
+    auto opp_goal_area = visualizer->createGoalAreaMarker(false, fd.length, fd.goalAreaLength, fd.goalAreaWidth, "map");
+    marker_array.markers.push_back(opp_goal_area);
+    localization_marker_array.markers.push_back(opp_goal_area);
+    field_map_array.markers.push_back(opp_goal_area);
     
     // Our penalty area (large penalty area)
-    marker_array.markers.push_back(
-        visualizer->createPenaltyAreaMarker(true, fd.length, fd.penaltyAreaLength, fd.penaltyAreaWidth, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createPenaltyAreaMarker(true, fd.length, fd.penaltyAreaLength, fd.penaltyAreaWidth, "map"));
+    auto our_penalty_area = visualizer->createPenaltyAreaMarker(true, fd.length, fd.penaltyAreaLength, fd.penaltyAreaWidth, "map");
+    marker_array.markers.push_back(our_penalty_area);
+    localization_marker_array.markers.push_back(our_penalty_area);
+    field_map_array.markers.push_back(our_penalty_area);
     
     // Opponent's penalty area (large penalty area)
-    marker_array.markers.push_back(
-        visualizer->createPenaltyAreaMarker(false, fd.length, fd.penaltyAreaLength, fd.penaltyAreaWidth, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createPenaltyAreaMarker(false, fd.length, fd.penaltyAreaLength, fd.penaltyAreaWidth, "map"));
+    auto opp_penalty_area = visualizer->createPenaltyAreaMarker(false, fd.length, fd.penaltyAreaLength, fd.penaltyAreaWidth, "map");
+    marker_array.markers.push_back(opp_penalty_area);
+    localization_marker_array.markers.push_back(opp_penalty_area);
+    field_map_array.markers.push_back(opp_penalty_area);
     
     // Our penalty point
-    marker_array.markers.push_back(
-        visualizer->createPenaltyPointMarker(true, fd.length, fd.penaltyDist, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createPenaltyPointMarker(true, fd.length, fd.penaltyDist, "map"));
+    auto our_penalty_point = visualizer->createPenaltyPointMarker(true, fd.length, fd.penaltyDist, "map");
+    marker_array.markers.push_back(our_penalty_point);
+    localization_marker_array.markers.push_back(our_penalty_point);
+    field_map_array.markers.push_back(our_penalty_point);
     
     // Opponent's penalty point
-    marker_array.markers.push_back(
-        visualizer->createPenaltyPointMarker(false, fd.length, fd.penaltyDist, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createPenaltyPointMarker(false, fd.length, fd.penaltyDist, "map"));
+    auto opp_penalty_point = visualizer->createPenaltyPointMarker(false, fd.length, fd.penaltyDist, "map");
+    marker_array.markers.push_back(opp_penalty_point);
+    localization_marker_array.markers.push_back(opp_penalty_point);
+    field_map_array.markers.push_back(opp_penalty_point);
 
     // 2. Publish robot position - with orientation arrow
     auto robot_marker = visualizer->createRobotMarker(
@@ -2597,9 +2600,10 @@ void Brain::publishVisualizationMarkers()
 
     visualizer->publishMarkers(marker_array);
     visualizer->publishLocalizationMarkers(localization_marker_array);
+    visualizer->publishFieldMap(field_map_array);
 }
 
-void Brain::publishOdomToMapTF()
+void Brain::publishMapToBaseLinkTF()
 {
     // Create transform message
     geometry_msgs::msg::TransformStamped transformStamped;
@@ -2607,7 +2611,8 @@ void Brain::publishOdomToMapTF()
     // Set timestamp
     transformStamped.header.stamp = this->now();
     transformStamped.header.frame_id = "map";
-    transformStamped.child_frame_id = "odom";
+    transformStamped.child_frame_id = "base_link";
+
     
     // Set translation (robot position in the field coordinate system)
     transformStamped.transform.translation.x = data->robotPoseToField.x;

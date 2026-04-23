@@ -11,4 +11,6 @@ build_ros2
 dist
 .DS_Store
 Memory.md
-image
+/image/
+Migrate Rerun Localization Visualization to ROS 2 + Foxglove.md
+/Reference_Files_oldversion/

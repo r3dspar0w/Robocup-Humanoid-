@@ -9,6 +9,7 @@
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <nav_msgs/msg/occupancy_grid.hpp>
 #include <cmath>
+#include <Eigen/Dense>
 #include <vector>
 
 class VisualizationPublisher
@@ -250,6 +251,21 @@ public:
      */
     static std_msgs::msg::ColorRGBA getColor(float r, float g, float b, float a = 1.0f);
 
+    /**
+     * @brief Publish the complete static field map
+     */
+    void publishFieldMap(const visualization_msgs::msg::MarkerArray& map_markers);
+
+    /**
+     * @brief Publish particle filter hypotheses
+     */
+    void publishParticles(const Eigen::ArrayXXd& hypos, const std::string& frame_id = "map");
+
+    /**
+     * @brief Publish robot pose with PoseStamped
+     */
+    void publishRobotPoseStamped(double x, double y, double theta, const std::string& frame_id = "map");
+
 private:
     rclcpp::Node *node_;
     rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr marker_publisher_;
@@ -257,6 +273,11 @@ private:
     rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr point_cloud_publisher_;
     rclcpp::Publisher<nav_msgs::msg::OccupancyGrid>::SharedPtr obstacle_grid_publisher_;
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pubPlayerDecision_;
+
+    // New publishers for Rerun migration
+    rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr field_map_publisher_;
+    rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr particles_publisher_;
+    rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr robot_pose_publisher_;
 
 
     // Fixed marker IDs - robot itself
