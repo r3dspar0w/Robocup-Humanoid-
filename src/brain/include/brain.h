@@ -142,9 +142,9 @@ public:
     void publishVisualizationMarkers();
 
     /**
-     * @brief Publish odom to map TF transform
+     * @brief Publish map to base_link TF transform
      */
-    void publishOdomToMapTF();
+    void publishMapToBaseLinkTF();
 
     /**
      * @brief Publish field dimensions as static messages

@@ -13,12 +13,21 @@ VisualizationPublisher::VisualizationPublisher(rclcpp::Node *node)
 {
     marker_publisher_ = node_->create_publisher<visualization_msgs::msg::MarkerArray>(
         "/booster_soccer/visualization_markers", 10);
+    localization_marker_publisher_ = node_->create_publisher<visualization_msgs::msg::MarkerArray>(
+        "/booster_soccer/localization_markers", 10);
     point_cloud_publisher_ = node_->create_publisher<sensor_msgs::msg::PointCloud2>(
         "/booster_soccer/visualization_point_cloud", 10);
     obstacle_grid_publisher_ = node_->create_publisher<nav_msgs::msg::OccupancyGrid>(
         "/booster_soccer/visualization_obstacle_grid", 10);
     pubPlayerDecision_ = node_->create_publisher<std_msgs::msg::String>(
         "/booster_soccer/player_decision", 10);
+
+    field_map_publisher_ = node_->create_publisher<visualization_msgs::msg::MarkerArray>(
+        "/booster_soccer/localization/field_map", rclcpp::QoS(1).transient_local());
+    particles_publisher_ = node_->create_publisher<sensor_msgs::msg::PointCloud2>(
+        "/booster_soccer/localization/particles", 10);
+    robot_pose_publisher_ = node_->create_publisher<geometry_msgs::msg::PoseStamped>(
+        "/booster_soccer/localization/robot_pose", 10);
 }
 
 visualization_msgs::msg::Marker VisualizationPublisher::createRobotMarker(
@@ -134,12 +143,68 @@ void VisualizationPublisher::publishMarkers(const visualization_msgs::msg::Marke
     marker_publisher_->publish(markers);
 }
 
+void VisualizationPublisher::publishLocalizationMarkers(const visualization_msgs::msg::MarkerArray &markers)
+{
+    localization_marker_publisher_->publish(markers);
+}
+
 void VisualizationPublisher::publishPlayerDecision(const std::string &message)
 {
     std_msgs::msg::String msg;
     msg.data = message;
     pubPlayerDecision_->publish(msg);
 }
+
+void VisualizationPublisher::publishFieldMap(const visualization_msgs::msg::MarkerArray& map_markers)
+{
+    field_map_publisher_->publish(map_markers);
+}
+
+void VisualizationPublisher::publishParticles(const Eigen::ArrayXXd& hypos, const std::string& frame_id)
+{
+    if (hypos.rows() == 0) return;
+
+    sensor_msgs::msg::PointCloud2 cloud_msg;
+    cloud_msg.header.frame_id = frame_id;
+    cloud_msg.header.stamp = node_->now();
+
+    cloud_msg.height = 1;
+    cloud_msg.width = hypos.rows();
+
+    sensor_msgs::PointCloud2Modifier modifier(cloud_msg);
+    modifier.setPointCloud2FieldsByString(1, "xyz");
+    modifier.resize(cloud_msg.width);
+
+    sensor_msgs::PointCloud2Iterator<float> iter_x(cloud_msg, "x");
+    sensor_msgs::PointCloud2Iterator<float> iter_y(cloud_msg, "y");
+    sensor_msgs::PointCloud2Iterator<float> iter_z(cloud_msg, "z");
+
+    for (int i = 0; i < hypos.rows(); ++i, ++iter_x, ++iter_y, ++iter_z) {
+        *iter_x = hypos(i, 0);
+        *iter_y = hypos(i, 1);
+        *iter_z = 0.05; // Slightly above ground
+    }
+
+    particles_publisher_->publish(cloud_msg);
+}
+
+void VisualizationPublisher::publishRobotPoseStamped(double x, double y, double theta, const std::string& frame_id)
+{
+    geometry_msgs::msg::PoseStamped pose_msg;
+    pose_msg.header.frame_id = frame_id;
+    pose_msg.header.stamp = node_->now();
+
+    pose_msg.pose.position.x = x;
+    pose_msg.pose.position.y = y;
+    pose_msg.pose.position.z = 0.0;
+
+    tf2::Quaternion q;
+    q.setRPY(0, 0, theta);
+    pose_msg.pose.orientation = tf2::toMsg(q);
+
+    robot_pose_publisher_->publish(pose_msg);
+}
+
 
 std_msgs::msg::ColorRGBA VisualizationPublisher::getColor(float r, float g, float b, float a)
 {
@@ -789,3 +854,51 @@ visualization_msgs::msg::Marker VisualizationPublisher::createDecisionInfoMarker
     return marker;
 }
 
+visualization_msgs::msg::Marker VisualizationPublisher::createLocalizationStatusMarker(
+    double x,
+    double y,
+    bool is_calibrated,
+    bool last_locate_success,
+    double confidence,
+    double residual,
+    int marker_count,
+    const std::string &frame_id)
+{
+    visualization_msgs::msg::Marker marker;
+    marker.header.frame_id = frame_id;
+    marker.header.stamp = node_->now();
+    marker.ns = "localization_status";
+    marker.id = LOCALIZATION_STATUS_ID;
+    marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
+    marker.action = visualization_msgs::msg::Marker::ADD;
+
+    marker.pose.position.x = x;
+    marker.pose.position.y = y;
+    marker.pose.position.z = 0.8;
+    marker.pose.orientation.w = 1.0;
+    marker.scale.z = 0.22;
+
+    float r = 1.0f, g = 0.2f, b = 0.2f;
+    if (is_calibrated && confidence >= 75.0) {
+        r = 0.1f; g = 1.0f; b = 0.1f;
+    } else if (is_calibrated && confidence >= 40.0) {
+        r = 1.0f; g = 0.9f; b = 0.1f;
+    } else if (is_calibrated || last_locate_success) {
+        r = 1.0f; g = 0.55f; b = 0.1f;
+    }
+    marker.color = getColor(r, g, b);
+
+    std::stringstream ss;
+    ss << (is_calibrated ? "Loc OK" : "Loc LOST");
+    if (last_locate_success || std::isfinite(residual)) {
+        ss << "\nConf: " << std::fixed << std::setprecision(0) << confidence << "%";
+    }
+    if (std::isfinite(residual)) {
+        ss << "\nResidual: " << std::fixed << std::setprecision(2) << residual;
+    }
+    ss << "\nMarkers: " << marker_count;
+    marker.text = ss.str();
+    marker.lifetime = rclcpp::Duration::from_seconds(0);
+
+    return marker;
+}

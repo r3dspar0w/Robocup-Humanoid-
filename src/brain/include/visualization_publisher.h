@@ -4,11 +4,13 @@
 #include <visualization_msgs/msg/marker.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
 #include <geometry_msgs/msg/point.hpp>
+#include <geometry_msgs/msg/pose_stamped.hpp>
 #include <std_msgs/msg/color_rgba.hpp>
 #include <std_msgs/msg/string.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <nav_msgs/msg/occupancy_grid.hpp>
 #include <cmath>
+#include <Eigen/Dense>
 #include <vector>
 
 class VisualizationPublisher
@@ -143,6 +145,12 @@ public:
     void publishMarkers(const visualization_msgs::msg::MarkerArray &markers);
 
     /**
+     * @brief Publish localization-only markers for a clean field-map panel.
+     * @param markers Marker array
+     */
+    void publishLocalizationMarkers(const visualization_msgs::msg::MarkerArray &markers);
+
+    /**
      * @brief Create GameController info marker (displays match state, score, etc.)
      * @param my_score Our score
      * @param oppo_score Opponent score
@@ -190,6 +198,27 @@ public:
         const std::string &frame_id = "map");
 
     /**
+     * @brief Create localization status marker near the robot.
+     * @param x Robot x coordinate
+     * @param y Robot y coordinate
+     * @param is_calibrated Whether localization is currently trusted
+     * @param last_locate_success Whether the last localization attempt succeeded
+     * @param confidence Confidence in percentage [0, 100]
+     * @param residual Residual from the last localization attempt
+     * @param marker_count Number of field markers used in the last attempt
+     * @param frame_id Frame id
+     */
+    visualization_msgs::msg::Marker createLocalizationStatusMarker(
+        double x,
+        double y,
+        bool is_calibrated,
+        bool last_locate_success,
+        double confidence,
+        double residual,
+        int marker_count,
+        const std::string &frame_id = "map");
+
+    /**
      * @brief Publish point cloud data
      * @param points Point cloud data (x, y, z)
      * @param frame_id Frame id
@@ -223,12 +252,33 @@ public:
      */
     static std_msgs::msg::ColorRGBA getColor(float r, float g, float b, float a = 1.0f);
 
+    /**
+     * @brief Publish the complete static field map
+     */
+    void publishFieldMap(const visualization_msgs::msg::MarkerArray& map_markers);
+
+    /**
+     * @brief Publish particle filter hypotheses
+     */
+    void publishParticles(const Eigen::ArrayXXd& hypos, const std::string& frame_id = "map");
+
+    /**
+     * @brief Publish robot pose with PoseStamped
+     */
+    void publishRobotPoseStamped(double x, double y, double theta, const std::string& frame_id = "map");
+
 private:
     rclcpp::Node *node_;
     rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr marker_publisher_;
+    rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr localization_marker_publisher_;
     rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr point_cloud_publisher_;
     rclcpp::Publisher<nav_msgs::msg::OccupancyGrid>::SharedPtr obstacle_grid_publisher_;
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pubPlayerDecision_;
+
+    // New publishers for Rerun migration
+    rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr field_map_publisher_;
+    rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr particles_publisher_;
+    rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr robot_pose_publisher_;
 
 
     // Fixed marker IDs - robot itself
@@ -237,6 +287,7 @@ private:
     static constexpr uint32_t GAME_CONTROLLER_STATE_ID = 2;
     static constexpr uint32_t GAME_CONTROLLER_INFO_ID = 3;
     static constexpr uint32_t DECISION_INFO_ID = 4;
+    static constexpr uint32_t LOCALIZATION_STATUS_ID = 5;
 
     // Field map marker IDs (fixed)
     static constexpr uint32_t FIELD_CENTER_LINE_ID = 100;
