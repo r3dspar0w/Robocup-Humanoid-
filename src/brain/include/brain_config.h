@@ -34,6 +34,7 @@ public:
     string get_field_type();   
     int get_num_of_players();
     bool get_treat_person_as_robot();
+    bool get_start_on_opponent_side();
     string get_game_control_ip();
 
     string get_robot_name();
