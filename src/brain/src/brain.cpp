@@ -1121,10 +1121,6 @@ void Brain::gameControlCallback(const game_controller_interface::msg::GameContro
             static_cast<int>(msg.secondary_state),
             static_cast<int>(msg.kick_off_team)));
 
-    if (communication && !msg.source_ip.empty()) {
-        communication->updateGameControllerEndpoint(msg.source_ip, msg.source_port);
-    }
-
     if (get_parameter(GAME_AGENT_MODE_PARAM).as_bool()) {
         prtWarn("Agent mode, ignore game control");
         return;

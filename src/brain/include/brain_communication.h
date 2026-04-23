@@ -14,7 +14,6 @@
 #include <stdexcept>
 
 
-#include "RoboCupGameControlData.h"
 #include "team_communication_msg.h"
 #include "utils/print.h"
 
@@ -32,24 +31,9 @@ public:
     
     void initCommunication();
     bool isTeamChanged();
-    void updateGameControllerEndpoint(const std::string &ip, uint16_t source_port = GAMECONTROLLER_DATA_PORT);
 
 private:
     Brain *brain;
-
-    void initGameControllerUnicast();
-    std::thread _gamecontrol_unicast_thread;
-    void unicastToGameController();
-    void clearupGameControllerUnicast();
-    std::atomic<bool> _unicast_gamecontrol_flag = false;
-    int _gc_send_socket = -1;
-    sockaddr_in _gcsaddr{};
-    std::mutex _gcsaddr_mutex;
-    std::string _game_controller_target_ip;
-    uint16_t _game_controller_target_port = GAMECONTROLLER_RETURN_PORT;
-    int _game_controller_send_count = 0;
-    HlRoboCupGameControlReturnData gc_return_data;
-    static constexpr int BROADCAST_GAME_CONTROL_INTERVAL_MS = 1000;
 
     const char* MULTICAST_ADDR = "239.255.255.250"; // multicast address
     int _discovery_msg_id = 0;
