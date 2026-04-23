@@ -58,7 +58,12 @@
                            - Kick
                            - Cross
                         -->
-                        <StrikerDecide decision_out="{decision}" decision_in="{decision}" chase_threshold="1.0" />
+                        <StrikerDecide decision_out="{decision}" decision_in="{decision}" chase_threshold="1.0"
+                                       straight_kick_yaw_tolerance="0.12"
+                                       straight_kick_y_tolerance="0.10"
+                                       straight_kick_goal_tolerance="0.18"
+                                       straight_kick_obstacle_dist="2.0"
+                                       straight_kick_max_range="1.2" />
                         <!-- Start Searching for ball -->
                         <SubTree ID="FindBall" _while="decision=='find'" _autoremap="true" />
                      </ReactiveSequence>
@@ -117,7 +122,13 @@
                               min_msec_kick -> Duration to kick by
                               msecs_stablize -> Balance Before Kick
                         -->
-                        <Kick _while="decision == 'kick'" speed_limit="0.8" min_msec_kick="1000" msecs_stablize="1000"/>
+                        <Kick _while="decision == 'kick'" speed_limit="0.8" min_msec_kick="1000" msecs_stablize="1000"
+                              prefer_straight="true"
+                              straight_yaw_tolerance="0.12"
+                              straight_y_tolerance="0.10"
+                              straight_goal_tolerance="0.18"
+                              straight_obstacle_dist="2.0"
+                              straight_speed_limit="1.0"/>
 
                         <!-- CROSS - Pass Instead of Shoot -->
                         <Kick _while="decision == 'cross'" speed_limit="0.4" min_msec_kick="300"/>
