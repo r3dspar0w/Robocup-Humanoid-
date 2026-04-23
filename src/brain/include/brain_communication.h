@@ -3,18 +3,16 @@
 #include <string>
 #include <atomic>
 #include <cstdint>
-#include <map>
 #include <mutex>
 #include <thread>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <sys/un.h>
 #include <unistd.h>
 #include <stdexcept>
 
 
-#include "team_communication_msg.h"
+#include "RoboCupGameControlData.h"
 #include "utils/print.h"
 
 
@@ -31,60 +29,21 @@ public:
     
     void initCommunication();
     bool isTeamChanged();
+    void updateGameControllerEndpoint(const std::string &ip, uint16_t source_port = GAMECONTROLLER_DATA_PORT);
 
 private:
     Brain *brain;
 
-    const char* MULTICAST_ADDR = "239.255.255.250"; // multicast address
-    int _discovery_msg_id = 0;
-
-    void initDiscoveryBroadcast();
-    void clearupDiscoveryBroadcast();
-    void broadcastDiscovery();
-    std::thread _discovery_broadcast_thread;
-    std::atomic<bool> _broadcast_discovery_flag{false};
-    int _discovery_send_socket = -1;
-    int _discovery_udp_port = 0;
-    sockaddr_in _saddr;
-    static constexpr int BROADCAST_DISCOVERY_INTERVAL_MS = 1000;
-
-
-    void initDiscoveryReceiver();
-    void clearupDiscoveryReceiver();
-    void spinDiscoveryReceiver();
-    std::atomic<bool> _receive_discovery_flag = false;
-    std::thread _discovery_recv_thread;
-    int _discovery_recv_socket = -1;
-
-
-    struct TeammateInfo {
-        uint32_t ip;
-        int playerId;
-        rclcpp::Time lastUpdate;
-    };
-    std::map<uint32_t, TeammateInfo> _teammate_addresses; // playerId -> TeammateInfo
-    std::mutex _teammate_addresses_mutex;
-    static constexpr int TEAMMATE_TIMEOUT_MS = 20 * 1000; // 20s timeout
-    
-    void cleanupExpiredTeammates();
-
-    void initCommunicationUnicast();
-    void clearupCommunicationUnicast();
-    void unicastCommunication();
-    int _team_communication_msg_id = 0;
-    std::atomic<bool> _unicast_communication_flag = false;
-    std::thread _unicast_thread;
-    int _unicast_socket = -1;
-    int _unicast_udp_port = 0;
-    sockaddr_in _unicast_saddr;
-    static constexpr int UNICAST_INTERVAL_MS = 100;
-
-
-    void initCommunicationReceiver();
-    void clearupCommunicationReceiver();
-    void spinCommunicationReceiver();
-    std::atomic<bool> _receive_communication_flag = false;
-    std::thread _communication_recv_thread;
-    int _communication_recv_socket = -1;
-    int _communication_recv_port = 0;
+    void initGameControllerReturn();
+    void clearupGameControllerReturn();
+    void unicastGameControllerReturn();
+    std::thread _game_controller_return_thread;
+    std::atomic<bool> _game_controller_return_flag = false;
+    int _game_controller_return_socket = -1;
+    sockaddr_in _game_controller_return_addr{};
+    std::mutex _game_controller_return_mutex;
+    std::string _game_controller_target_ip;
+    uint16_t _game_controller_target_port = GAMECONTROLLER_RETURN_PORT;
+    int _team_id_at_init = -1;
+    static constexpr int GAME_CONTROLLER_RETURN_INTERVAL_MS = 1000;
 };

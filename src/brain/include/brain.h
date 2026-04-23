@@ -32,7 +32,6 @@
 #include "booster_interface/msg/remote_controller_state.hpp"
 
 #include "RoboCupGameControlData.h"
-#include "team_communication_msg.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -76,7 +75,7 @@ public:
     std::shared_ptr<VisualizationPublisher> visualizer;
     // BrainTree object, contains BehaviorTree related operations
     std::shared_ptr<BrainTree> tree;
-    // Communication object, contains communication related operations, mainly for dual-machine communication and referee communication
+    // Communication object for GameController return-data packets.
     std::shared_ptr<BrainCommunication> communication;
 
     // Constructor: create ROS2 node (nodeName handled in implementation)

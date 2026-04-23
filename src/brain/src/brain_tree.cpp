@@ -1718,8 +1718,8 @@ NodeStatus GoBackInField::tick()
 
     double valve;
     getInput("valve", valve);
-    double vx = 0; 
-    double vy = 0; 
+    double vx = 0;
+    double vy = 0;
     double dir = 0;
     auto fd = brain->config->fieldDimensions;
     if (brain->data->robotPoseToField.x > fd.length / 2.0 - valve) dir = - M_PI;
