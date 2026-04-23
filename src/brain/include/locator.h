@@ -70,8 +70,6 @@ public:
 
 	double residual(vector<FieldMarker> markers_r, Pose2D pose);
 
-	bool isConverged();
-
 	int calcProbs(vector<FieldMarker> markers_r);
 
 	Pose2D finalAdjust(vector<FieldMarker> markers_r, Pose2D pose);
