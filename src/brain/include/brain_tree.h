@@ -86,6 +86,7 @@ public:
             InputPort<double>("straight_kick_yaw_tolerance", 0.12, "Maximum ball yaw error for a straight striker kick"),
             InputPort<double>("straight_kick_y_tolerance", 0.10, "Maximum lateral ball offset for a straight striker kick"),
             InputPort<double>("straight_kick_goal_tolerance", 0.18, "Maximum robot-ball-goal angular error for a straight striker kick"),
+            InputPort<double>("straight_kick_goalpost_margin", 0.3, "Goal post safety margin used by striker straight-kick checks"),
             InputPort<double>("straight_kick_obstacle_dist", 2.0, "Minimum clear forward obstacle distance for a straight striker kick"),
             InputPort<double>("straight_kick_max_range", 1.2, "Maximum ball range for a straight striker kick"),
             InputPort<string>("decision_in", "", "Used to read the previous decision"),
@@ -282,7 +283,16 @@ public:
 
     static PortsList providedPorts()
     {
-        return Chase::providedPorts();
+        PortsList ports = Chase::providedPorts();
+        ports.insert({
+            InputPort<double>("open_vx_limit", 1.2, "Striker-only chase vx limit when no robot is near the ball"),
+            InputPort<double>("open_vtheta_limit", 1.4, "Striker-only chase turn limit when no robot is near the ball"),
+            InputPort<double>("open_robot_near_ball_dist", 1.5, "Robot distance around the ball that disables open-space striker boost"),
+            InputPort<bool>("curve_when_behind", true, "Striker-only curved approach when the ball or chase target is behind"),
+            InputPort<double>("curve_lateral_gain", 0.8, "Striker-only lateral gain for curved behind-ball chase"),
+            InputPort<double>("curve_lateral_bias", 0.12, "Striker-only lateral bias for curved behind-ball chase"),
+        });
+        return ports;
     }
 
     NodeStatus tick() override;
@@ -353,6 +363,7 @@ public:
             InputPort<double>("straight_yaw_tolerance", 0.12, "Maximum ball yaw error for straight kick mode"),
             InputPort<double>("straight_y_tolerance", 0.10, "Maximum lateral ball offset for straight kick mode"),
             InputPort<double>("straight_goal_tolerance", 0.18, "Maximum robot-ball-goal angular error for straight kick mode"),
+            InputPort<double>("straight_goalpost_margin", 0.3, "Goal post safety margin used by straight kick mode"),
             InputPort<double>("straight_obstacle_dist", 2.0, "Minimum clear forward obstacle distance for straight kick mode"),
             InputPort<double>("straight_speed_limit", 1.0, "Forward speed used by straight kick mode"),
         };
@@ -373,7 +384,7 @@ private:
     double _speed; 
     double _minRange; 
     tuple<double, double, double> _calcSpeed();
-    bool _shouldUseStraightKick(double yawTolerance, double yTolerance, double goalTolerance, double obstacleDist);
+    bool _shouldUseStraightKick(double yawTolerance, double yTolerance, double goalTolerance, double goalpostMargin, double obstacleDist);
 };
 
 class RLVisionKick : public StatefulActionNode

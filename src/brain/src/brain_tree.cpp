@@ -16,6 +16,18 @@
 #include"behaviortree_cpp/loggers/groot2_publisher.h"
 
 namespace {
+bool hasRobotNearBall(Brain *brain, double nearBallDist)
+{
+    auto robots = brain->data->getRobots();
+    auto ballPos = brain->data->ball.posToField;
+    for (const auto &robot : robots) {
+        if (norm(robot.posToField.x - ballPos.x, robot.posToField.y - ballPos.y) < nearBallDist) {
+            return true;
+        }
+    }
+    return false;
+}
+
 template <typename ChaseNodeT>
 NodeStatus TickChaseNode(ChaseNodeT &node, Brain *brain, const string &logScope)
 {
@@ -33,6 +45,7 @@ NodeStatus TickChaseNode(ChaseNodeT &node, Brain *brain, const string &logScope)
 
     bool avoidObstacle = brain->config->get_avoid_during_chase();
     double oaSafeDist = brain->config->get_chase_ao_safe_dist();
+    bool isStrikerChase = logScope == "StrikerChase";
 
     if (
         brain->config->get_limit_near_ball_speed()
@@ -50,6 +63,23 @@ NodeStatus TickChaseNode(ChaseNodeT &node, Brain *brain, const string &logScope)
     );
     double theta_rb = brain->data->robotBallAngleToField;
     auto ballPos = brain->data->ball.posToField;
+    bool curveWhenBehind = false;
+    double curveLateralGain = 0.0;
+    double curveLateralBias = 0.0;
+    if (isStrikerChase) {
+        double openVxLimit, openVthetaLimit, openRobotNearBallDist;
+        node.getInput("open_vx_limit", openVxLimit);
+        node.getInput("open_vtheta_limit", openVthetaLimit);
+        node.getInput("open_robot_near_ball_dist", openRobotNearBallDist);
+        node.getInput("curve_when_behind", curveWhenBehind);
+        node.getInput("curve_lateral_gain", curveLateralGain);
+        node.getInput("curve_lateral_bias", curveLateralBias);
+
+        if (!hasRobotNearBall(brain, openRobotNearBallDist)) {
+            vxLimit = max(vxLimit, openVxLimit);
+            vthetaLimit = max(vthetaLimit, openVthetaLimit);
+        }
+    }
 
     double vx, vy, vtheta;
     Pose2D target_f, target_r;
@@ -84,6 +114,18 @@ NodeStatus TickChaseNode(ChaseNodeT &node, Brain *brain, const string &logScope)
         vx = speed * cos(avoidDir);
         vy = speed * sin(avoidDir);
         vtheta = ballYaw;
+    } else if (
+        isStrikerChase
+        && curveWhenBehind
+        && (targetType == "circle_back" || fabs(ballYaw) > M_PI / 2.0 || target_r.x < 0.0)
+    ) {
+        log("curved striker chase");
+        double targetRange = norm(target_r.x, target_r.y);
+        double lateralSign = fabs(target_r.y) > 0.05 ? (target_r.y > 0.0 ? 1.0 : -1.0) : circleBackDir;
+        vx = min(vxLimit, max(0.25, targetRange * 0.65));
+        if (target_r.x < 0.0) vx = min(vx, 0.45);
+        vy = target_r.y * curveLateralGain + lateralSign * curveLateralBias;
+        vtheta = targetDir * 1.4;
     } else {
         vx = min(vxLimit, brain->data->ball.range);
         vy = 0;
@@ -852,11 +894,13 @@ NodeStatus StrikerDecide::tick() {
     double straightYawTolerance;
     double straightYTolerance;
     double straightGoalTolerance;
+    double straightGoalpostMargin;
     double straightObstacleDist;
     double straightMaxRange;
     getInput("straight_kick_yaw_tolerance", straightYawTolerance);
     getInput("straight_kick_y_tolerance", straightYTolerance);
     getInput("straight_kick_goal_tolerance", straightGoalTolerance);
+    getInput("straight_kick_goalpost_margin", straightGoalpostMargin);
     getInput("straight_kick_obstacle_dist", straightObstacleDist);
     getInput("straight_kick_max_range", straightMaxRange);
     string lastDecision, position;
@@ -871,8 +915,7 @@ NodeStatus StrikerDecide::tick() {
     double ballX = ball.posToRobot.x;
     double ballY = ball.posToRobot.y;
     
-    const double goalpostMargin = 0.3; 
-    bool angleGoodForKick = brain->isAngleGood(goalpostMargin, "kick");
+    bool angleGoodForKick = brain->isAngleGood(straightGoalpostMargin, "kick");
 
     bool avoidPushing = brain->config->get_avoid_during_kick();
     double kickAoSafeDist = brain->config->get_kick_ao_safe_dist();
@@ -943,15 +986,15 @@ NodeStatus StrikerDecide::tick() {
         brain->data->tmImInVisualKick = true;
     } else if (!brain->data->tmImLead) {
         newDecision = "assist";
-    } else if (ballRange > chaseRangeThreshold * (lastDecision == "chase" ? 0.9 : 1.0))
-    {
-        newDecision = "chase";
     } else if (canKickOrCross && brain->data->kickType == "cross") {
         newDecision = "cross";
         brain->data->isFreekickKickingOff = false;
     } else if (canKickOrCross && straightShotReady) {
         newDecision = "kick";
         brain->data->isFreekickKickingOff = false; 
+    } else if (ballRange > chaseRangeThreshold * (lastDecision == "chase" ? 0.9 : 1.0))
+    {
+        newDecision = "chase";
     }
     else
     {
@@ -1325,7 +1368,7 @@ tuple<double, double, double> Kick::_calcSpeed() {
     return make_tuple(vx, vy, msecKick);
 }
 
-bool Kick::_shouldUseStraightKick(double yawTolerance, double yTolerance, double goalTolerance, double obstacleDist)
+bool Kick::_shouldUseStraightKick(double yawTolerance, double yTolerance, double goalTolerance, double goalpostMargin, double obstacleDist)
 {
     string role = brain->tree->getEntry<string>("player_role");
     if (role != "striker" || brain->data->kickType == "cross" || !brain->data->ballDetected) {
@@ -1337,7 +1380,7 @@ bool Kick::_shouldUseStraightKick(double yawTolerance, double yTolerance, double
     double deltaDir = toPInPI(brain->data->kickDir - brain->data->robotBallAngleToField);
 
     bool ballCentered = fabs(ballYaw) <= yawTolerance && fabs(ballY) <= yTolerance;
-    bool goalAligned = brain->isAngleGood(0.3, "kick") && fabs(deltaDir) <= goalTolerance;
+    bool goalAligned = brain->isAngleGood(goalpostMargin, "kick") && fabs(deltaDir) <= goalTolerance;
     bool forwardLaneClear = brain->distToObstacle(0.0) >= obstacleDist
         && brain->distToObstacle(ballYaw) >= obstacleDist;
 
@@ -1367,14 +1410,15 @@ NodeStatus Kick::onStart()
     bool preferStraight = false;
     getInput("prefer_straight", preferStraight);
     if (preferStraight) {
-        double yawTolerance, yTolerance, goalTolerance, obstacleDist, straightSpeed;
+        double yawTolerance, yTolerance, goalTolerance, goalpostMargin, obstacleDist, straightSpeed;
         getInput("straight_yaw_tolerance", yawTolerance);
         getInput("straight_y_tolerance", yTolerance);
         getInput("straight_goal_tolerance", goalTolerance);
+        getInput("straight_goalpost_margin", goalpostMargin);
         getInput("straight_obstacle_dist", obstacleDist);
         getInput("straight_speed_limit", straightSpeed);
 
-        if (!_shouldUseStraightKick(yawTolerance, yTolerance, goalTolerance, obstacleDist)) {
+        if (!_shouldUseStraightKick(yawTolerance, yTolerance, goalTolerance, goalpostMargin, obstacleDist)) {
             brain->client->setVelocity(0, 0, 0);
             return NodeStatus::SUCCESS;
         }
@@ -1440,14 +1484,15 @@ NodeStatus Kick::onRunning()
     }
 
     if (preferStraight) {
-        double yawTolerance, yTolerance, goalTolerance, obstacleDist, straightSpeed;
+        double yawTolerance, yTolerance, goalTolerance, goalpostMargin, obstacleDist, straightSpeed;
         getInput("straight_yaw_tolerance", yawTolerance);
         getInput("straight_y_tolerance", yTolerance);
         getInput("straight_goal_tolerance", goalTolerance);
+        getInput("straight_goalpost_margin", goalpostMargin);
         getInput("straight_obstacle_dist", obstacleDist);
         getInput("straight_speed_limit", straightSpeed);
 
-        if (!_shouldUseStraightKick(yawTolerance, yTolerance, goalTolerance, obstacleDist)) {
+        if (!_shouldUseStraightKick(yawTolerance, yTolerance, goalTolerance, goalpostMargin, obstacleDist)) {
             log("straight kick invalid, return to adjust");
             brain->client->setVelocity(0, 0, 0);
             return NodeStatus::SUCCESS;
