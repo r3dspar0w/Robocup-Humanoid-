@@ -1258,7 +1258,7 @@ void Brain::detectionsCallback(const vision_interface::msg::Detections &msg)
             if (config->get_treat_person_as_robot())
                 robots.push_back(obj);
         }
-        if (obj.label == "Opponent")
+        if (obj.label == "Opponent" || obj.label == "Goalkeeper" || obj.label == "OpponentGoalie")
             robots.push_back(obj);
         if (obj.label == "LCross" || obj.label == "TCross" || obj.label == "XCross" || obj.label == "PenaltyPoint")
             markings.push_back(obj);
@@ -1669,7 +1669,7 @@ vector<GameObject> Brain::getGameObjects(const vision_interface::msg::Detections
 
         // Distance-Based Trust/Fusion Logic
         const float kDepthTrustThreshold = 3.0f;
-        bool is_robot = (obj.label == "Opponent" || obj.label == "Teammate" || obj.label == "Goalpost");
+        bool is_robot = (obj.label == "Opponent" || obj.label == "Teammate" || obj.label == "Goalkeeper" || obj.label == "OpponentGoalie" || obj.label == "Goalpost");
         bool depth_valid = (obj.position[0] != 0.0f || obj.position[1] != 0.0f);
         float dist_D = std::hypot(obj.position[0], obj.position[1]);
 
