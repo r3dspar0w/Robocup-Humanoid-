@@ -30,10 +30,23 @@ public:
             blue_bounds_.clear();
             for (const auto &bound : node["blue_bounds"]) {
                 if (bound.size() != 6) {
-                    std::cerr << "Invalid red bounds size: " << bound.size() << std::endl;
+                    std::cerr << "Invalid blue bounds size: " << bound.size() << std::endl;
                     continue;
                 }
                 blue_bounds_.emplace_back(
+                    cv::Scalar(bound[0].as<int>(), bound[1].as<int>(), bound[2].as<int>()),
+                    cv::Scalar(bound[3].as<int>(), bound[4].as<int>(), bound[5].as<int>()));
+            }
+        }
+
+        if (node["white_bounds"]) {
+            white_bounds_.clear();
+            for (const auto &bound : node["white_bounds"]) {
+                if (bound.size() != 6) {
+                    std::cerr << "Invalid white bounds size: " << bound.size() << std::endl;
+                    continue;
+                }
+                white_bounds_.emplace_back(
                     cv::Scalar(bound[0].as<int>(), bound[1].as<int>(), bound[2].as<int>()),
                     cv::Scalar(bound[3].as<int>(), bound[4].as<int>(), bound[5].as<int>()));
             }
@@ -43,7 +56,7 @@ public:
             green_bounds_.clear();
             for (const auto &bound : node["green_bounds"]) {
                 if (bound.size() != 6) {
-                    std::cerr << "Invalid red bounds size: " << bound.size() << std::endl;
+                    std::cerr << "Invalid green bounds size: " << bound.size() << std::endl;
                     continue;
                 }
                 green_bounds_.emplace_back(
@@ -77,29 +90,34 @@ public:
         // Create masks for each color
         cv::Mat blue_mask = getColorMask(hsv, blue_bounds_);
         cv::Mat red_mask = getColorMask(hsv, red_bounds_);
+        cv::Mat white_mask = getColorMask(hsv, white_bounds_);
         cv::Mat green_mask = getColorMask(hsv, green_bounds_);
 
         // Count non-zero pixels in each mask
         int red_count = cv::countNonZero(red_mask);
         int blue_count = cv::countNonZero(blue_mask);
+        int white_count = cv::countNonZero(white_mask);
         int green_count = cv::countNonZero(green_mask);
 
         // Determine the dominant color
         cv::Mat mask;
         std::string color = "None";
-        if (green_count > ((red_count + blue_count) * 5)) {
+        if (green_count > ((red_count + blue_count + white_count) * 5)) {
             mask = cv::Mat::zeros(red_mask.size(), CV_8UC1);
-        } else if (red_count > blue_count) {
+        } else if (red_count > blue_count && red_count > white_count) {
             mask = red_mask;
             color = "red";
-        } else if (red_count < blue_count) {
+        } else if (blue_count > red_count && blue_count > white_count) {
             mask = blue_mask;
             color = "blue";
+        } else if (white_count > red_count && white_count > blue_count) {
+            mask = white_mask;
+            color = "white";
         } else {
             mask = cv::Mat::zeros(red_mask.size(), CV_8UC1);
         }
 
-        return {color, mask, {red_count, blue_count, green_count}};
+        return {color, mask, {red_count, blue_count, white_count, green_count}};
     }
 
 private:
@@ -108,6 +126,8 @@ private:
         {cv::Scalar(160, 80, 100), cv::Scalar(179, 255, 255)}};
     std::vector<std::pair<cv::Scalar, cv::Scalar>> blue_bounds_ = {
         {cv::Scalar(100, 140, 50), cv::Scalar(140, 255, 255)}};
+    std::vector<std::pair<cv::Scalar, cv::Scalar>> white_bounds_ = {
+        {cv::Scalar(0, 0, 180), cv::Scalar(179, 70, 255)}};
     std::vector<std::pair<cv::Scalar, cv::Scalar>> green_bounds_ = {
         {cv::Scalar(30, 45, 45), cv::Scalar(80, 255, 255)}};
 };

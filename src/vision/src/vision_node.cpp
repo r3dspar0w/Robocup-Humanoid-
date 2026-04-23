@@ -35,6 +35,23 @@ std::string NormalizeColorName(std::string value) {
     return value;
 }
 
+bool IsRobotLikeLabel(const std::string &label) {
+    return label == "Opponent" || label == "Teammate" || label == "Goalkeeper" || label == "OpponentGoalie";
+}
+
+std::string RobotLabelFromColor(const std::string &robot_color, const std::string &team_color) {
+    if (robot_color == "white") {
+        return "Goalkeeper";
+    }
+    if (robot_color == "blue") {
+        return "OpponentGoalie";
+    }
+    if (!team_color.empty() && robot_color == team_color) {
+        return "Teammate";
+    }
+    return "Opponent";
+}
+
 } // namespace
 
 VisionNode::VisionNode(const std::string &node_name, const rclcpp::NodeOptions &options) :
@@ -401,7 +418,7 @@ static cv::Mat DrawDebugOverlay(
 
         // Fused value label (cyan)
         const float kDepthTrustThreshold = 3.0f;
-        bool is_robot = (obj.label == "Opponent" || obj.label == "Teammate" || obj.label == "Goalpost");
+        bool is_robot = (IsRobotLikeLabel(obj.label) || obj.label == "Goalpost");
         bool depth_valid = (pd[0] != 0.0f || pd[1] != 0.0f);
         float dist_D = std::hypot(pd[0], pd[1]);
 
@@ -567,15 +584,13 @@ void VisionNode::ProcessData(SyncedDataBlock &synced_data, vision_interface::msg
             std::string robot_color_str = NormalizeColorName(color_classifier_->Classify(crop));
             // add robot color to detection_obj
             detection_obj.color = robot_color_str;
-            if (!team_color_.empty() && robot_color_str == team_color_) {
-                detection_obj.label = "Teammate";
-                detection.class_name = detection_obj.label;
-            }
+            detection_obj.label = RobotLabelFromColor(robot_color_str, team_color_);
+            detection.class_name = detection_obj.label;
         }
 
         // log detail semantic and spatial information
         std::cout << "[Detection Log] " << detection_obj.label;
-        if ((detection_obj.label == "Opponent" || detection_obj.label == "Teammate") && !detection_obj.color.empty()) {
+        if (IsRobotLikeLabel(detection_obj.label) && !detection_obj.color.empty()) {
             std::cout << " (Color: " << detection_obj.color << ")";
         }
         std::cout << " (Conf: " << std::fixed << std::setprecision(1) << detection_obj.confidence << "%)"

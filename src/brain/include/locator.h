@@ -2,6 +2,7 @@
 #pragma once
 
 #include <Eigen/Core>
+#include <algorithm>
 #include <cstdlib> 
 #include <ctime>   
 #include <limits>
@@ -27,6 +28,11 @@ public:
 	double numShrinkRatio = 0.85;	 
 	double offsetShrinkRatio = 0.8;	 
 	int minMarkerCnt = 3;		 
+	bool lastLocateSuccess = false;
+	int lastMarkerCount = 0;
+	int lastLocateCode = 0;
+	double lastResidual = std::numeric_limits<double>::infinity();
+	double lastConfidence = 0.0;
 
 	
 	vector<FieldMarker> fieldMarkers;
@@ -73,6 +79,14 @@ public:
 			return 0.0;
 		return 1 / sqrt(2 * M_PI * sigma * sigma) * exp(-(r - mu) * (r - mu) / (2 * sigma * sigma));
 	};
+
+	inline double residualToConfidence(double residual) const
+	{
+		if (!std::isfinite(residual) || residualTolerance <= 1e-6)
+			return 0.0;
+		double normalized = 1.0 - residual / residualTolerance;
+		return std::clamp(normalized, 0.0, 1.0) * 100.0;
+	}
 };
 
 
