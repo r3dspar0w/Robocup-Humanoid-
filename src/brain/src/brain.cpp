@@ -124,6 +124,9 @@ Brain::Brain() : rclcpp::Node("brain_node")
 
     declare_parameter<bool>("enable_com", true);
 
+    declare_parameter<bool>("sound.enable", false);
+    declare_parameter<string>("sound.sound_pack", "espeak");
+
     declare_parameter<string>("vision.image_camera_info_topic", "/camera/color/camera_info");
     declare_parameter<string>("vision.depth_image_topic", "/camera/camera/aligned_depth_to_color/image_raw");
     declare_parameter<string>("vision.depth_camera_info_topic", "/camera/depth/camera_info");
@@ -168,6 +171,20 @@ void Brain::init()
     
     communication->initCommunication();
 
+    std::string role = config->get_player_role();
+    if (role == "goal_keeper") role = "goal keeper";
+    if (role == "striker") role = "striker";
+
+    if (config->soundEnable && config->soundPack == "espeak") {
+        speak(
+            "team " + std::to_string(config->get_team_id()) +
+            " player " + std::to_string(config->get_player_id()) +
+            " " + role +
+            " ok auto",
+            true
+        );
+    }
+
     data->lastSuccessfulLocalizeTime = get_clock()->now();
     data->timeLastDet = get_clock()->now();
     data->timeLastLineDet = get_clock()->now();
@@ -209,6 +226,8 @@ void Brain::init()
     pubBallPosition = create_publisher<geometry_msgs::msg::Point>("/booster_soccer/ball_position" + topic_suffix, 10);
     pubTeammatesPoses = create_publisher<std_msgs::msg::Float64MultiArray>("/booster_soccer/teammates_poses" + topic_suffix, 10);
     pubKickBall = create_publisher<brain::msg::Kick>("/kick_ball", 10);
+
+    pubSpeak = create_publisher<std_msgs::msg::String>("/speak", 10);
 
     // subscribe to depth image topic
     string depthTopic = config->get_depth_image_topic();
@@ -264,6 +283,11 @@ void Brain::init()
 
     // Publish field dimensions information (called after publisher creation)
     publishFieldDimensions();
+
+    speak(
+        "team " + std::to_string(config->get_team_id()) + " " + config->get_player_role() + " ok",
+        true
+    );
 }
 
 void Brain::loadConfig()
@@ -1129,6 +1153,21 @@ void Brain::gameControlCallback(const game_controller_interface::msg::GameContro
     int playerId = config->get_player_id();
     string gameState = gameStateMap[static_cast<int>(msg.state)];
     tree->setEntry<string>("gc_game_state", gameState);
+
+    if (config->soundEnable && config->soundPack == "espeak" && gameState != lastGameState) {
+        if (gameState == "INITIAL") {
+            speak("initialising", true);
+        } else if (gameState == "READY") {
+            speak("ready", true);
+        } else if (gameState == "SET") {
+            speak("set", true);
+        } else if (gameState == "PLAY") {
+            speak("play", true);
+        } else if (gameState == "END") {
+            speak("end", true);
+        }
+    }
+
     bool isKickOffSide = (msg.kick_off_team == teamId); // Whether our team is the kickoff side
     tree->setEntry<bool>("gc_is_kickoff_side", isKickOffSide);
 
@@ -2698,4 +2737,27 @@ void Brain::publishTeammatesPoses()
     }
     
     pubTeammatesPoses->publish(msg);
+}
+
+void Brain::speak(string text, bool allowRepeat)
+{
+    const double COOLDOWN_MSECS = 2000.0;
+
+    if (!pubSpeak) return;
+    if (!config->soundEnable || config->soundPack != "espeak") return;
+
+    static string _lastText;
+    static rclcpp::Time _lastTime;
+
+    if (msecsSince(_lastTime) < COOLDOWN_MSECS) return;
+
+    if (_lastText == text && (!allowRepeat)) return;
+
+    _lastTime = get_clock()->now();
+
+    std_msgs::msg::String msg;
+    msg.data = text;
+    pubSpeak->publish(msg);
+
+    _lastText = text;
 }
