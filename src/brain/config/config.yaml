@@ -7,7 +7,7 @@ brain_node:
       player_role: "goal_keeper" # striker | goal_keeper
       treat_person_as_robot: true
       number_of_players: 3
-      start_on_opponent_side: true #False for normal field size and goal keeper
+      start_on_opponent_side: false #False for normal field size and goal keeper
       
     robot:
       robot_name: "" # When multiple robots exist, specify e.g. "robot0", "robot1"; leave empty for single robot
