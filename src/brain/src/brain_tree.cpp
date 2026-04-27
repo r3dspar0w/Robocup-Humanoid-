@@ -639,6 +639,7 @@ NodeStatus GoToGoalBlockingPosition::tick() {
     double distToGoalline = getInput<double>("dist_to_goalline").value();
 
     auto fd = brain->config->fieldDimensions;
+    distToGoalline = min(distToGoalline, max(0.2, fd.penaltyAreaLength - 0.2));
     auto ballPos = brain->data->ball.posToField;
     auto robotPose = brain->data->robotPoseToField;
 
@@ -895,10 +896,11 @@ NodeStatus PredictBallTraj::tick()
 
 NodeStatus CalcGoliePos::tick()
 {
-    double goalX, goalY, radius;
+    double goalX, goalY, radius, maxYMargin;
     getInput("ctPosx", goalX);
     getInput("ctPosy", goalY);
     getInput("golie_radius", radius);
+    getInput("max_y_margin", maxYMargin);
     if (std::fabs(goalX) < 1e-9) {
         goalX = -brain->config->fieldDimensions.length / 2.0;
     }
@@ -917,6 +919,12 @@ NodeStatus CalcGoliePos::tick()
     Pose2D goaliePos;
     goaliePos.x = goalX + radius * dx / dist;
     goaliePos.y = goalY + radius * dy / dist;
+    const auto &fd = brain->config->fieldDimensions;
+    const double maxAbsY = std::max(0.2, fd.goalAreaWidth / 2.0 - maxYMargin);
+    const double minGoalClearance = 0.2;
+    const double maxX = goalX + std::max(radius, fd.goalAreaLength + minGoalClearance);
+    goaliePos.x = cap(goaliePos.x, maxX, goalX + minGoalClearance);
+    goaliePos.y = cap(goaliePos.y, maxAbsY, -maxAbsY);
     goaliePos.theta = atan2(predBall.y - goaliePos.y, predBall.x - goaliePos.x);
     brain->data->GoliePos = goaliePos;
     brain->data->goaliePredictedInterceptPose = goaliePos;
@@ -1348,6 +1356,8 @@ NodeStatus GoalieDecide::tick()
     getInput("adjust_angle_tolerance", adjustAngleTolerance);
     double adjustYTolerance;
     getInput("adjust_y_tolerance", adjustYTolerance);
+    double lostBallRetreatAfter;
+    getInput("lost_ball_retreat_after", lostBallRetreatAfter);
     string lastDecision, position;
     getInput("decision_in", lastDecision);
 
@@ -1384,11 +1394,13 @@ NodeStatus GoalieDecide::tick()
     double goalieChaseScoreBiased = -1.0;
     bool currentlyChasingBeforeBias = false;
     bool currentlyChasingAfterHysteresis = false;
+    const double localBallObservationAge = brain->msecsSince(brain->data->ball.timePoint) / 1000.0;
 
     string newDecision;
     if (!(iKnowBallPos || tmBallPosReliable))
     {
-        newDecision = "find";
+        ballObservationAge = localBallObservationAge;
+        newDecision = ballObservationAge > lostBallRetreatAfter ? "retreat" : "find";
     }
     else if (canClearNow)
     {
@@ -1477,7 +1489,7 @@ NodeStatus GoalieDecide::tick()
             teammateBestTimeToBall = goalieTimeToBall + 2.0;
         }
 
-        ballObservationAge = brain->msecsSince(brain->data->ball.timePoint) / 1000.0;
+        ballObservationAge = localBallObservationAge;
         if (!iKnowBallPos && tmBallPosReliable) {
             double freshestTeammateBallAge = 1e9;
             for (int i = 0; i < HL_MAX_NUM_PLAYERS; i++) {

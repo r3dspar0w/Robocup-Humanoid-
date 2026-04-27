@@ -120,6 +120,7 @@ public:
             InputPort<double>("auto_visual_kick_enable_angle", 0.785, "Angle range for enabling auto visual kick"),
             InputPort<double>("auto_visual_kick_obstacle_dist_threshold", 3.0, "Obstacle distance threshold for auto visual kick, if an obstacle is within this distance, auto visual kick is not executed"),
             InputPort<double>("auto_visual_kick_obstacle_angle_threshold", 1.744, "Obstacle angle threshold for auto visual kick, if an obstacle is within this angle, auto visual kick is not executed"),
+            InputPort<double>("lost_ball_retreat_after", 5.0, "Retreat to the original blocking pose after this many seconds without reliable ball location"),
             OutputPort<string>("decision_out"),
         };
     }
@@ -606,6 +607,7 @@ public:
             InputPort<double>("ctPosx", 0.0, "Goal center x in field frame; default 0 means own goal center"),
             InputPort<double>("ctPosy", 0.0, "Goal center y in field frame"),
             InputPort<double>("golie_radius", 1.0, "Goalkeeper blocking radius from goal center"),
+            InputPort<double>("max_y_margin", 0.2, "Margin inside goal-area y bounds for the blocking target"),
         };
     }
 
