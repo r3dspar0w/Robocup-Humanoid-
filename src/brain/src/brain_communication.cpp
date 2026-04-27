@@ -514,6 +514,10 @@ TeamCommunicationMsg BrainCommunication::fromRelayMsg(const game_controller_inte
 
 void BrainCommunication::relayCommunicationCallback(const game_controller_interface::msg::TeamCommunication::SharedPtr msg)
 {
+    brain->log->strategy(format(
+        "Brain received relay ROS input: team=%d player=%d commId=%d cmdId=%d cmd=%d ballKnown=%d ballDetected=%d",
+        msg->team_id, msg->player_id, msg->communication_id, msg->cmd_id, msg->cmd,
+        msg->ball_location_known, msg->ball_detected));
     processTeamCommunicationMsg(fromRelayMsg(*msg), "relay");
 }
 

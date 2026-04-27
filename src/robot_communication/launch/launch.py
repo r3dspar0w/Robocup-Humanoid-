@@ -14,6 +14,7 @@ def generate_launch_description():
         DeclareLaunchArgument('robot_comm_port', default_value='0'),
         DeclareLaunchArgument('relay_broadcast_address', default_value='255.255.255.255'),
         DeclareLaunchArgument('publish_own_packets', default_value='true'),
+        DeclareLaunchArgument('enable_local_loopback_echo', default_value='true'),
         Node(
             package='robot_communication',
             executable='robot_communication_node',
@@ -25,6 +26,7 @@ def generate_launch_description():
                 'robot_comm_port': LaunchConfiguration('robot_comm_port'),
                 'relay_broadcast_address': LaunchConfiguration('relay_broadcast_address'),
                 'publish_own_packets': LaunchConfiguration('publish_own_packets'),
+                'enable_local_loopback_echo': LaunchConfiguration('enable_local_loopback_echo'),
             }]
         )
     ])

@@ -115,6 +115,7 @@ public:
         robot_comm_port_ = declare_parameter<int>("robot_comm_port", 0);
         relay_broadcast_address_ = declare_parameter<std::string>("relay_broadcast_address", "255.255.255.255");
         publish_own_packets_ = declare_parameter<bool>("publish_own_packets", true);
+        enable_local_loopback_echo_ = declare_parameter<bool>("enable_local_loopback_echo", true);
 
         if (robot_comm_port_ <= 0) {
             robot_comm_port_ = 31000 + team_id_;
@@ -234,6 +235,26 @@ private:
         if (ret < 0) {
             RCLCPP_WARN(get_logger(), "Robot UDP relay send failed: %s", strerror(errno));
         }
+
+        // Some networks do not loop broadcast packets back to the sender.
+        // Send a local UDP copy so the receive path can be verified on this robot.
+        if (publish_own_packets_ && enable_local_loopback_echo_) {
+            sockaddr_in loopback_addr{};
+            loopback_addr.sin_family = AF_INET;
+            loopback_addr.sin_port = htons(robot_comm_port_);
+            loopback_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+            ssize_t loopback_ret = sendto(
+                send_socket_,
+                &packet,
+                sizeof(packet),
+                0,
+                reinterpret_cast<sockaddr *>(&loopback_addr),
+                sizeof(loopback_addr));
+
+            if (loopback_ret < 0) {
+                RCLCPP_WARN(get_logger(), "Robot UDP relay loopback send failed: %s", strerror(errno));
+            }
+        }
     }
 
     void receiveLoop()
@@ -269,11 +290,11 @@ private:
                 continue;
             }
 
-            if (packet.team_id != team_id_) {
+            if (team_id_ > 0 && packet.team_id != team_id_) {
                 continue;
             }
 
-            if (packet.player_id == player_id_ && !publish_own_packets_) {
+            if (player_id_ > 0 && packet.player_id == player_id_ && !publish_own_packets_) {
                 continue;
             }
 
@@ -292,6 +313,7 @@ private:
     int robot_comm_port_ = 0;
     std::string relay_broadcast_address_;
     bool publish_own_packets_ = true;
+    bool enable_local_loopback_echo_ = true;
 
     int send_socket_ = -1;
     int receive_socket_ = -1;
