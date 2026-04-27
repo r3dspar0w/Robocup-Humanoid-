@@ -296,6 +296,10 @@ void Brain::loadConfig()
     string visionConfigPath, visionConfigLocalPath;
     get_parameter("vision_config_path", visionConfigPath);
     get_parameter("vision_config_local_path", visionConfigLocalPath);
+
+    get_parameter("sound.enable", config->soundEnable);
+    get_parameter("sound.sound_pack", config->soundPack);
+
     if (!filesystem::exists(visionConfigPath)) {
         // Error and exit
         RCLCPP_ERROR(get_logger(), "vision_config_path %s not exists", visionConfigPath.c_str());
