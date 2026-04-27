@@ -65,6 +65,10 @@ def handle_configuration(context, *args, **kwargs):
     if disableCom in ['true', 'True', '1']:
         config['enable_com'] = False
 
+    disableRobotCommRelay = context.perform_substitution(LaunchConfiguration('disable_robot_comm_relay'))
+    if disableRobotCommRelay in ['true', 'True', '1']:
+        config['enable_robot_comm_relay'] = False
+
     return [
         Node(
             package ='brain',
@@ -123,6 +127,11 @@ def generate_launch_description():
             'disable_com', 
             default_value='false',
             description='Force disable communication'
+        ),
+        DeclareLaunchArgument(
+            'disable_robot_comm_relay',
+            default_value='false',
+            description='Force disable the ROS-to-UDP robot communication relay path'
         ),
         DeclareLaunchArgument(
             'agent_mode', 

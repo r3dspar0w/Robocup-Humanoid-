@@ -123,6 +123,7 @@ Brain::Brain() : rclcpp::Node("brain_node")
     declare_parameter<double>("locator.max_residual", 0.3);
 
     declare_parameter<bool>("enable_com", true);
+    declare_parameter<bool>("enable_robot_comm_relay", true);
 
     declare_parameter<bool>("sound.enable", false);
     declare_parameter<string>("sound.sound_pack", "espeak");

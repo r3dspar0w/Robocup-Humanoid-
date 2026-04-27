@@ -12,6 +12,7 @@
 #include "RoboCupGameControlData.h"
 #include "team_communication_msg.h"
 #include "utils/print.h"
+#include <game_controller_interface/msg/team_communication.hpp>
 
 
 class Brain; // forward declaration
@@ -77,6 +78,12 @@ private:
     void initCommunicationUnicast();
     void clearupCommunicationUnicast();
     void unicastCommunication();
+    TeamCommunicationMsg makeTeamCommunicationMsg();
+    void processTeamCommunicationMsg(const TeamCommunicationMsg &msg, const string &source);
+    game_controller_interface::msg::TeamCommunication toRelayMsg(const TeamCommunicationMsg &msg);
+    TeamCommunicationMsg fromRelayMsg(const game_controller_interface::msg::TeamCommunication &msg);
+    void initRelayCommunication();
+    void relayCommunicationCallback(const game_controller_interface::msg::TeamCommunication::SharedPtr msg);
     int _team_communication_msg_id = 0;
     std::atomic<bool> _unicast_communication_flag = false;
     std::thread _unicast_thread;
@@ -84,6 +91,9 @@ private:
     int _unicast_udp_port = 0;
     sockaddr_in _unicast_saddr;
     static constexpr int UNICAST_INTERVAL_MS = 100;
+    bool _enable_robot_comm_relay = true;
+    rclcpp::Publisher<game_controller_interface::msg::TeamCommunication>::SharedPtr _relay_pub;
+    rclcpp::Subscription<game_controller_interface::msg::TeamCommunication>::SharedPtr _relay_sub;
 
 
     void initCommunicationReceiver();

@@ -14,6 +14,7 @@ find_package(rosidl_default_generators REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/GameControlData.msg"
   "msg/RobotInfo.msg"
+  "msg/TeamCommunication.msg"
   "msg/TeamInfo.msg"
 )
 
