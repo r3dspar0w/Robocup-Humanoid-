@@ -24,6 +24,13 @@ def generate_launch_description():
                     "ip_white_list": [
                         "127.0.0.1",
                     ],
+
+                    # Relay brain teammate messages through this node without disabling direct robot UDP fallback.
+                    "enable_team_relay": True,
+                    "team_id": 67,
+                    "player_id": 1,
+                    "team_relay_port": 31067,
+                    "relay_broadcast_address": "255.255.255.255",
                 }
             ]
         ),

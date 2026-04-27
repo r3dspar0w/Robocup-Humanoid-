@@ -94,6 +94,15 @@ void BrainCommunication::initCommunication()
         initDiscoveryReceiver();
         RCLCPP_INFO(brain->get_logger(), "InitCommunication Discovery enabled. UDP port: %d", _discovery_udp_port);
 
+        _relay_team_comm_pub = brain->create_publisher<game_controller_interface::msg::TeamCommunication>("/booster_soccer/team_comm/out", 10);
+        _relay_team_comm_sub = brain->create_subscription<game_controller_interface::msg::TeamCommunication>(
+            "/booster_soccer/team_comm/in",
+            10,
+            [this](const game_controller_interface::msg::TeamCommunication::SharedPtr msg) {
+                this->relayTeamCommunicationCallback(msg);
+            });
+        RCLCPP_INFO(brain->get_logger(), "InitCommunication GameController relay topics enabled.");
+
         initCommunicationUnicast();
         initCommunicationReceiver();
         RCLCPP_INFO(brain->get_logger(), "InitCommunication Communication enabled. UDP port: %d", _unicast_udp_port);
@@ -414,40 +423,120 @@ void BrainCommunication::initCommunicationUnicast() {
         - Decide Passing vs Shooting
         - Decide Positioning
 */
+TeamCommunicationMsg BrainCommunication::buildTeamCommunicationMsg() {
+    TeamCommunicationMsg msg;
+    msg.validation = VALIDATION_COMMUNICATION;
+    msg.communicationId = _team_communication_msg_id++;
+    msg.teamId = brain->config->get_team_id();
+    msg.playerId = brain->config->get_player_id();
+
+    string role = brain->tree->getEntry<string>("player_role");
+    if (role == "striker") {
+        msg.playerRole = 1;
+    } else if (role == "goal_keeper") {
+        msg.playerRole = 2;
+    } else {
+        msg.playerRole = 3;
+    }
+
+    msg.isAlive = brain->data->tmImAlive;
+    msg.isLead = brain->data->tmImLead;
+    msg.ballDetected = brain->data->ballDetected;
+    msg.ballLocationKnown = brain->tree->getEntry<bool>("ball_location_known");
+    msg.ballConfidence = brain->data->ball.confidence;
+    msg.ballRange = brain->data->ball.range;
+    msg.cost = brain->data->tmMyCost;
+    msg.ballPosToField = brain->data->ball.posToField;
+    msg.robotPoseToField = brain->data->robotPoseToField;
+    msg.kickDir = brain->data->kickDir;
+    msg.thetaRb = brain->data->robotBallAngleToField;
+    msg.cmdId = brain->data->tmMyCmdId;
+    msg.cmd = brain->data->tmMyCmd;
+    return msg;
+}
+
+game_controller_interface::msg::TeamCommunication BrainCommunication::toRosTeamCommunicationMsg(const TeamCommunicationMsg &msg) {
+    game_controller_interface::msg::TeamCommunication rosMsg;
+    rosMsg.validation = msg.validation;
+    rosMsg.communication_id = msg.communicationId;
+    rosMsg.team_id = msg.teamId;
+    rosMsg.player_id = msg.playerId;
+    rosMsg.player_role = msg.playerRole;
+    rosMsg.is_alive = msg.isAlive;
+    rosMsg.is_lead = msg.isLead;
+    rosMsg.ball_detected = msg.ballDetected;
+    rosMsg.ball_location_known = msg.ballLocationKnown;
+    rosMsg.ball_confidence = msg.ballConfidence;
+    rosMsg.ball_range = msg.ballRange;
+    rosMsg.cost = msg.cost;
+    rosMsg.ball_x = msg.ballPosToField.x;
+    rosMsg.ball_y = msg.ballPosToField.y;
+    rosMsg.ball_z = msg.ballPosToField.z;
+    rosMsg.robot_x = msg.robotPoseToField.x;
+    rosMsg.robot_y = msg.robotPoseToField.y;
+    rosMsg.robot_theta = msg.robotPoseToField.theta;
+    rosMsg.kick_dir = msg.kickDir;
+    rosMsg.theta_rb = msg.thetaRb;
+    rosMsg.cmd_id = msg.cmdId;
+    rosMsg.cmd = msg.cmd;
+    return rosMsg;
+}
+
+TeamCommunicationMsg BrainCommunication::fromRosTeamCommunicationMsg(const game_controller_interface::msg::TeamCommunication &msg) {
+    TeamCommunicationMsg teamMsg;
+    teamMsg.validation = msg.validation;
+    teamMsg.communicationId = msg.communication_id;
+    teamMsg.teamId = msg.team_id;
+    teamMsg.playerId = msg.player_id;
+    teamMsg.playerRole = msg.player_role;
+    teamMsg.isAlive = msg.is_alive;
+    teamMsg.isLead = msg.is_lead;
+    teamMsg.ballDetected = msg.ball_detected;
+    teamMsg.ballLocationKnown = msg.ball_location_known;
+    teamMsg.ballConfidence = msg.ball_confidence;
+    teamMsg.ballRange = msg.ball_range;
+    teamMsg.cost = msg.cost;
+    teamMsg.ballPosToField = {msg.ball_x, msg.ball_y, msg.ball_z};
+    teamMsg.robotPoseToField = {msg.robot_x, msg.robot_y, msg.robot_theta};
+    teamMsg.kickDir = msg.kick_dir;
+    teamMsg.thetaRb = msg.theta_rb;
+    teamMsg.cmdId = msg.cmd_id;
+    teamMsg.cmd = msg.cmd;
+    return teamMsg;
+}
+
+void BrainCommunication::publishRelayTeamCommunication(const TeamCommunicationMsg &msg) {
+    if (_relay_team_comm_pub) {
+        _relay_team_comm_pub->publish(toRosTeamCommunicationMsg(msg));
+    }
+}
+
+void BrainCommunication::relayTeamCommunicationCallback(const game_controller_interface::msg::TeamCommunication::SharedPtr msg) {
+    TeamCommunicationMsg teamMsg = fromRosTeamCommunicationMsg(*msg);
+    brain->log->strategy(
+        "GameController relay received team communication: "
+        + format(
+            "team=%d player=%d commId=%d cmdId=%d cmd=%d ballKnown=%d ballDetected=%d",
+            teamMsg.teamId,
+            teamMsg.playerId,
+            teamMsg.communicationId,
+            teamMsg.cmdId,
+            teamMsg.cmd,
+            teamMsg.ballLocationKnown,
+            teamMsg.ballDetected
+        )
+    );
+    applyTeamCommunicationMsg(teamMsg, "relayReceiveMsg");
+}
+
 void BrainCommunication::unicastCommunication() {
     auto log = [=](string msg) {
         brain->log->debug("sendMsg", msg);
     };
     while (_unicast_communication_flag) {
         cleanupExpiredTeammates();
-        TeamCommunicationMsg msg;
-        msg.validation = VALIDATION_COMMUNICATION;
-        msg.communicationId = _team_communication_msg_id++;
-        msg.teamId = brain->config->get_team_id();
-        msg.playerId = brain->config->get_player_id();
-        
-        string role = brain->tree->getEntry<string>("player_role");
-        if (role == "striker") {
-            msg.playerRole = 1;
-        } else if (role == "goal_keeper") {
-            msg.playerRole = 2;
-        } else {
-            msg.playerRole = 3; // Unknown role
-        }
-
-        msg.isAlive = brain->data->tmImAlive;
-        msg.isLead = brain->data->tmImLead;
-        msg.ballDetected = brain->data->ballDetected;
-        msg.ballLocationKnown = brain->tree->getEntry<bool>("ball_location_known");
-        msg.ballConfidence = brain->data->ball.confidence;
-        msg.ballRange = brain->data->ball.range;
-        msg.cost = brain->data->tmMyCost;
-        msg.ballPosToField = brain->data->ball.posToField;
-        msg.robotPoseToField = brain->data->robotPoseToField;
-        msg.kickDir = brain->data->kickDir;
-        msg.thetaRb = brain->data->robotBallAngleToField;
-        msg.cmdId = brain->data->tmMyCmdId;
-        msg.cmd = brain->data->tmMyCmd;
+        TeamCommunicationMsg msg = buildTeamCommunicationMsg();
+        publishRelayTeamCommunication(msg);
         log(format("ImAlive: %d, ImLead: %d, myCost: %.1f, myCmdId: %d, myCmd: %d", msg.isAlive, msg.isLead, msg.cost, msg.cmdId, msg.cmd));
 
         std::lock_guard<std::mutex> lock(_teammate_addresses_mutex);
@@ -524,11 +613,93 @@ void BrainCommunication::initCommunicationReceiver() {
     }
 }
 
+void BrainCommunication::applyTeamCommunicationMsg(const TeamCommunicationMsg &msg, const string &source) {
+    auto log = [=](string msg) {
+        brain->log->debug(source, msg);
+    };
+
+    if (msg.validation != VALIDATION_COMMUNICATION) {
+        cout << RED_CODE << format("received TeamCommunicationMsg packet with invalid validation: %d", msg.validation)
+            << RESET_CODE << endl;
+        return;
+    }
+
+    if (msg.teamId != brain->config->get_team_id()) {
+        cout << YELLOW_CODE << format("Received message from team %d, expected team %d", msg.teamId, brain->config->get_team_id())
+            << RESET_CODE << endl;
+        return;
+    }
+
+    if (msg.playerId == brain->config->get_player_id()) {
+        cout << CYAN_CODE <<  format(
+            "communicationId: %d, alive: %d, ballDetected: %d ballRange: %.2f playerId: %d",
+            msg.communicationId, msg.isAlive, msg.ballDetected, msg.ballRange, msg.playerId)
+            << RESET_CODE << endl;
+        brain->data->sendId = msg.communicationId;
+        brain->data->sendTime = brain->get_clock()->now();
+        return;
+    }
+
+    auto tmIdx = msg.playerId - 1;
+
+    if (tmIdx < 0 || tmIdx >= HL_MAX_NUM_PLAYERS) {
+        cout << YELLOW_CODE << format("Received message with invalid playerId: %d", msg.playerId) << RESET_CODE << endl;
+        return;
+    }
+
+    if (brain->data->penalty[tmIdx] == SUBSTITUTE) {
+        cout << YELLOW_CODE << format("Communication playerId %d is substitute", msg.playerId) << RESET_CODE << endl;
+        return;
+    }
+
+    log(format("TMID: %.d, alive: %d, lead: %d, cost: %.1f, CmdId: %d, Cmd: %d", msg.playerId, msg.isAlive, msg.isLead, msg.cost, msg.cmdId, msg.cmd));
+
+    TMStatus &tmStatus = brain->data->tmStatus[tmIdx];
+
+    switch(msg.playerRole) {
+        case 1: tmStatus.role = "striker"; break;
+        case 2: tmStatus.role = "goal_keeper"; break;
+        default: tmStatus.role = "unknown"; break;
+    }
+    tmStatus.isAlive = msg.isAlive;
+    tmStatus.ballDetected = msg.ballDetected;
+    tmStatus.ballLocationKnown = msg.ballLocationKnown;
+    tmStatus.ballConfidence = msg.ballConfidence;
+    tmStatus.ballRange = msg.ballRange;
+    tmStatus.cost = msg.cost;
+    tmStatus.isLead = msg.isLead;
+    tmStatus.ballPosToField = msg.ballPosToField;
+    tmStatus.robotPoseToField = msg.robotPoseToField;
+    tmStatus.kickDir = msg.kickDir;
+    tmStatus.thetaRb = msg.thetaRb;
+    tmStatus.timeLastCom = brain->get_clock()->now();
+    tmStatus.cmd = msg.cmd;
+    tmStatus.cmdId = msg.cmdId;
+
+    if (msg.cmdId > brain->data->tmCmdId) {
+        brain->data->tmCmdId = msg.cmdId;
+        brain->data->tmReceivedCmd = msg.cmd;
+        brain->data->tmLastCmdChangeTime = brain->get_clock()->now();
+        log(format("Received new command from teammate %d: %d", msg.playerId, msg.cmd));
+        if (source == "relayReceiveMsg") {
+            brain->log->strategy(
+                "GameController relay accepted teammate command: "
+                + format(
+                    "fromPlayer=%d cmdId=%d cmd=%d role=%s ballKnown=%d cost=%.2f",
+                    msg.playerId,
+                    msg.cmdId,
+                    msg.cmd,
+                    tmStatus.role.c_str(),
+                    msg.ballLocationKnown,
+                    msg.cost
+                )
+            );
+        }
+    }
+}
+
 // ---------------------- Receiving Teammates Info ---------------------------
 void BrainCommunication::spinCommunicationReceiver() {
-    auto log = [=](string msg) {
-        brain->log->debug("receiveMsg", msg);
-    };
     sockaddr_in addr{};
     socklen_t addr_len = sizeof(addr);
 
@@ -550,72 +721,7 @@ void BrainCommunication::spinCommunicationReceiver() {
             continue;
         }
 
-        if (msg.validation != VALIDATION_COMMUNICATION) { // fail to pass validation
-            cout << RED_CODE << format("received TeamCommunicationMsg packet with invalid validation: %d", msg.validation)
-                << RESET_CODE << endl;
-            continue;
-        }
-
-        if (msg.teamId != brain->config->get_team_id()) { // Ignore messages from other teams
-            cout << YELLOW_CODE << format("Received message from team %d, expected team %d", msg.teamId, brain->config->get_team_id())
-                << RESET_CODE << endl;
-            continue;
-        }
-
-        if (msg.playerId == brain->config->get_player_id()) {  // Ignore own messages
-            // Handle own messages
-            cout << CYAN_CODE <<  format(
-                "communicationId: %d, alive: %d, ballDetected: %d ballRange: %.2f playerId: %d",
-                msg.communicationId, msg.isAlive, msg.ballDetected, msg.ballRange, msg.playerId)
-                << RESET_CODE << endl;
-            brain->data->sendId = msg.communicationId;
-            brain->data->sendTime = brain->get_clock()->now();
-            continue;
-        } 
-
-        auto tmIdx = msg.playerId - 1;
-
-        if (tmIdx < 0 || tmIdx >= HL_MAX_NUM_PLAYERS) { // HL_MAX_NUM_PLAYERS is the maximum number of players
-            cout << YELLOW_CODE << format("Received message with invalid playerId: %d", msg.playerId) << RESET_CODE << endl;
-            continue;
-        }
-
-        if (brain->data->penalty[tmIdx] == SUBSTITUTE) { // Ignore substitute players' information
-            cout << YELLOW_CODE << format("Communication playerId %d is substitute", msg.playerId) << RESET_CODE << endl;
-            continue;
-        }
-
-        log(format("TMID: %.d, alive: %d, lead: %d, cost: %.1f, CmdId: %d, Cmd: %d", msg.playerId, msg.isAlive, msg.isLead, msg.cost, msg.cmdId, msg.cmd));
-
-        TMStatus &tmStatus = brain->data->tmStatus[tmIdx];
-        
-        switch(msg.playerRole) {
-            case 1: tmStatus.role = "striker"; break;
-            case 2: tmStatus.role = "goal_keeper"; break;
-            default: tmStatus.role = "unknown"; break;
-        }
-        tmStatus.isAlive = msg.isAlive;
-        tmStatus.ballDetected = msg.ballDetected;
-        tmStatus.ballLocationKnown = msg.ballLocationKnown;
-        tmStatus.ballConfidence = msg.ballConfidence;
-        tmStatus.ballRange = msg.ballRange;
-        tmStatus.cost = msg.cost;
-        tmStatus.isLead = msg.isLead;
-        tmStatus.ballPosToField = msg.ballPosToField;
-        tmStatus.robotPoseToField = msg.robotPoseToField;
-        tmStatus.kickDir = msg.kickDir;
-        tmStatus.thetaRb = msg.thetaRb;
-        tmStatus.timeLastCom = brain->get_clock()->now();
-        tmStatus.cmd = msg.cmd;
-        tmStatus.cmdId = msg.cmdId;
-
-        // Check if a new command has been received
-        if (msg.cmdId > brain->data->tmCmdId) {
-            brain->data->tmCmdId = msg.cmdId;
-            brain->data->tmReceivedCmd = msg.cmd;
-            brain->data->tmLastCmdChangeTime = brain->get_clock()->now();
-            log(format("Received new command from teammate %d: %d", msg.playerId, msg.cmd));
-        }
+        applyTeamCommunicationMsg(msg, "receiveMsg");
 
     }
 }
