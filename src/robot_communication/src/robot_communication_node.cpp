@@ -114,6 +114,7 @@ public:
         player_id_ = declare_parameter<int>("player_id", 0);
         robot_comm_port_ = declare_parameter<int>("robot_comm_port", 0);
         relay_broadcast_address_ = declare_parameter<std::string>("relay_broadcast_address", "255.255.255.255");
+        publish_own_packets_ = declare_parameter<bool>("publish_own_packets", true);
 
         if (robot_comm_port_ <= 0) {
             robot_comm_port_ = 31000 + team_id_;
@@ -272,7 +273,7 @@ private:
                 continue;
             }
 
-            if (packet.player_id == player_id_) {
+            if (packet.player_id == player_id_ && !publish_own_packets_) {
                 continue;
             }
 
@@ -290,6 +291,7 @@ private:
     int player_id_ = 0;
     int robot_comm_port_ = 0;
     std::string relay_broadcast_address_;
+    bool publish_own_packets_ = true;
 
     int send_socket_ = -1;
     int receive_socket_ = -1;

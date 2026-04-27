@@ -540,6 +540,11 @@ void BrainCommunication::processTeamCommunicationMsg(const TeamCommunicationMsg 
             "%s communicationId: %d, alive: %d, ballDetected: %d ballRange: %.2f playerId: %d",
             source.c_str(), msg.communicationId, msg.isAlive, msg.ballDetected, msg.ballRange, msg.playerId)
             << RESET_CODE << endl;
+        brain->log->strategy(format(
+            "Received own team communication echo through %s: team=%d player=%d commId=%d role=%d alive=%d lead=%d ballKnown=%d ballDetected=%d ballRange=%.2f cost=%.2f cmdId=%d cmd=%d",
+            source.c_str(), msg.teamId, msg.playerId, msg.communicationId, msg.playerRole,
+            msg.isAlive, msg.isLead, msg.ballLocationKnown, msg.ballDetected,
+            msg.ballRange, msg.cost, msg.cmdId, msg.cmd));
         brain->data->sendId = msg.communicationId;
         brain->data->sendTime = brain->get_clock()->now();
         return;

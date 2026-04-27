@@ -13,6 +13,7 @@ def generate_launch_description():
         DeclareLaunchArgument('player_id', default_value='0'),
         DeclareLaunchArgument('robot_comm_port', default_value='0'),
         DeclareLaunchArgument('relay_broadcast_address', default_value='255.255.255.255'),
+        DeclareLaunchArgument('publish_own_packets', default_value='true'),
         Node(
             package='robot_communication',
             executable='robot_communication_node',
@@ -23,6 +24,7 @@ def generate_launch_description():
                 'player_id': LaunchConfiguration('player_id'),
                 'robot_comm_port': LaunchConfiguration('robot_comm_port'),
                 'relay_broadcast_address': LaunchConfiguration('relay_broadcast_address'),
+                'publish_own_packets': LaunchConfiguration('publish_own_packets'),
             }]
         )
     ])
