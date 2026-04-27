@@ -99,4 +99,8 @@ brain_node:
         # depth_image_topic: "/camera/robot0_rgbd_camera/depth/image_raw" # simulated
         # depth_camera_info_topic: "/camera/robot0_rgbd_camera/depth/camera_info" # simulated
     
-    game_control_ip: "192.168.0.103"
+    game_control_ip: "192.168.0.100"
+
+    sound:
+        enable: true
+        sound_pack: espeak

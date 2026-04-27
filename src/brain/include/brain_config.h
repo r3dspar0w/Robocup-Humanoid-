@@ -74,6 +74,9 @@ public:
 
     bool get_enable_com();
 
+    bool soundEnable = false;
+    string soundPack = "espeak";
+
     string get_tree_file_path();
 
     int get_depth_sample_step();
