@@ -305,7 +305,18 @@ void GameControllerNode::relayOutgoingTeamCommunication(const game_controller_in
     if (ret < 0)
     {
         RCLCPP_ERROR(get_logger(), "team relay sendto failed: %s", strerror(errno));
+        return;
     }
+    RCLCPP_INFO_THROTTLE(
+        get_logger(),
+        *get_clock(),
+        1000,
+        "team relay TX team=%d player=%d commId=%d cmdId=%d cmd=%d",
+        packet.teamId,
+        packet.playerId,
+        packet.communicationId,
+        packet.cmdId,
+        packet.cmd);
 }
 
 void GameControllerNode::spinTeamRelayReceiver()
@@ -336,6 +347,16 @@ void GameControllerNode::spinTeamRelayReceiver()
             continue;
         }
 
+        RCLCPP_INFO_THROTTLE(
+            get_logger(),
+            *get_clock(),
+            1000,
+            "team relay RX team=%d player=%d commId=%d cmdId=%d cmd=%d",
+            packet.teamId,
+            packet.playerId,
+            packet.communicationId,
+            packet.cmdId,
+            packet.cmd);
         _team_relay_publisher->publish(toRosTeamCommunication(packet));
     }
 }
