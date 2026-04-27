@@ -343,8 +343,18 @@ NodeStatus StepOnSpot::tick()
 NodeStatus CamTrackBall::tick()
 {
     double pitch, yaw, ballX, ballY, deltaX, deltaY;
-    const double pixToleranceX = brain->config->cameraImageWidth * 3 / 10.; // If the pixel difference between the ball and the center of the field of view is less than this tolerance, it is considered to be at the center of the field of view.
-    const double pixToleranceY = brain->config->cameraImageHeight * 3 / 10.;
+    double pixToleranceRatioX, pixToleranceRatioY, detectedSmoother, rememberedGain;
+    getInput("pixel_tolerance_ratio_x", pixToleranceRatioX);
+    getInput("pixel_tolerance_ratio_y", pixToleranceRatioY);
+    getInput("detected_smoother", detectedSmoother);
+    getInput("remembered_gain", rememberedGain);
+    pixToleranceRatioX = cap(pixToleranceRatioX, 0.5, 0.01);
+    pixToleranceRatioY = cap(pixToleranceRatioY, 0.5, 0.01);
+    detectedSmoother = max(detectedSmoother, 1.0);
+    rememberedGain = cap(rememberedGain, 1.0, 0.01);
+
+    const double pixToleranceX = brain->config->cameraImageWidth * pixToleranceRatioX;
+    const double pixToleranceY = brain->config->cameraImageHeight * pixToleranceRatioY;
     const double xCenter = brain->config->cameraImageWidth / 2;
     const double yCenter = brain->config->cameraImageHeight / 2; 
 
@@ -359,11 +369,11 @@ NodeStatus CamTrackBall::tick()
     { 
         if (iKnowBallPos) {
             // moving with smooth to last known ball position from vision
-            pitch = brain->data->headPitch + (brain->data->ball.pitchToRobot - brain->data->headPitch) * 0.01;
-            yaw = brain->data->headYaw + (brain->data->ball.yawToRobot - brain->data->headYaw) * 0.01;
+            pitch = brain->data->headPitch + (brain->data->ball.pitchToRobot - brain->data->headPitch) * rememberedGain;
+            yaw = brain->data->headYaw + (brain->data->ball.yawToRobot - brain->data->headYaw) * rememberedGain;
         } else if (tmBallPosReliable) {
-            pitch =  brain->data->headPitch + (brain->data->tmBall.pitchToRobot - brain->data->headPitch) * 0.01;
-            yaw = brain->data->headYaw + (brain->data->tmBall.yawToRobot - brain->data->headYaw) * 0.01;
+            pitch =  brain->data->headPitch + (brain->data->tmBall.pitchToRobot - brain->data->headPitch) * rememberedGain;
+            yaw = brain->data->headYaw + (brain->data->tmBall.yawToRobot - brain->data->headYaw) * rememberedGain;
         } else {
             brain->log->error("CamTrackBall", "reached impossible condition");
         }
@@ -379,9 +389,8 @@ NodeStatus CamTrackBall::tick()
             return NodeStatus::SUCCESS;
         }
 
-        double smoother = 3.5;
-        double deltaYaw = deltaX / brain->config->cameraImageWidth * brain->config->depthCameraFovX / smoother;
-        double deltaPitch = deltaY / brain->config->cameraImageHeight * brain->config->depthCameraFovY / smoother;
+        double deltaYaw = deltaX / brain->config->cameraImageWidth * brain->config->depthCameraFovX / detectedSmoother;
+        double deltaPitch = deltaY / brain->config->cameraImageHeight * brain->config->depthCameraFovY / detectedSmoother;
 
         pitch = brain->data->headPitch + deltaPitch;
         yaw = brain->data->headYaw - deltaYaw;
@@ -1457,6 +1466,11 @@ NodeStatus GoalieDecide::tick()
 
         const auto &fd = brain->config->fieldDimensions;
         Point ballPosToField = decisionBallPosToField;
+        if (iKnowBallPos) {
+            ballPosToField.x = brain->data->Pred_ball.x;
+            ballPosToField.y = brain->data->Pred_ball.y;
+            ballPosToField.z = 0.0;
+        }
         int selfIdx = brain->config->get_player_id() - 1;
 
         goalieTimeToBall = brain->data->tmMyCost;
@@ -1679,7 +1693,7 @@ tuple<double, double, double> Kick::_calcSpeed() {
 bool Kick::_shouldUseStraightKick(double yawTolerance, double yTolerance, double goalTolerance, double goalpostMargin, double obstacleDist)
 {
     string role = brain->tree->getEntry<string>("player_role");
-    if (role != "striker" || brain->data->kickType == "cross" || !brain->data->ballDetected) {
+    if (brain->data->kickType == "cross" || !brain->data->ballDetected) {
         return false;
     }
 
@@ -1691,6 +1705,14 @@ bool Kick::_shouldUseStraightKick(double yawTolerance, double yTolerance, double
     bool goalAligned = brain->isAngleGood(goalpostMargin, "kick") && fabs(deltaDir) <= goalTolerance;
     bool forwardLaneClear = brain->distToObstacle(0.0) >= obstacleDist
         && brain->distToObstacle(ballYaw) >= obstacleDist;
+
+    if (role == "goal_keeper") {
+        return ballCentered && fabs(ballYaw) < M_PI / 2.0 && forwardLaneClear;
+    }
+
+    if (role != "striker") {
+        return false;
+    }
 
     return ballCentered && goalAligned && forwardLaneClear;
 }

@@ -6,7 +6,7 @@
          <IfThenElse>
              <ScriptCondition        name="Ball location known?" code="ball_location_known || tm_ball_pos_reliable" />
              <Sequence               name="[Yes] -> Track ball and adjust position" >
-                <CamTrackBall />
+                <CamTrackBall pixel_tolerance_ratio_x="0.08" pixel_tolerance_ratio_y="0.08" detected_smoother="2.2" remembered_gain="0.12" />
              </Sequence>
              <Sequence               name="[No] -> Find ball">
                 <CamFindBall />

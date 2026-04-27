@@ -139,7 +139,12 @@ public:
 
     static PortsList providedPorts()
     {
-        return {};
+        return {
+            InputPort<double>("pixel_tolerance_ratio_x", 0.08, "Image-width ratio tolerated before moving head"),
+            InputPort<double>("pixel_tolerance_ratio_y", 0.08, "Image-height ratio tolerated before moving head"),
+            InputPort<double>("detected_smoother", 2.2, "Head tracking smoothing when the ball is detected"),
+            InputPort<double>("remembered_gain", 0.12, "Head tracking gain toward remembered ball position"),
+        };
     }
     NodeStatus tick() override;
 

@@ -74,19 +74,19 @@
                         lost_ball_retreat_after="5.0"
                      />
 
-                     <!-- Short ball loss: keep scanning without walking away from goal. -->
-                     <SetVelocity _while="decision=='find'" />
+                     <!-- Short ball loss: use the original find flow, including scan and ready/penalty positioning. -->
+                     <SubTree ID="FindBall" _while="decision=='find'" _autoremap="true" />
                      <!-- Retreat uses the original bounded blocking pose, capped inside the penalty area. -->
                      <GoToGoalBlockingPosition _while="decision == 'retreat'" theta_tolerance="0.6" vx_limit="0.9" vy_limit="0.6" dist_to_goalline="2.0" />
 
                      <!-- Goalkeeper can chase, but they should return back to goal -->
                      <GoalieChase   _while="decision == 'chase'"  vx_limit="0.8"  vy_limit="0.3"  vtheta_limit="1.0"  dist="0.1" safe_dist="0.5" />
                      <!-- Slightly different Adjust to prioritise blocking angle rather than approaching ball for a shot -->
-                     <Adjust _while="decision =='adjust'" turn_threshold="0.8" range="0.2" vx_limit="0.8" vy_limit="0.6" vtheta_limit="1.0" vtheta_factor="4.5" tangential_speed_far="0.9" tangential_speed_near="0.3" />
+                     <Adjust _while="decision =='adjust'" turn_threshold="0.8" range="0.2" vx_limit="0.5" vy_limit="0.35" vtheta_limit="1.0" vtheta_factor="4.0" tangential_speed_far="0.35" tangential_speed_near="0.12" no_turn_threshold="0.08" turn_first_threshold="0.35" />
 
                      <!-- Goalkeepers usually kick faster to clear ball away-->
                      <!-- Strikers kick for precision, not goalie-->
-                     <Kick _while="decision == 'kick'" speed_limit="1.2" min_msec_kick="600"/>
+                     <Kick _while="decision == 'kick'" speed_limit="1.2" min_msec_kick="600" prefer_straight="true" straight_yaw_tolerance="0.20" straight_y_tolerance="0.18" straight_obstacle_dist="1.0" straight_speed_limit="1.2"/>
                   </Sequence>
                </Sequence>
             </ReactiveSequence>
