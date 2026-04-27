@@ -54,6 +54,8 @@ public:
     GameObject tmBall;           
     double robotBallAngleToField; 
     bool lose_ball = false;
+    Pose2D Pred_ball;
+    Pose2D GoliePos;
     Pose2D goaliePredictedInterceptPose;
     bool goaliePredictedInterceptActive = false;
     Point goaliePredictedBallVelocityToField{0.0, 0.0, 0.0};

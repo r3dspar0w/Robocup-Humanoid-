@@ -559,6 +559,88 @@ private:
     Brain *brain;
 };
 
+class PredictBallTraj : public SyncActionNode
+{
+public:
+    PredictBallTraj(const std::string &name, const NodeConfig &config, Brain *_brain) : SyncActionNode(name, config), brain(_brain) {}
+
+    static BT::PortsList providedPorts()
+    {
+        return {
+            InputPort<double>("R_meas", 0.05, "Ball position measurement noise"),
+            InputPort<double>("sigma_a", 1.0, "Ball acceleration process noise"),
+            InputPort<double>("P0_pos", 0.1, "Initial position covariance"),
+            InputPort<double>("P0_vel", 1.0, "Initial velocity covariance"),
+            InputPort<double>("drop_time", 0.5, "Seconds without detection before velocity damping"),
+            InputPort<double>("vel_decay", 0.3, "Lost-ball velocity damping rate"),
+            InputPort<double>("a_min", 0.1, "Minimum effective ball deceleration"),
+            InputPort<double>("a_max", 0.8, "Maximum effective ball deceleration"),
+            InputPort<double>("k_av", 4.0, "Speed-to-deceleration curve gain"),
+        };
+    }
+
+    BT::NodeStatus tick() override;
+
+private:
+    Brain *brain;
+    bool kfInitialized = false;
+    bool hasPrevTime = false;
+    bool hasLastMeas = false;
+    rclcpp::Time prevTime;
+    rclcpp::Time lastMeasStamp;
+    double stateX = 0.0;
+    double stateY = 0.0;
+    double stateVx = 0.0;
+    double stateVy = 0.0;
+    double P[4][4] = {};
+};
+
+class CalcGoliePos : public SyncActionNode
+{
+public:
+    CalcGoliePos(const std::string &name, const NodeConfig &config, Brain *_brain) : SyncActionNode(name, config), brain(_brain) {}
+
+    static BT::PortsList providedPorts()
+    {
+        return {
+            InputPort<double>("ctPosx", 0.0, "Goal center x in field frame; default 0 means own goal center"),
+            InputPort<double>("ctPosy", 0.0, "Goal center y in field frame"),
+            InputPort<double>("golie_radius", 1.0, "Goalkeeper blocking radius from goal center"),
+        };
+    }
+
+    BT::NodeStatus tick() override;
+
+private:
+    Brain *brain;
+};
+
+class GolieMove : public SyncActionNode
+{
+public:
+    GolieMove(const std::string &name, const NodeConfig &config, Brain *_brain) : SyncActionNode(name, config), brain(_brain) {}
+
+    static BT::PortsList providedPorts()
+    {
+        return {
+            InputPort<double>("ctPosx", 0.0, "Goal center x in field frame; default 0 means own goal center"),
+            InputPort<double>("ctPosy", 0.0, "Goal center y in field frame"),
+            InputPort<double>("Kp", 2.0, "Position proportional gain"),
+            InputPort<double>("Kp_theta", 4.0, "Heading proportional gain"),
+            InputPort<double>("vx_high", 0.7, "Maximum robot-frame x velocity"),
+            InputPort<double>("vx_low", -0.35, "Minimum robot-frame x velocity"),
+            InputPort<double>("vy_high", 0.4, "Maximum robot-frame y velocity"),
+            InputPort<double>("vy_low", -0.4, "Minimum robot-frame y velocity"),
+            InputPort<double>("stop_threshold", 0.15, "Stop distance from goalkeeper target"),
+        };
+    }
+
+    BT::NodeStatus tick() override;
+
+private:
+    Brain *brain;
+};
+
 
 class Assist : public SyncActionNode
 {

@@ -226,6 +226,9 @@ void BrainTree::init()
     REGISTER_BUILDER(GoToFreekickPosition)
     REGISTER_BUILDER(GoToReadyPosition)
     REGISTER_BUILDER(GoToGoalBlockingPosition)
+    REGISTER_BUILDER(PredictBallTraj)
+    REGISTER_BUILDER(CalcGoliePos)
+    REGISTER_BUILDER(GolieMove)
     REGISTER_BUILDER(TurnOnSpot)
     REGISTER_BUILDER(MoveToPoseOnField)
     REGISTER_BUILDER(GoBackInField)
@@ -675,6 +678,299 @@ NodeStatus GoToGoalBlockingPosition::tick() {
         thetaTolerance,
         avoidObstacle
     );
+    return NodeStatus::SUCCESS;
+}
+
+NodeStatus PredictBallTraj::tick()
+{
+    double Rmeas, sigmaA, P0pos, P0vel;
+    getInput("R_meas", Rmeas);
+    getInput("sigma_a", sigmaA);
+    getInput("P0_pos", P0pos);
+    getInput("P0_vel", P0vel);
+
+    // Input: processed vision ball position in the field frame.
+    const auto ballPos = brain->data->ball.posToField;
+    const double mx = ballPos.x;
+    const double my = ballPos.y;
+    const bool measValid = brain->data->ballDetected;
+    const auto measStamp = brain->data->ball.timePoint;
+
+    // dt: advance every BT/control tick, bounded to keep covariance stable.
+    const auto now = brain->get_clock()->now();
+    double dt = 0.03;
+    if (hasPrevTime) {
+        dt = (now - prevTime).seconds();
+        dt = std::clamp(dt, 1e-3, 0.05);
+    }
+    prevTime = now;
+    hasPrevTime = true;
+
+    bool newMeas = false;
+    if (measValid && (!hasLastMeas || measStamp != lastMeasStamp)) {
+        newMeas = true;
+    }
+
+    // Initialization: wait for the first valid ball measurement.
+    if (!kfInitialized) {
+        if (!measValid) {
+            return NodeStatus::SUCCESS;
+        }
+
+        stateX = mx;
+        stateY = my;
+        stateVx = 0.0;
+        stateVy = 0.0;
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                P[i][j] = 0.0;
+            }
+        }
+        P[0][0] = P[1][1] = P0pos;
+        P[2][2] = P[3][3] = P0vel;
+
+        brain->data->Pred_ball.x = stateX;
+        brain->data->Pred_ball.y = stateY;
+        brain->data->Pred_ball.theta = 0.0;
+        brain->data->goaliePredictedBallVelocityToField = {stateVx, stateVy, 0.0};
+        brain->data->goaliePredictedBallSpeed = 0.0;
+
+        kfInitialized = true;
+        lastMeasStamp = measStamp;
+        hasLastMeas = true;
+        return NodeStatus::SUCCESS;
+    }
+
+    // Prediction: constant-velocity state and covariance propagation.
+    const double xPred = stateX + stateVx * dt;
+    const double yPred = stateY + stateVy * dt;
+    const double vxPred = stateVx;
+    const double vyPred = stateVy;
+
+    const double F[4][4] = {
+        {1.0, 0.0, dt,  0.0},
+        {0.0, 1.0, 0.0, dt },
+        {0.0, 0.0, 1.0, 0.0},
+        {0.0, 0.0, 0.0, 1.0},
+    };
+
+    const double sa2 = sigmaA * sigmaA;
+    const double dt2 = dt * dt;
+    const double dt3 = dt2 * dt;
+    const double dt4 = dt2 * dt2;
+    double Q[4][4] = {};
+    Q[0][0] = sa2 * dt4 * 0.25;
+    Q[1][1] = sa2 * dt4 * 0.25;
+    Q[0][2] = Q[2][0] = sa2 * dt3 * 0.5;
+    Q[1][3] = Q[3][1] = sa2 * dt3 * 0.5;
+    Q[2][2] = Q[3][3] = sa2 * dt2;
+
+    double FP[4][4] = {};
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            for (int k = 0; k < 4; ++k) {
+                FP[i][j] += F[i][k] * P[k][j];
+            }
+        }
+    }
+
+    double Ppred[4][4] = {};
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            for (int k = 0; k < 4; ++k) {
+                Ppred[i][j] += FP[i][k] * F[j][k];
+            }
+            Ppred[i][j] += Q[i][j];
+        }
+    }
+
+    stateX = xPred;
+    stateY = yPred;
+    stateVx = vxPred;
+    stateVy = vyPred;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            P[i][j] = Ppred[i][j];
+        }
+    }
+
+    // Lost-ball damping: keep predicting, then decay velocity after stale vision.
+    double dropTime, velDecay;
+    getInput("drop_time", dropTime);
+    getInput("vel_decay", velDecay);
+    if (!measValid && hasLastMeas && (now - lastMeasStamp).seconds() > dropTime) {
+        const double decay = std::exp(-velDecay * dt);
+        stateVx *= decay;
+        stateVy *= decay;
+    }
+
+    // Update: position-only Kalman correction on new camera frames.
+    if (newMeas) {
+        const double r0 = mx - stateX;
+        const double r1 = my - stateY;
+
+        const double S00 = P[0][0] + Rmeas;
+        const double S01 = P[0][1];
+        const double S10 = P[1][0];
+        const double S11 = P[1][1] + Rmeas;
+        double detS = S00 * S11 - S01 * S10;
+        if (std::fabs(detS) < 1e-12) {
+            detS = detS >= 0.0 ? 1e-12 : -1e-12;
+        }
+
+        const double invS00 = S11 / detS;
+        const double invS01 = -S01 / detS;
+        const double invS10 = -S10 / detS;
+        const double invS11 = S00 / detS;
+
+        double K[4][2] = {};
+        for (int i = 0; i < 4; ++i) {
+            K[i][0] = P[i][0] * invS00 + P[i][1] * invS10;
+            K[i][1] = P[i][0] * invS01 + P[i][1] * invS11;
+        }
+
+        stateX += K[0][0] * r0 + K[0][1] * r1;
+        stateY += K[1][0] * r0 + K[1][1] * r1;
+        stateVx += K[2][0] * r0 + K[2][1] * r1;
+        stateVy += K[3][0] * r0 + K[3][1] * r1;
+
+        double Pold[4][4] = {};
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                Pold[i][j] = P[i][j];
+            }
+        }
+
+        double IKH[4][4] = {};
+        for (int i = 0; i < 4; ++i) {
+            IKH[i][i] = 1.0;
+            IKH[i][0] -= K[i][0];
+            IKH[i][1] -= K[i][1];
+        }
+
+        double Pnew[4][4] = {};
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                for (int k = 0; k < 4; ++k) {
+                    Pnew[i][j] += IKH[i][k] * Pold[k][j];
+                }
+            }
+        }
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                P[i][j] = Pnew[i][j];
+            }
+        }
+
+        lastMeasStamp = measStamp;
+        hasLastMeas = true;
+    }
+
+    // Stop-position prediction: project filtered velocity to its final stop.
+    double aMin, aMax, kAv;
+    getInput("a_min", aMin);
+    getInput("a_max", aMax);
+    getInput("k_av", kAv);
+    aMin = std::max(aMin, 1e-3);
+    aMax = std::max(aMax, aMin + 1e-3);
+    kAv = std::max(kAv, 1e-3);
+
+    const double speed = norm(stateVx, stateVy);
+    Pose2D predBall;
+    predBall.x = stateX;
+    predBall.y = stateY;
+    predBall.theta = 0.0;
+    if (speed > 0.005) {
+        const double aEff = aMin + (aMax - aMin) * std::exp(-kAv * speed);
+        const double stopDist = speed * speed / (2.0 * aEff);
+        predBall.x = stateX + stateVx / speed * stopDist;
+        predBall.y = stateY + stateVy / speed * stopDist;
+    }
+
+    brain->data->Pred_ball = predBall;
+    brain->data->goaliePredictedBallVelocityToField = {stateVx, stateVy, 0.0};
+    brain->data->goaliePredictedBallSpeed = speed;
+    return NodeStatus::SUCCESS;
+}
+
+NodeStatus CalcGoliePos::tick()
+{
+    double goalX, goalY, radius;
+    getInput("ctPosx", goalX);
+    getInput("ctPosy", goalY);
+    getInput("golie_radius", radius);
+    if (std::fabs(goalX) < 1e-9) {
+        goalX = -brain->config->fieldDimensions.length / 2.0;
+    }
+
+    // Goalkeeper target: block on the ray from goal center to predicted stop point.
+    const auto predBall = brain->data->Pred_ball;
+    double dx = predBall.x - goalX;
+    double dy = predBall.y - goalY;
+    double dist = norm(dx, dy);
+    if (dist < 1e-6) {
+        dx = 1.0;
+        dy = 0.0;
+        dist = 1.0;
+    }
+
+    Pose2D goaliePos;
+    goaliePos.x = goalX + radius * dx / dist;
+    goaliePos.y = goalY + radius * dy / dist;
+    goaliePos.theta = atan2(predBall.y - goaliePos.y, predBall.x - goaliePos.x);
+    brain->data->GoliePos = goaliePos;
+    brain->data->goaliePredictedInterceptPose = goaliePos;
+    brain->data->goaliePredictedInterceptActive = true;
+    return NodeStatus::SUCCESS;
+}
+
+NodeStatus GolieMove::tick()
+{
+    if (!brain->tree->getEntry<bool>("ball_location_known")) {
+        brain->client->setVelocity(0.0, 0.0, 0.0);
+        return NodeStatus::SUCCESS;
+    }
+
+    double goalX, goalY, stopThreshold, Kp, KpTheta;
+    double vxHigh, vxLow, vyHigh, vyLow;
+    getInput("ctPosx", goalX);
+    getInput("ctPosy", goalY);
+    getInput("stop_threshold", stopThreshold);
+    getInput("Kp", Kp);
+    getInput("Kp_theta", KpTheta);
+    getInput("vx_high", vxHigh);
+    getInput("vx_low", vxLow);
+    getInput("vy_high", vyHigh);
+    getInput("vy_low", vyLow);
+    if (std::fabs(goalX) < 1e-9) {
+        goalX = -brain->config->fieldDimensions.length / 2.0;
+    }
+
+    // Movement: field-frame target error converted to robot-frame velocity.
+    const auto robotPose = brain->data->robotPoseToField;
+    const auto target = brain->data->GoliePos;
+    const double ex = target.x - robotPose.x;
+    const double ey = target.y - robotPose.y;
+    const double dist = norm(ex, ey);
+    const double targetTheta = atan2(target.y - goalY, target.x - goalX);
+
+    double controlX = ex * cos(robotPose.theta) + ey * sin(robotPose.theta);
+    double controlY = -ex * sin(robotPose.theta) + ey * cos(robotPose.theta);
+    const double linearFactor = Kp / (1.0 + std::exp(-3.0 * (dist - 0.3)));
+    controlX *= linearFactor;
+    controlY *= linearFactor;
+
+    double controlTheta = toPInPI(targetTheta - robotPose.theta) * KpTheta;
+    controlX = cap(controlX, vxHigh, vxLow);
+    controlY = cap(controlY, vyHigh, vyLow);
+
+    if (dist < stopThreshold) {
+        controlX = 0.0;
+        controlY = 0.0;
+        controlTheta = 0.0;
+    }
+
+    brain->client->setVelocity(controlX, controlY, controlTheta);
     return NodeStatus::SUCCESS;
 }
 

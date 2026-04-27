@@ -30,6 +30,20 @@
                   -->
                   <Sequence>
                      <SubTree ID="CamFindAndTrackBall" _autoremap="true" />
+                     <PredictBallTraj
+                        R_meas="0.05"
+                        sigma_a="1.0"
+                        P0_pos="0.1"
+                        P0_vel="1.0"
+                        drop_time="0.5"
+                        vel_decay="0.3"
+                        a_min="0.1"
+                        a_max="0.8"
+                        k_av="4.0"
+                     />
+                     <CalcGoliePos
+                        golie_radius="1.2"
+                     />
 
                      <!-- One of the main difference between striker and goalie BT -->
                      <!-- This uses <GoalieDecide .../>-->
@@ -61,8 +75,8 @@
                      <!-- The Below 2 is to ensure that they return to goal -->
                      <!-- Ensures that they return to goal even if they do not see the ball. -->
                      <!-- Strikers only focus on finding ball for offense -->
-                     <GoToGoalBlockingPosition _while="decision=='find'" theta_tolerance="0.6" vx_limit="0.7" vy_limit="0.5" />
-                     <GoToGoalBlockingPosition _while="decision == 'retreat'" theta_tolerance="0.6" vx_limit="0.9" vy_limit="0.6" />
+                     <GolieMove _while="decision=='find'" stop_threshold="0.2" Kp="2.0" Kp_theta="4.0" vx_high="0.7" vx_low="-0.35" vy_high="0.4" vy_low="-0.4" />
+                     <GolieMove _while="decision == 'retreat'" stop_threshold="0.2" Kp="2.0" Kp_theta="4.0" vx_high="0.9" vx_low="-0.45" vy_high="0.4" vy_low="-0.4" />
 
                      <!-- Goalkeeper can chase, but they should return back to goal -->
                      <GoalieChase   _while="decision == 'chase'"  vx_limit="0.8"  vy_limit="0.3"  vtheta_limit="1.0"  dist="0.1" safe_dist="0.5" />
