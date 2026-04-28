@@ -17,7 +17,7 @@ def generate_launch_description():
         DeclareLaunchArgument('enable_local_loopback_echo', default_value='true'),
         DeclareLaunchArgument('enable_compact_team_packet', default_value='true'),
         DeclareLaunchArgument('compact_secret_password', default_value='167'),
-        DeclareLaunchArgument('compact_packet_size', default_value='8'),
+        DeclareLaunchArgument('compact_packet_size', default_value='5'),
         DeclareLaunchArgument('field_length', default_value='14.0'),
         DeclareLaunchArgument('field_width', default_value='9.0'),
         Node(
