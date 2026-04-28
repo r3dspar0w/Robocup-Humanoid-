@@ -525,10 +525,6 @@ TeamCommunicationMsg BrainCommunication::fromRelayMsg(const game_controller_inte
 
 void BrainCommunication::relayCommunicationCallback(const game_controller_interface::msg::TeamCommunication::SharedPtr msg)
 {
-    brain->log->strategy(format(
-        "Brain received relay ROS input: team=%d player=%d commId=%d cmdId=%d cmd=%d ballKnown=%d ballDetected=%d",
-        msg->team_id, msg->player_id, msg->communication_id, msg->cmd_id, msg->cmd,
-        msg->ball_location_known, msg->ball_detected));
     processTeamCommunicationMsg(fromRelayMsg(*msg), "relay");
 }
 
@@ -555,11 +551,6 @@ void BrainCommunication::processTeamCommunicationMsg(const TeamCommunicationMsg 
             "%s communicationId: %d, alive: %d, ballDetected: %d ballRange: %.2f playerId: %d",
             source.c_str(), msg.communicationId, msg.isAlive, msg.ballDetected, msg.ballRange, msg.playerId)
             << RESET_CODE << endl;
-        brain->log->strategy(format(
-            "Received own team communication echo through %s: team=%d player=%d commId=%d role=%d alive=%d lead=%d ballKnown=%d ballDetected=%d ballRange=%.2f cost=%.2f cmdId=%d cmd=%d",
-            source.c_str(), msg.teamId, msg.playerId, msg.communicationId, msg.playerRole,
-            msg.isAlive, msg.isLead, msg.ballLocationKnown, msg.ballDetected,
-            msg.ballRange, msg.cost, msg.cmdId, msg.cmd));
         brain->data->sendId = msg.communicationId;
         brain->data->sendTime = brain->get_clock()->now();
         return;
@@ -579,11 +570,6 @@ void BrainCommunication::processTeamCommunicationMsg(const TeamCommunicationMsg 
 
     log(format("TMID: %.d, alive: %d, lead: %d, cost: %.1f, CmdId: %d, Cmd: %d, source: %s",
         msg.playerId, msg.isAlive, msg.isLead, msg.cost, msg.cmdId, msg.cmd, source.c_str()));
-    brain->log->strategy(format(
-        "Received team communication through %s: team=%d player=%d commId=%d role=%d alive=%d lead=%d ballKnown=%d ballDetected=%d ballRange=%.2f cost=%.2f cmdId=%d cmd=%d",
-        source.c_str(), msg.teamId, msg.playerId, msg.communicationId, msg.playerRole,
-        msg.isAlive, msg.isLead, msg.ballLocationKnown, msg.ballDetected,
-        msg.ballRange, msg.cost, msg.cmdId, msg.cmd));
 
     TMStatus &tmStatus = brain->data->tmStatus[tmIdx];
 
@@ -612,8 +598,6 @@ void BrainCommunication::processTeamCommunicationMsg(const TeamCommunicationMsg 
         brain->data->tmReceivedCmd = msg.cmd;
         brain->data->tmLastCmdChangeTime = brain->get_clock()->now();
         log(format("Received new command from teammate %d through %s: %d", msg.playerId, source.c_str(), msg.cmd));
-        brain->log->strategy(format("Received team command through %s from player %d: cmdId=%d cmd=%d",
-            source.c_str(), msg.playerId, msg.cmdId, msg.cmd));
     }
 }
 
@@ -636,11 +620,6 @@ void BrainCommunication::unicastCommunication() {
 
         if (_enable_robot_comm_relay && _relay_pub) {
             _relay_pub->publish(toRelayMsg(msg));
-            brain->log->strategy(format(
-                "Sent team communication through relay: team=%d player=%d commId=%d role=%d alive=%d lead=%d ballKnown=%d ballDetected=%d ballRange=%.2f cost=%.2f cmdId=%d cmd=%d",
-                msg.teamId, msg.playerId, msg.communicationId, msg.playerRole,
-                msg.isAlive, msg.isLead, msg.ballLocationKnown, msg.ballDetected,
-                msg.ballRange, msg.cost, msg.cmdId, msg.cmd));
         }
 
         std::lock_guard<std::mutex> lock(_teammate_addresses_mutex);
@@ -656,12 +635,6 @@ void BrainCommunication::unicastCommunication() {
             if (ret < 0) {
                 cout << RED_CODE << format("sendto failed: %s", strerror(errno))
                     << RESET_CODE << endl;
-            } else {
-                brain->log->strategy(format(
-                    "Sent team communication through direct UDP: team=%d player=%d targetPlayer=%d commId=%d role=%d alive=%d lead=%d ballKnown=%d ballDetected=%d ballRange=%.2f cost=%.2f cmdId=%d cmd=%d",
-                    msg.teamId, msg.playerId, it->second.playerId, msg.communicationId, msg.playerRole,
-                    msg.isAlive, msg.isLead, msg.ballLocationKnown, msg.ballDetected,
-                    msg.ballRange, msg.cost, msg.cmdId, msg.cmd));
             }
         }
         this_thread::sleep_for(chrono::milliseconds(UNICAST_INTERVAL_MS));
