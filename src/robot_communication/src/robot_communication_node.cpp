@@ -1,7 +1,11 @@
 #include <atomic>
+#include <algorithm>
+#include <array>
 #include <cerrno>
 #include <chrono>
 #include <cstring>
+#include <cmath>
+#include <cstdint>
 #include <functional>
 #include <stdexcept>
 #include <string>
@@ -20,6 +24,8 @@ using TeamCommunication = game_controller_interface::msg::TeamCommunication;
 namespace
 {
 constexpr int VALIDATION_COMMUNICATION = 31202;
+constexpr std::size_t COMPACT_PACKET_MAX_SIZE = 8;
+constexpr std::size_t COMPACT_PACKET_MIN_SIZE = 3;
 
 struct UdpTeamCommunicationPacket
 {
@@ -116,6 +122,19 @@ public:
         relay_broadcast_address_ = declare_parameter<std::string>("relay_broadcast_address", "255.255.255.255");
         publish_own_packets_ = declare_parameter<bool>("publish_own_packets", true);
         enable_local_loopback_echo_ = declare_parameter<bool>("enable_local_loopback_echo", true);
+        enable_compact_team_packet_ = declare_parameter<bool>("enable_compact_team_packet", true);
+        compact_secret_password_ = declare_parameter<int>("compact_secret_password", 0xA7);
+        compact_packet_size_ = declare_parameter<int>("compact_packet_size", 8);
+        field_length_ = declare_parameter<double>("field_length", 14.0);
+        field_width_ = declare_parameter<double>("field_width", 9.0);
+
+        compact_secret_password_ = std::clamp(compact_secret_password_, 0, 255);
+        compact_packet_size_ = std::clamp(
+            compact_packet_size_,
+            static_cast<int>(COMPACT_PACKET_MIN_SIZE),
+            static_cast<int>(COMPACT_PACKET_MAX_SIZE));
+        field_length_ = std::max(field_length_, 1e-3);
+        field_width_ = std::max(field_width_, 1e-3);
 
         if (robot_comm_port_ <= 0) {
             robot_comm_port_ = 31000 + team_id_;
@@ -133,6 +152,11 @@ public:
             receive_thread_ = std::thread([this]() { receiveLoop(); });
             RCLCPP_INFO(get_logger(), "Robot UDP relay enabled on port %d for team=%d player=%d",
                         robot_comm_port_, team_id_, player_id_);
+            if (enable_compact_team_packet_) {
+                RCLCPP_INFO(get_logger(),
+                            "Compact team packet enabled: size=%d password=0x%02X field=%.2fx%.2f",
+                            compact_packet_size_, compact_secret_password_, field_length_, field_width_);
+            }
         } else {
             RCLCPP_INFO(get_logger(), "Robot UDP relay disabled");
         }
@@ -236,6 +260,11 @@ private:
             RCLCPP_WARN(get_logger(), "Robot UDP relay send failed: %s", strerror(errno));
         }
 
+        if (enable_compact_team_packet_) {
+            auto compact_packet = makeCompactPacket(*msg);
+            sendPacket(compact_packet.data(), compact_packet_size_, send_addr_, "compact");
+        }
+
         // Some networks do not loop broadcast packets back to the sender.
         // Send a local UDP copy so the receive path can be verified on this robot.
         if (publish_own_packets_ && enable_local_loopback_echo_) {
@@ -254,20 +283,100 @@ private:
             if (loopback_ret < 0) {
                 RCLCPP_WARN(get_logger(), "Robot UDP relay loopback send failed: %s", strerror(errno));
             }
+
+            if (enable_compact_team_packet_) {
+                auto compact_packet = makeCompactPacket(*msg);
+                sendPacket(compact_packet.data(), compact_packet_size_, loopback_addr, "compact loopback");
+            }
         }
+    }
+
+    void sendPacket(const void *data, std::size_t size, const sockaddr_in &addr, const char *label)
+    {
+        ssize_t ret = sendto(
+            send_socket_,
+            data,
+            size,
+            0,
+            reinterpret_cast<const sockaddr *>(&addr),
+            sizeof(addr));
+
+        if (ret < 0) {
+            RCLCPP_WARN(get_logger(), "Robot UDP relay %s send failed: %s", label, strerror(errno));
+        }
+    }
+
+    std::array<uint8_t, COMPACT_PACKET_MAX_SIZE> makeCompactPacket(const TeamCommunication &msg) const
+    {
+        std::array<uint8_t, COMPACT_PACKET_MAX_SIZE> packet{};
+        packet[0] = static_cast<uint8_t>(compact_secret_password_);
+        packet[1] = static_cast<uint8_t>(msg.player_id) & 0x07;
+        packet[2] = calcBallZone(msg);
+        return packet;
+    }
+
+    uint8_t calcBallZone(const TeamCommunication &msg) const
+    {
+        if (!msg.ball_location_known) {
+            return 0;
+        }
+
+        const double half_length = field_length_ * 0.5;
+        const double half_width = field_width_ * 0.5;
+        const double x = std::clamp(msg.ball_pos_to_field_x, -half_length, half_length);
+        const double y = std::clamp(msg.ball_pos_to_field_y, -half_width, half_width);
+
+        // Rows are numbered from opponent side to own side.
+        const int row = std::clamp(static_cast<int>(std::floor((half_length - x) / (field_length_ / 3.0))), 0, 2);
+        // Columns are numbered left to right when facing the opponent goal.
+        const int col = std::clamp(static_cast<int>(std::floor((half_width - y) / (field_width_ / 3.0))), 0, 2);
+        return static_cast<uint8_t>(row * 3 + col + 1);
+    }
+
+    void handleCompactPacket(const uint8_t *packet, ssize_t len)
+    {
+        if (!enable_compact_team_packet_) {
+            return;
+        }
+
+        if (len < static_cast<ssize_t>(COMPACT_PACKET_MIN_SIZE)) {
+            RCLCPP_WARN(get_logger(), "Compact team packet too small: %ld", len);
+            return;
+        }
+
+        if (packet[0] != static_cast<uint8_t>(compact_secret_password_)) {
+            RCLCPP_WARN(get_logger(), "Compact team packet ignored wrong password: 0x%02X", packet[0]);
+            return;
+        }
+
+        const int compact_player_id = packet[1] & 0x07;
+        const int ball_zone = packet[2];
+
+        if (player_id_ > 0 && compact_player_id == (player_id_ & 0x07) && !publish_own_packets_) {
+            return;
+        }
+
+        RCLCPP_INFO(get_logger(),
+                    "Compact team packet received: player=%d zone=%d size=%ld reserved=[%d,%d,%d,%d,%d]",
+                    compact_player_id, ball_zone, len,
+                    len > 3 ? packet[3] : 0,
+                    len > 4 ? packet[4] : 0,
+                    len > 5 ? packet[5] : 0,
+                    len > 6 ? packet[6] : 0,
+                    len > 7 ? packet[7] : 0);
     }
 
     void receiveLoop()
     {
         sockaddr_in from_addr{};
         socklen_t from_addr_len = sizeof(from_addr);
-        UdpTeamCommunicationPacket packet{};
+        std::array<uint8_t, sizeof(UdpTeamCommunicationPacket)> buffer{};
 
         while (receive_flag_.load(std::memory_order_relaxed)) {
             ssize_t len = recvfrom(
                 receive_socket_,
-                &packet,
-                sizeof(packet),
+                buffer.data(),
+                buffer.size(),
                 0,
                 reinterpret_cast<sockaddr *>(&from_addr),
                 &from_addr_len);
@@ -279,11 +388,19 @@ private:
                 continue;
             }
 
+            if (enable_compact_team_packet_ && len == compact_packet_size_) {
+                handleCompactPacket(buffer.data(), len);
+                continue;
+            }
+
             if (len != static_cast<ssize_t>(sizeof(UdpTeamCommunicationPacket))) {
                 RCLCPP_WARN(get_logger(), "Robot UDP relay ignored packet with size %ld, expected %ld",
                             len, sizeof(UdpTeamCommunicationPacket));
                 continue;
             }
+
+            UdpTeamCommunicationPacket packet{};
+            std::memcpy(&packet, buffer.data(), sizeof(packet));
 
             if (packet.validation != VALIDATION_COMMUNICATION) {
                 RCLCPP_WARN(get_logger(), "Robot UDP relay ignored invalid validation: %d", packet.validation);
@@ -314,6 +431,11 @@ private:
     std::string relay_broadcast_address_;
     bool publish_own_packets_ = true;
     bool enable_local_loopback_echo_ = true;
+    bool enable_compact_team_packet_ = true;
+    int compact_secret_password_ = 0xA7;
+    int compact_packet_size_ = 8;
+    double field_length_ = 14.0;
+    double field_width_ = 9.0;
 
     int send_socket_ = -1;
     int receive_socket_ = -1;
