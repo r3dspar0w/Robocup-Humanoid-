@@ -69,6 +69,7 @@ brain_node:
       max_residual: 0.35
 
     enable_com: true
+    enable_robot_comm_relay: true
     
     rerunLog:
       enable_tcp: true
