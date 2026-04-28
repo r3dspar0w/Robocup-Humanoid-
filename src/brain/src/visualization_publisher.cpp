@@ -889,7 +889,7 @@ visualization_msgs::msg::Marker VisualizationPublisher::createLocalizationStatus
     marker.color = getColor(r, g, b);
 
     std::stringstream ss;
-    ss << (is_calibrated ? "Loc OK" : "Loc LOST");
+    ss << ((is_calibrated || last_locate_success) ? "Loc OK" : "Loc LOST");
     if (last_locate_success || std::isfinite(residual)) {
         ss << "\nConf: " << std::fixed << std::setprecision(0) << confidence << "%";
     }
