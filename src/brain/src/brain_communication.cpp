@@ -280,11 +280,22 @@ void BrainCommunication::clearupDiscoveryReceiver()
 void BrainCommunication::unicastToGameController() {
     while (_unicast_gamecontrol_flag.load(std::memory_order_relaxed))
     {
-        gc_return_data.team = brain->config->get_team_id();
-        gc_return_data.player = brain->config->get_player_id(); // return data id is 1,2,3,4
-        gc_return_data.message = GAMECONTROLLER_RETURN_MSG_ALIVE;
+        RoboCupGameControlReturnData gc_return_data;
 
-        int ret = sendto(_gc_send_socket, &gc_return_data, sizeof(gc_return_data), 0, (sockaddr *)&_gcsaddr, sizeof(_gcsaddr));
+        gc_return_data.teamNum = brain->config->get_team_id();
+        gc_return_data.playerNum = brain->config->get_player_id();
+        gc_return_data.fallen = 0;
+
+        // safe defaults (important)
+        gc_return_data.pose[0] = 0.0f;
+        gc_return_data.pose[1] = 0.0f;
+        gc_return_data.pose[2] = 0.0f;
+        gc_return_data.ballAge = -1.0f;
+        gc_return_data.ball[0] = 0.0f;
+        gc_return_data.ball[1] = 0.0f;
+
+        int ret = sendto(_gc_send_socket, &gc_return_data, sizeof(gc_return_data), 0,
+                        (sockaddr *)&_gcsaddr, sizeof(_gcsaddr));
         if (ret < 0)
         {
             cout << RED_CODE << format("gc sendto failed: %s", strerror(errno))

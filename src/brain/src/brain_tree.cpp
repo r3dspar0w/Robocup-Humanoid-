@@ -1021,6 +1021,26 @@ NodeStatus StrikerDecide::tick() {
 
     setOutput("decision_out", newDecision);
     
+    static std::string lastSpokenStrikerDecision = "";
+    if (brain->config->soundEnable && brain->config->soundPack == "espeak" && newDecision != lastSpokenStrikerDecision) {
+        if (newDecision == "find") {
+            brain->speak("find ball", true);
+        } else if (newDecision == "assist") {
+            brain->speak("assist", true);
+        } else if (newDecision == "chase") {
+            brain->speak("chase", true);
+        } else if (newDecision == "adjust") {
+            brain->speak("adjust", true);
+        } else if (newDecision == "kick") {
+            brain->speak("kick", true);
+        } else if (newDecision == "cross") {
+            brain->speak("cross", true);
+        } else if (newDecision == "auto_visual_kick") {
+            brain->speak("visual kick", true);
+        }
+        lastSpokenStrikerDecision = newDecision;
+    }
+    
     // Publish player_decide message
     brain->visualizer->publishPlayerDecision(format("striker-%s", newDecision.c_str()));
     
@@ -1305,6 +1325,22 @@ NodeStatus GoalieDecide::tick()
     }
 
     setOutput("decision_out", newDecision);
+
+    static std::string lastSpokenGoalieDecision = "";
+    if (brain->config->soundEnable && brain->config->soundPack == "espeak" && newDecision != lastSpokenGoalieDecision) {
+        if (newDecision == "find") {
+            brain->speak("find ball", true);
+        } else if (newDecision == "retreat") {
+            brain->speak("retreat", true);
+        } else if (newDecision == "chase") {
+            brain->speak("chase", true);
+        } else if (newDecision == "adjust") {
+            brain->speak("adjust", true);
+        } else if (newDecision == "kick") {
+            brain->speak("kick", true);
+        }
+        lastSpokenGoalieDecision = newDecision;
+    }
     
     // Publish player_decide message
     brain->visualizer->publishPlayerDecision(format("goalie-%s", newDecision.c_str()));
