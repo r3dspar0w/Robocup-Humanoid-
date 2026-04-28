@@ -449,8 +449,15 @@ NodeStatus SelfLocateEnterField::tick()
 
     auto markers = brain->data->getMarkersForLocator();
     auto fd = brain->config->fieldDimensions;
-    PoseBox2D cEnterLeft = {-fd.length / 2, -fd.circleRadius, fd.width / 2, fd.width / 2 + 1, -M_PI / 2 - M_PI / 6, -M_PI / 2 + M_PI / 6};
-    PoseBox2D cEnterRight = {-fd.length / 2, -fd.circleRadius, -fd.width / 2 - 1, -fd.width / 2, M_PI / 2 - M_PI / 6, M_PI / 2 + M_PI / 6};
+    PoseBox2D cEnterLeft, cEnterRight;
+
+   if (brain->config->get_start_on_opponent_side()) {
+       cEnterLeft = PoseBox2D{fd.length / 2, fd.circleRadius, fd.width / 2, fd.width / 2 + 1, -M_PI / 2 - M_PI / 6, -M_PI / 2 + M_PI / 6};
+       cEnterRight = PoseBox2D{fd.length / 2, fd.circleRadius, -fd.width / 2 - 1, -fd.width / 2, M_PI / 2 - M_PI / 6, M_PI / 2 + M_PI / 6};
+   } else {
+       cEnterLeft = PoseBox2D{-fd.length / 2, -fd.circleRadius, fd.width / 2, fd.width / 2 + 1, -M_PI / 2 - M_PI / 6, -M_PI / 2 + M_PI / 6};
+       cEnterRight = PoseBox2D{-fd.length / 2, -fd.circleRadius, -fd.width / 2 - 1, -fd.width / 2, M_PI / 2 - M_PI / 6, M_PI / 2 + M_PI / 6};
+   }
 
 
     auto resLeft = brain->locator->locateRobot(markers, cEnterLeft);

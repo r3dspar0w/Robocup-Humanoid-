@@ -57,6 +57,10 @@ bool BrainConfig::get_treat_person_as_robot() {
     return static_cast<rclcpp::Node*>(brain)->get_parameter_or("game.treat_person_as_robot", false);
 }
 
+bool BrainConfig::get_start_on_opponent_side() {
+    return static_cast<rclcpp::Node*>(brain)->get_parameter_or("game.start_on_opponent_side", false);
+}
+
 string BrainConfig::get_robot_name() {
     return static_cast<rclcpp::Node*>(brain)->get_parameter_or("robot.robot_name", string(""));
 }

@@ -58,7 +58,13 @@
                            - Kick
                            - Cross
                         -->
-                        <StrikerDecide decision_out="{decision}" decision_in="{decision}" chase_threshold="1.0" />
+                        <StrikerDecide decision_out="{decision}" decision_in="{decision}" chase_threshold="0.85"
+                                       straight_kick_yaw_tolerance="0.22"
+                                       straight_kick_y_tolerance="0.18"
+                                       straight_kick_goal_tolerance="0.35"
+                                       straight_kick_goalpost_margin="0.15"
+                                       straight_kick_obstacle_dist="1.3"
+                                       straight_kick_max_range="1.45" />
                         <!-- Start Searching for ball -->
                         <SubTree ID="FindBall" _while="decision=='find'" _autoremap="true" />
                      </ReactiveSequence>
@@ -81,7 +87,13 @@
                               dist -> Stopping Distance
                               safe_dist -> Avoid Collisions
                         -->
-                        <StrikerChase   _while="decision == 'chase'"  vx_limit="0.9"  vy_limit="0.2"  vtheta_limit="1.0"  dist="0.1" safe_dist="0.5" />
+                        <StrikerChase   _while="decision == 'chase'"  vx_limit="1.0"  vy_limit="0.35"  vtheta_limit="1.2"  dist="0.1" safe_dist="0.65"
+                                        open_vx_limit="1.2"
+                                        open_vtheta_limit="1.4"
+                                        open_robot_near_ball_dist="1.5"
+                                        curve_when_behind="true"
+                                        curve_lateral_gain="0.8"
+                                        curve_lateral_bias="0.12" />
 
                         <!-- 
                         AUTO VISUAL KICK
@@ -106,7 +118,7 @@
                            This aligns with goal, adjust angle and finetune position
 
                         -->
-                        <Adjust _while="decision =='adjust'" turn_threshold="0.5" range="0.4" vx_limit="0.7" vy_limit="0.6" vtheta_limit="1.5" vtheta_factor="1.5" tangential_speed_far="0.7" tangential_speed_near="0.15" />
+                        <Adjust _while="decision =='adjust'" turn_threshold="0.5" range="0.35" vx_limit="0.8" vy_limit="0.7" vtheta_limit="1.5" vtheta_factor="1.5" tangential_speed_far="0.75" tangential_speed_near="0.25" no_turn_threshold="0.18" turn_first_threshold="0.9" />
 
                         <!-- 
                         KICK
@@ -117,7 +129,14 @@
                               min_msec_kick -> Duration to kick by
                               msecs_stablize -> Balance Before Kick
                         -->
-                        <Kick _while="decision == 'kick'" speed_limit="0.8" min_msec_kick="1000" msecs_stablize="1000"/>
+                        <Kick _while="decision == 'kick'" speed_limit="0.9" min_msec_kick="900" msecs_stablize="1000"
+                              prefer_straight="true"
+                              straight_yaw_tolerance="0.22"
+                              straight_y_tolerance="0.18"
+                              straight_goal_tolerance="0.35"
+                              straight_goalpost_margin="0.15"
+                              straight_obstacle_dist="1.3"
+                              straight_speed_limit="1.1"/>
 
                         <!-- CROSS - Pass Instead of Shoot -->
                         <Kick _while="decision == 'cross'" speed_limit="0.4" min_msec_kick="300"/>

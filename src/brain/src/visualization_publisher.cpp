@@ -21,6 +21,13 @@ VisualizationPublisher::VisualizationPublisher(rclcpp::Node *node)
         "/booster_soccer/visualization_obstacle_grid", 10);
     pubPlayerDecision_ = node_->create_publisher<std_msgs::msg::String>(
         "/booster_soccer/player_decision", 10);
+
+    field_map_publisher_ = node_->create_publisher<visualization_msgs::msg::MarkerArray>(
+        "/booster_soccer/localization/field_map", rclcpp::QoS(1).transient_local());
+    particles_publisher_ = node_->create_publisher<sensor_msgs::msg::PointCloud2>(
+        "/booster_soccer/localization/particles", 10);
+    robot_pose_publisher_ = node_->create_publisher<geometry_msgs::msg::PoseStamped>(
+        "/booster_soccer/localization/robot_pose", 10);
 }
 
 visualization_msgs::msg::Marker VisualizationPublisher::createRobotMarker(
@@ -147,6 +154,57 @@ void VisualizationPublisher::publishPlayerDecision(const std::string &message)
     msg.data = message;
     pubPlayerDecision_->publish(msg);
 }
+
+void VisualizationPublisher::publishFieldMap(const visualization_msgs::msg::MarkerArray& map_markers)
+{
+    field_map_publisher_->publish(map_markers);
+}
+
+void VisualizationPublisher::publishParticles(const Eigen::ArrayXXd& hypos, const std::string& frame_id)
+{
+    if (hypos.rows() == 0) return;
+
+    sensor_msgs::msg::PointCloud2 cloud_msg;
+    cloud_msg.header.frame_id = frame_id;
+    cloud_msg.header.stamp = node_->now();
+
+    cloud_msg.height = 1;
+    cloud_msg.width = hypos.rows();
+
+    sensor_msgs::PointCloud2Modifier modifier(cloud_msg);
+    modifier.setPointCloud2FieldsByString(1, "xyz");
+    modifier.resize(cloud_msg.width);
+
+    sensor_msgs::PointCloud2Iterator<float> iter_x(cloud_msg, "x");
+    sensor_msgs::PointCloud2Iterator<float> iter_y(cloud_msg, "y");
+    sensor_msgs::PointCloud2Iterator<float> iter_z(cloud_msg, "z");
+
+    for (int i = 0; i < hypos.rows(); ++i, ++iter_x, ++iter_y, ++iter_z) {
+        *iter_x = hypos(i, 0);
+        *iter_y = hypos(i, 1);
+        *iter_z = 0.05; // Slightly above ground
+    }
+
+    particles_publisher_->publish(cloud_msg);
+}
+
+void VisualizationPublisher::publishRobotPoseStamped(double x, double y, double theta, const std::string& frame_id)
+{
+    geometry_msgs::msg::PoseStamped pose_msg;
+    pose_msg.header.frame_id = frame_id;
+    pose_msg.header.stamp = node_->now();
+
+    pose_msg.pose.position.x = x;
+    pose_msg.pose.position.y = y;
+    pose_msg.pose.position.z = 0.0;
+
+    tf2::Quaternion q;
+    q.setRPY(0, 0, theta);
+    pose_msg.pose.orientation = tf2::toMsg(q);
+
+    robot_pose_publisher_->publish(pose_msg);
+}
+
 
 std_msgs::msg::ColorRGBA VisualizationPublisher::getColor(float r, float g, float b, float a)
 {

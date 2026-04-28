@@ -34,6 +34,7 @@ public:
     string get_field_type();   
     int get_num_of_players();
     bool get_treat_person_as_robot();
+    bool get_start_on_opponent_side();
     string get_game_control_ip();
 
     string get_robot_name();
@@ -72,6 +73,9 @@ public:
 
 
     bool get_enable_com();
+
+    bool soundEnable = false;
+    string soundPack = "espeak";
 
     string get_tree_file_path();
 

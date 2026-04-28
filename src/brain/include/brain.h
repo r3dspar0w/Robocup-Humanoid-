@@ -142,9 +142,9 @@ public:
     void publishVisualizationMarkers();
 
     /**
-     * @brief Publish odom to map TF transform
+     * @brief Publish map to base_link TF transform
      */
-    void publishOdomToMapTF();
+    void publishMapToBaseLinkTF();
 
     /**
      * @brief Publish field dimensions as static messages
@@ -167,6 +167,8 @@ public:
     void publishTeammatesPoses();
 
     void pubKickMsg();
+
+    void speak(string text, bool allowRepeat = false);
 
     // ------------------------------------------------------ SUB CALLBACKS ------------------------------------------------------
 
@@ -287,6 +289,7 @@ private:
     rclcpp::Publisher<geometry_msgs::msg::Point>::SharedPtr pubBallPosition;
     rclcpp::Publisher<brain::msg::Kick>::SharedPtr pubKickBall;
     rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr pubTeammatesPoses;
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pubSpeak;
 
     // ------------------------------------------------------ debug logs related ------------------------------------------------------
     void logLags();

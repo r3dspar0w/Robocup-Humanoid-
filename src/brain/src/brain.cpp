@@ -44,6 +44,7 @@ Brain::Brain() : rclcpp::Node("brain_node")
     player_role_desc.type = rcl_interfaces::msg::ParameterType::PARAMETER_STRING;
     declare_parameter<string>("game.player_role", "", player_role_desc);
     declare_parameter<bool>("game.treat_person_as_robot", false);
+    declare_parameter<bool>("game.start_on_opponent_side", false);
     declare_parameter<int>("game.number_of_players", 2);
 
     declare_parameter<string>("robot.robot_name", "");
@@ -123,6 +124,9 @@ Brain::Brain() : rclcpp::Node("brain_node")
 
     declare_parameter<bool>("enable_com", true);
 
+    declare_parameter<bool>("sound.enable", false);
+    declare_parameter<string>("sound.sound_pack", "espeak");
+
     declare_parameter<string>("vision.image_camera_info_topic", "/camera/color/camera_info");
     declare_parameter<string>("vision.depth_image_topic", "/camera/camera/aligned_depth_to_color/image_raw");
     declare_parameter<string>("vision.depth_camera_info_topic", "/camera/depth/camera_info");
@@ -167,6 +171,20 @@ void Brain::init()
     
     communication->initCommunication();
 
+    std::string role = config->get_player_role();
+    if (role == "goal_keeper") role = "goal keeper";
+    if (role == "striker") role = "striker";
+
+    if (config->soundEnable && config->soundPack == "espeak") {
+        speak(
+            "team " + std::to_string(config->get_team_id()) +
+            " player " + std::to_string(config->get_player_id()) +
+            " " + role +
+            " ok auto",
+            true
+        );
+    }
+
     data->lastSuccessfulLocalizeTime = get_clock()->now();
     data->timeLastDet = get_clock()->now();
     data->timeLastLineDet = get_clock()->now();
@@ -208,6 +226,8 @@ void Brain::init()
     pubBallPosition = create_publisher<geometry_msgs::msg::Point>("/booster_soccer/ball_position" + topic_suffix, 10);
     pubTeammatesPoses = create_publisher<std_msgs::msg::Float64MultiArray>("/booster_soccer/teammates_poses" + topic_suffix, 10);
     pubKickBall = create_publisher<brain::msg::Kick>("/kick_ball", 10);
+
+    pubSpeak = create_publisher<std_msgs::msg::String>("/speak", 10);
 
     // subscribe to depth image topic
     string depthTopic = config->get_depth_image_topic();
@@ -263,6 +283,11 @@ void Brain::init()
 
     // Publish field dimensions information (called after publisher creation)
     publishFieldDimensions();
+
+    speak(
+        "team " + std::to_string(config->get_team_id()) + " " + config->get_player_role() + " ok",
+        true
+    );
 }
 
 void Brain::loadConfig()
@@ -271,6 +296,10 @@ void Brain::loadConfig()
     string visionConfigPath, visionConfigLocalPath;
     get_parameter("vision_config_path", visionConfigPath);
     get_parameter("vision_config_local_path", visionConfigLocalPath);
+
+    get_parameter("sound.enable", config->soundEnable);
+    get_parameter("sound.sound_pack", config->soundPack);
+
     if (!filesystem::exists(visionConfigPath)) {
         // Error and exit
         RCLCPP_ERROR(get_logger(), "vision_config_path %s not exists", visionConfigPath.c_str());
@@ -324,11 +353,13 @@ void Brain::tick()
     // Publish visualization markers
     publishVisualizationMarkers();
     
-    // Publish odom to map TF transform
-    publishOdomToMapTF();
+    // Publish map to base_link TF transform
+    publishMapToBaseLinkTF();
     
     // Publish position information
     publishRobotPose();
+    visualizer->publishRobotPoseStamped(data->robotPoseToField.x, data->robotPoseToField.y, data->robotPoseToField.theta, "map");
+    visualizer->publishParticles(locator->getParticles(), "map");
     publishBallPosition();
     publishTeammatesPoses();
     
@@ -718,10 +749,18 @@ vector<double> Brain::getGoalPostAngles(const double margin)
 {
     double leftX, leftY, rightX, rightY; 
 
-    leftX = config->fieldDimensions.length / 2;
-    leftY = config->fieldDimensions.goalWidth / 2;
-    rightX = config->fieldDimensions.length / 2;
-    rightY = -config->fieldDimensions.goalWidth / 2;
+    if (config->get_start_on_opponent_side()) {
+       leftX = -config->fieldDimensions.length / 2;
+       leftY = config->fieldDimensions.goalWidth / 2;
+       rightX = -config->fieldDimensions.length / 2;
+       rightY = -config->fieldDimensions.goalWidth / 2;
+   } else {
+       leftX = config->fieldDimensions.length / 2;
+       leftY = config->fieldDimensions.goalWidth / 2;
+       rightX = config->fieldDimensions.length / 2;
+       rightY = -config->fieldDimensions.goalWidth / 2;
+   }
+
 
 
     auto goalposts = data->getGoalposts();
@@ -1118,6 +1157,21 @@ void Brain::gameControlCallback(const game_controller_interface::msg::GameContro
     int playerId = config->get_player_id();
     string gameState = gameStateMap[static_cast<int>(msg.state)];
     tree->setEntry<string>("gc_game_state", gameState);
+
+    if (config->soundEnable && config->soundPack == "espeak" && gameState != lastGameState) {
+        if (gameState == "INITIAL") {
+            speak("initialising", true);
+        } else if (gameState == "READY") {
+            speak("ready", true);
+        } else if (gameState == "SET") {
+            speak("set", true);
+        } else if (gameState == "PLAY") {
+            speak("play", true);
+        } else if (gameState == "END") {
+            speak("end", true);
+        }
+    }
+
     bool isKickOffSide = (msg.kick_off_team == teamId); // Whether our team is the kickoff side
     tree->setEntry<bool>("gc_is_kickoff_side", isKickOffSide);
 
@@ -2445,63 +2499,64 @@ void Brain::publishVisualizationMarkers()
 {
     visualization_msgs::msg::MarkerArray marker_array;
     visualization_msgs::msg::MarkerArray localization_marker_array;
+    visualization_msgs::msg::MarkerArray field_map_array;
 
     // 1. Publish field map (fixed)
     auto &fd = config->fieldDimensions;
     
     // Center line
-    marker_array.markers.push_back(
-        visualizer->createFieldCenterLineMarker(fd.width, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createFieldCenterLineMarker(fd.width, "map"));
+    auto center_line = visualizer->createFieldCenterLineMarker(fd.width, "map");
+    marker_array.markers.push_back(center_line);
+    localization_marker_array.markers.push_back(center_line);
+    field_map_array.markers.push_back(center_line);
     
     // Center circle
-    marker_array.markers.push_back(
-        visualizer->createFieldCenterCircleMarker(fd.circleRadius, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createFieldCenterCircleMarker(fd.circleRadius, "map"));
+    auto center_circle = visualizer->createFieldCenterCircleMarker(fd.circleRadius, "map");
+    marker_array.markers.push_back(center_circle);
+    localization_marker_array.markers.push_back(center_circle);
+    field_map_array.markers.push_back(center_circle);
     
     // Field boundary
-    marker_array.markers.push_back(
-        visualizer->createFieldBoundaryMarker(fd.length, fd.width, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createFieldBoundaryMarker(fd.length, fd.width, "map"));
+    auto field_boundary = visualizer->createFieldBoundaryMarker(fd.length, fd.width, "map");
+    marker_array.markers.push_back(field_boundary);
+    localization_marker_array.markers.push_back(field_boundary);
+    field_map_array.markers.push_back(field_boundary);
     
     // Our goal area
-    marker_array.markers.push_back(
-        visualizer->createGoalAreaMarker(true, fd.length, fd.goalAreaLength, fd.goalAreaWidth, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createGoalAreaMarker(true, fd.length, fd.goalAreaLength, fd.goalAreaWidth, "map"));
+    auto our_goal_area = visualizer->createGoalAreaMarker(true, fd.length, fd.goalAreaLength, fd.goalAreaWidth, "map");
+    marker_array.markers.push_back(our_goal_area);
+    localization_marker_array.markers.push_back(our_goal_area);
+    field_map_array.markers.push_back(our_goal_area);
     
     // Opponent's goal area
-    marker_array.markers.push_back(
-        visualizer->createGoalAreaMarker(false, fd.length, fd.goalAreaLength, fd.goalAreaWidth, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createGoalAreaMarker(false, fd.length, fd.goalAreaLength, fd.goalAreaWidth, "map"));
+    auto opp_goal_area = visualizer->createGoalAreaMarker(false, fd.length, fd.goalAreaLength, fd.goalAreaWidth, "map");
+    marker_array.markers.push_back(opp_goal_area);
+    localization_marker_array.markers.push_back(opp_goal_area);
+    field_map_array.markers.push_back(opp_goal_area);
     
     // Our penalty area (large penalty area)
-    marker_array.markers.push_back(
-        visualizer->createPenaltyAreaMarker(true, fd.length, fd.penaltyAreaLength, fd.penaltyAreaWidth, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createPenaltyAreaMarker(true, fd.length, fd.penaltyAreaLength, fd.penaltyAreaWidth, "map"));
+    auto our_penalty_area = visualizer->createPenaltyAreaMarker(true, fd.length, fd.penaltyAreaLength, fd.penaltyAreaWidth, "map");
+    marker_array.markers.push_back(our_penalty_area);
+    localization_marker_array.markers.push_back(our_penalty_area);
+    field_map_array.markers.push_back(our_penalty_area);
     
     // Opponent's penalty area (large penalty area)
-    marker_array.markers.push_back(
-        visualizer->createPenaltyAreaMarker(false, fd.length, fd.penaltyAreaLength, fd.penaltyAreaWidth, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createPenaltyAreaMarker(false, fd.length, fd.penaltyAreaLength, fd.penaltyAreaWidth, "map"));
+    auto opp_penalty_area = visualizer->createPenaltyAreaMarker(false, fd.length, fd.penaltyAreaLength, fd.penaltyAreaWidth, "map");
+    marker_array.markers.push_back(opp_penalty_area);
+    localization_marker_array.markers.push_back(opp_penalty_area);
+    field_map_array.markers.push_back(opp_penalty_area);
     
     // Our penalty point
-    marker_array.markers.push_back(
-        visualizer->createPenaltyPointMarker(true, fd.length, fd.penaltyDist, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createPenaltyPointMarker(true, fd.length, fd.penaltyDist, "map"));
+    auto our_penalty_point = visualizer->createPenaltyPointMarker(true, fd.length, fd.penaltyDist, "map");
+    marker_array.markers.push_back(our_penalty_point);
+    localization_marker_array.markers.push_back(our_penalty_point);
+    field_map_array.markers.push_back(our_penalty_point);
     
     // Opponent's penalty point
-    marker_array.markers.push_back(
-        visualizer->createPenaltyPointMarker(false, fd.length, fd.penaltyDist, "map"));
-    localization_marker_array.markers.push_back(
-        visualizer->createPenaltyPointMarker(false, fd.length, fd.penaltyDist, "map"));
+    auto opp_penalty_point = visualizer->createPenaltyPointMarker(false, fd.length, fd.penaltyDist, "map");
+    marker_array.markers.push_back(opp_penalty_point);
+    localization_marker_array.markers.push_back(opp_penalty_point);
+    field_map_array.markers.push_back(opp_penalty_point);
 
     // 2. Publish robot position - with orientation arrow
     auto robot_marker = visualizer->createRobotMarker(
@@ -2597,9 +2652,10 @@ void Brain::publishVisualizationMarkers()
 
     visualizer->publishMarkers(marker_array);
     visualizer->publishLocalizationMarkers(localization_marker_array);
+    visualizer->publishFieldMap(field_map_array);
 }
 
-void Brain::publishOdomToMapTF()
+void Brain::publishMapToBaseLinkTF()
 {
     // Create transform message
     geometry_msgs::msg::TransformStamped transformStamped;
@@ -2607,7 +2663,8 @@ void Brain::publishOdomToMapTF()
     // Set timestamp
     transformStamped.header.stamp = this->now();
     transformStamped.header.frame_id = "map";
-    transformStamped.child_frame_id = "odom";
+    transformStamped.child_frame_id = "base_link";
+
     
     // Set translation (robot position in the field coordinate system)
     transformStamped.transform.translation.x = data->robotPoseToField.x;
@@ -2684,4 +2741,27 @@ void Brain::publishTeammatesPoses()
     }
     
     pubTeammatesPoses->publish(msg);
+}
+
+void Brain::speak(string text, bool allowRepeat)
+{
+    const double COOLDOWN_MSECS = 2000.0;
+
+    if (!pubSpeak) return;
+    if (!config->soundEnable || config->soundPack != "espeak") return;
+
+    static string _lastText;
+    static rclcpp::Time _lastTime;
+
+    if (msecsSince(_lastTime) < COOLDOWN_MSECS) return;
+
+    if (_lastText == text && (!allowRepeat)) return;
+
+    _lastTime = get_clock()->now();
+
+    std_msgs::msg::String msg;
+    msg.data = text;
+    pubSpeak->publish(msg);
+
+    _lastText = text;
 }
