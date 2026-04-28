@@ -15,6 +15,11 @@ def generate_launch_description():
         DeclareLaunchArgument('relay_broadcast_address', default_value='255.255.255.255'),
         DeclareLaunchArgument('publish_own_packets', default_value='true'),
         DeclareLaunchArgument('enable_local_loopback_echo', default_value='true'),
+        DeclareLaunchArgument('enable_compact_team_packet', default_value='true'),
+        DeclareLaunchArgument('compact_secret_password', default_value='167'),
+        DeclareLaunchArgument('compact_packet_size', default_value='5'),
+        DeclareLaunchArgument('field_length', default_value='14.0'),
+        DeclareLaunchArgument('field_width', default_value='9.0'),
         Node(
             package='robot_communication',
             executable='robot_communication_node',
@@ -27,6 +32,11 @@ def generate_launch_description():
                 'relay_broadcast_address': LaunchConfiguration('relay_broadcast_address'),
                 'publish_own_packets': LaunchConfiguration('publish_own_packets'),
                 'enable_local_loopback_echo': LaunchConfiguration('enable_local_loopback_echo'),
+                'enable_compact_team_packet': LaunchConfiguration('enable_compact_team_packet'),
+                'compact_secret_password': LaunchConfiguration('compact_secret_password'),
+                'compact_packet_size': LaunchConfiguration('compact_packet_size'),
+                'field_length': LaunchConfiguration('field_length'),
+                'field_width': LaunchConfiguration('field_width'),
             }]
         )
     ])
