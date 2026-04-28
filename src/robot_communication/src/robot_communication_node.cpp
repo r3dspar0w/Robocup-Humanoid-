@@ -68,6 +68,11 @@ std::string bytesToBinaryString(const void *data, std::size_t size)
     return stream.str();
 }
 
+uint16_t decodeCompactRobotPose(const uint8_t *packet)
+{
+    return static_cast<uint16_t>(packet[3]) | (static_cast<uint16_t>(packet[4]) << 8);
+}
+
 std::string describeCompactPacket(const uint8_t *packet)
 {
     const uint8_t identity = packet[1];
@@ -345,11 +350,6 @@ private:
             theta -= 2.0 * PI;
         }
         return theta;
-    }
-
-    uint16_t decodeCompactRobotPose(const uint8_t *packet) const
-    {
-        return static_cast<uint16_t>(packet[3]) | (static_cast<uint16_t>(packet[4]) << 8);
     }
 
     uint8_t calcBallZone(const TeamCommunication &msg) const
