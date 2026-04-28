@@ -24,6 +24,7 @@ using TeamCommunication = game_controller_interface::msg::TeamCommunication;
 // 167 decimal
 // 0xA7 hex
 // 10100111 binary
+// [ password ][ id/role/state ][ ball zone ][ pose byte 0 ][ pose byte 1 ]
 
 namespace
 {
