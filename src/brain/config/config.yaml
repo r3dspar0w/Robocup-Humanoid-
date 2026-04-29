@@ -4,10 +4,10 @@ brain_node:
       team_id: 67 # must be consistent with GameControl
       player_id: 1 # 1 | 2 | 3 | 4 | 5
       field_type: "adult_size" # adult_size | kid_size | robo_league
-      player_role: "goal_keeper" # striker | goal_keeper
+      player_role: "striker" # striker | goal_keeper
       treat_person_as_robot: true
       number_of_players: 3
-      start_on_opponent_side: false #False for normal field size and goal keeper
+      start_on_opponent_side: true #False for normal field size and goal keeper
       
     robot:
       robot_name: "" # When multiple robots exist, specify e.g. "robot0", "robot1"; leave empty for single robot

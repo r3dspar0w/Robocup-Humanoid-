@@ -1333,7 +1333,93 @@ void Brain::gameControlCallback(const game_controller_interface::msg::GameContro
 
     int teamId = config->get_team_id();
     int playerId = config->get_player_id();
-    string gameState = gameStateMap[static_cast<int>(msg.state)];
+
+    int rawState = static_cast<int>(msg.state);
+    int rawSecondaryState = static_cast<int>(msg.secondary_state);
+    int rawSecondaryTeam = static_cast<int>(msg.secondary_state_info[0]);
+    int rawSecondaryPhase = static_cast<int>(msg.secondary_state_info[1]);
+
+    // Safety guard so bad/raw GC state does not crash the robot brain
+    if (rawState < 0 || rawState >= static_cast<int>(gameStateMap.size())) {
+        RCLCPP_ERROR(
+            get_logger(),
+            "[GC_STATE_CHANGE] INVALID raw_state=%d secondary_state=%d secondary_team=%d secondary_phase=%d",
+            rawState,
+            rawSecondaryState,
+            rawSecondaryTeam,
+            rawSecondaryPhase
+        );
+        return;
+    }
+
+    string gameState = gameStateMap[rawState];
+
+    // Print + save only when the GameController state changes.
+    // This avoids the huge spam from locate logs.
+    static std::string lastPrintedGameState = "";
+    static int lastPrintedRawState = -1;
+    static int lastPrintedSecondaryState = -1;
+    static int lastPrintedSecondaryTeam = -1;
+    static int lastPrintedSecondaryPhase = -1;
+
+    bool gcStateChanged =
+        gameState != lastPrintedGameState ||
+        rawState != lastPrintedRawState ||
+        rawSecondaryState != lastPrintedSecondaryState ||
+        rawSecondaryTeam != lastPrintedSecondaryTeam ||
+        rawSecondaryPhase != lastPrintedSecondaryPhase;
+
+    static rclcpp::Time lastPeriodicGcLogTime = this->get_clock()->now();
+    static int gcPacketCount = 0;
+    gcPacketCount++;
+
+    auto nowForGcLog = this->get_clock()->now();
+    bool periodicLogDue = (nowForGcLog - lastPeriodicGcLogTime).seconds() >= 1.0;
+
+    if (gcStateChanged || periodicLogDue) {
+        const char *logType = gcStateChanged ? "GC_STATE_CHANGE" : "GC_PACKET_STILL_SAME";
+
+        RCLCPP_WARN(
+            get_logger(),
+            "[%s] count=%d raw_state=%d mapped_state=%s secondary_state=%d secondary_team=%d secondary_phase=%d",
+            logType,
+            gcPacketCount,
+            rawState,
+            gameState.c_str(),
+            rawSecondaryState,
+            rawSecondaryTeam,
+            rawSecondaryPhase
+        );
+
+        std::ofstream gcLog(
+            "/home/booster/Workspace/Robocup-Humanoid/gc_state_debug.log",
+            std::ios::app
+        );
+
+        if (gcLog.is_open()) {
+            gcLog
+                << "[" << std::fixed << std::setprecision(3) << nowForGcLog.seconds() << "] "
+                << logType
+                << " count=" << gcPacketCount
+                << " raw_state=" << rawState
+                << " mapped_state=" << gameState
+                << " secondary_state=" << rawSecondaryState
+                << " secondary_team=" << rawSecondaryTeam
+                << " secondary_phase=" << rawSecondaryPhase
+                << std::endl;
+        }
+
+        lastPeriodicGcLogTime = nowForGcLog;
+
+        if (gcStateChanged) {
+            lastPrintedGameState = gameState;
+            lastPrintedRawState = rawState;
+            lastPrintedSecondaryState = rawSecondaryState;
+            lastPrintedSecondaryTeam = rawSecondaryTeam;
+            lastPrintedSecondaryPhase = rawSecondaryPhase;
+        }
+    }
+
     tree->setEntry<string>("gc_game_state", gameState);
 
     if (config->soundEnable && config->soundPack == "espeak" && gameState != lastGameState) {
@@ -2623,7 +2709,7 @@ bool Brain::isFreekickStartPlacing() {
 
 
 void Brain::agentCommandCallback(const std_msgs::msg::String::SharedPtr msg) {
-    RCLCPP_INFO(get_logger(), "Received agent command: %s", msg->data.c_str());
+    RCLCPP_WARN(get_logger(), "[AgentCommand] raw msg->data='%s'", msg->data.c_str());
 
     data->timeLastGamecontrolMsg = get_clock()->now();
 

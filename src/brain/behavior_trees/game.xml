@@ -141,6 +141,13 @@
                         <ReactiveSequence _while="gc_game_state=='END'" name="game end">
                             <SetVelocity />
                         </ReactiveSequence>
+                        
+                        <!-- STOP STATE -->
+                        <ReactiveSequence _while="gc_game_state=='STOP'" name="game stop">
+                            <SubTree ID="CamFindAndTrackBall" _autoremap="true" />
+                            <SubTree ID="Locate" _autoremap="true" _while="ball_location_known"/>
+                            <SetVelocity />
+                        </ReactiveSequence>
 
                     </ReactiveSequence>
 
