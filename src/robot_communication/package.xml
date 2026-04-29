@@ -1,19 +1,16 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>game_controller_interface</name>
-  <version>1.0.0</version>
-  <description>game controller interface</description>
-  <maintainer email="lishuai@booster.tech">lishuai</maintainer>
+  <name>robot_communication</name>
+  <version>0.0.0</version>
+  <description>UDP relay for robot-to-robot team communication.</description>
+  <maintainer email="chengcheng@booster.tech">Cheng</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
-  <buildtool_depend>rosidl_default_generators</buildtool_depend>
 
   <depend>rclcpp</depend>
-  <depend>std_msgs</depend>
-  <exec_depend>rosidl_default_runtime</exec_depend>
-  <member_of_group>rosidl_interface_packages</member_of_group>
+  <depend>game_controller_interface</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
