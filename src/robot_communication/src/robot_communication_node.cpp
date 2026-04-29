@@ -613,7 +613,7 @@ private:
             }
             last_sequence_by_player_[compact_player_id] = packet->sequence();
 
-            RCLCPP_DEBUG(get_logger(), "RX team broadcast: %s", describeCompactPacket(*packet).c_str());
+            RCLCPP_INFO(get_logger(), "Received team broadcast: %s", describeCompactPacket(*packet).c_str());
             pub_in_->publish(makeMinimalMessageFromCompactPacket(*packet));
         }
     }
