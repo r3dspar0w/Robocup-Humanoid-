@@ -54,7 +54,7 @@ def _load_brain_config_defaults():
 
 def _arg_or_default(context, name, default):
     value = context.perform_substitution(LaunchConfiguration(name))
-    return default if value == '' else value
+    return default if value == '' else _scalar(value)
 
 
 def launch_robot_communication(context, *args, **kwargs):
