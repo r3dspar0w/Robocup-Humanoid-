@@ -65,8 +65,8 @@ brain_node:
       autoVisualKickEnableAngle: 0.8
 
     locator:
-      min_marker_count: 5
-      max_residual: 0.35
+      min_marker_count: 2  # was 5 — lowered to allow localization with fewer visible markers (e.g. half-field / corridor tests)
+      max_residual: 0.55   # was 0.35 — relaxed to tolerate rougher particle filter fits when only 1-2 markers visible
 
     enable_com: true
     enable_robot_comm_relay: true

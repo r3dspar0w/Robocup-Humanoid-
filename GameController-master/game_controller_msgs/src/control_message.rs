@@ -1,0 +1,255 @@
+use bytes::{BufMut, Bytes, BytesMut};
+
+use game_controller_core::{
+    timer::SignedDuration,
+    types::{Color, Division, Game, Params, Penalty, Phase, SetPlay, Side, SideMapping, State},
+};
+
+use crate::bindings::{
+    COMPETITION_TYPE_LARGE, COMPETITION_TYPE_MIDDLE, COMPETITION_TYPE_SMALL,
+    GAMECONTROLLER_STRUCT_HEADER, GAMECONTROLLER_STRUCT_SIZE, GAMECONTROLLER_STRUCT_VERSION,
+    GAME_PHASE_EXTRA_TIME, GAME_PHASE_NORMAL, GAME_PHASE_PENALTY_SHOOT_OUT, GAME_PHASE_TIMEOUT,
+    KICKING_TEAM_NONE, MAX_NUM_PLAYERS, PENALTY_BALL_HOLDING, PENALTY_ILLEGAL_POSITIONING,
+    PENALTY_INCAPABLE_ROBOT, PENALTY_LEAVING_THE_FIELD, PENALTY_LOCAL_GAME_STUCK,
+    PENALTY_MOTION_IN_SET, PENALTY_NONE, PENALTY_PICK_UP, PENALTY_PLAYING_WITH_ARMS_HANDS,
+    PENALTY_PUSHING, PENALTY_SENT_OFF, PENALTY_SUBSTITUTE, SET_PLAY_CORNER_KICK,
+    SET_PLAY_DIRECT_FREE_KICK, SET_PLAY_GOAL_KICK, SET_PLAY_INDIRECT_FREE_KICK, SET_PLAY_NONE,
+    SET_PLAY_PENALTY_KICK, SET_PLAY_THROW_IN, STATE_FINISHED, STATE_INITIAL, STATE_PLAYING,
+    STATE_READY, STATE_SET, TEAM_BLACK, TEAM_BLUE, TEAM_BROWN, TEAM_GRAY, TEAM_GREEN, TEAM_ORANGE,
+    TEAM_PURPLE, TEAM_RED, TEAM_WHITE, TEAM_YELLOW,
+};
+
+/// This struct corresponds to the `RobotInfo`.
+#[derive(Debug)]
+pub struct ControlMessagePlayer {
+    /// This field corresponds to `RobotInfo::penalty`.
+    penalty: u8,
+    /// This field corresponds to `RobotInfo::secsTillUnpenalised`.
+    secs_till_unpenalized: u8,
+    /// This field corresponds to `RobotInfo::warnings`.
+    warnings: u8,
+    /// This field corresponds to `RobotInfo::cautions`.
+    cautions: u8,
+}
+
+/// This struct corresponds to the `TeamInfo`.
+#[derive(Debug)]
+pub struct ControlMessageTeam {
+    /// This field corresponds to `TeamInfo::teamNumber`.
+    number: u8,
+    /// This field corresponds to `TeamInfo::fieldPlayerColour`.
+    field_player_color: u8,
+    /// This field corresponds to `TeamInfo::goalkeeperColour`.
+    goalkeeper_color: u8,
+    /// This field corresponds to `TeamInfo::goalkeeper`.
+    goalkeeper: u8,
+    /// This field corresponds to `TeamInfo::score`.
+    score: u8,
+    /// This field corresponds to `TeamInfo::penaltyShot`.
+    penalty_shot: u8,
+    /// This field corresponds to `TeamInfo::singleShots`.
+    single_shots: u16,
+    /// This field corresponds to `TeamInfo::messageBudget`.
+    message_budget: u16,
+    /// This field corresponds to `TeamInfo::players`.
+    players: [ControlMessagePlayer; MAX_NUM_PLAYERS as usize],
+}
+
+/// This struct corresponds to `RoboCupGameControlData`. `RoboCupGameControlData::header` and
+/// `RoboCupGameControlData::version` are implicitly added/removed when converting to/from the
+/// binary format.
+pub struct ControlMessage {
+    /// This field specifies if the message is sent to a monitor (`true`) or to the players
+    /// (`false`).
+    to_monitor: bool,
+    /// This field corresponds to `RoboCupGameControlData::packetNumber`.
+    packet_number: u8,
+    /// This field corresponds to `RoboCupGameControlData::playersPerTeam`.
+    players_per_team: u8,
+    /// This field corresponds to `RoboCupGameControlData::competitionType`.
+    competition_type: u8,
+    /// This field corresponds to `RoboCupGameControlData::stopped`.
+    stopped: bool,
+    /// This field corresponds to `RoboCupGameControlData::gamePhase`.
+    game_phase: u8,
+    /// This field corresponds to `RoboCupGameControlData::state`.
+    state: u8,
+    /// This field corresponds to `RoboCupGameControlData::setPlay`.
+    set_play: u8,
+    /// This field corresponds to `RoboCupGameControlData::firstHalf`.
+    first_half: bool,
+    /// This field corresponds to `RoboCupGameControlData::kickingTeam`.
+    kicking_team: u8,
+    /// This field corresponds to `RoboCupGameControlData::secsRemaining`.
+    secs_remaining: i16,
+    /// This field corresponds to `RoboCupGameControlData::secondaryTime`.
+    secondary_time: i16,
+    /// This field corresponds to `RoboCupGameControlData::teams`.
+    teams: [ControlMessageTeam; 2],
+}
+
+impl From<ControlMessage> for Bytes {
+    fn from(message: ControlMessage) -> Self {
+        let mut bytes = BytesMut::with_capacity(GAMECONTROLLER_STRUCT_SIZE);
+        bytes.put(if message.to_monitor {
+            &b"RGTD"[..4]
+        } else {
+            &GAMECONTROLLER_STRUCT_HEADER[..4]
+        });
+        bytes.put_u8(GAMECONTROLLER_STRUCT_VERSION);
+        bytes.put_u8(message.packet_number);
+        bytes.put_u8(message.players_per_team);
+        bytes.put_u8(message.competition_type);
+        bytes.put_u8(if message.stopped { 1 } else { 0 });
+        bytes.put_u8(message.game_phase);
+        bytes.put_u8(message.state);
+        bytes.put_u8(message.set_play);
+        bytes.put_u8(if message.first_half { 1 } else { 0 });
+        bytes.put_u8(message.kicking_team);
+        bytes.put_i16_le(message.secs_remaining);
+        bytes.put_i16_le(message.secondary_time);
+        for team in &message.teams {
+            bytes.put_u8(team.number);
+            bytes.put_u8(team.field_player_color);
+            bytes.put_u8(team.goalkeeper_color);
+            bytes.put_u8(team.goalkeeper);
+            bytes.put_u8(team.score);
+            bytes.put_u8(team.penalty_shot);
+            bytes.put_u16_le(team.single_shots);
+            bytes.put_u16_le(team.message_budget);
+            for player in &team.players {
+                bytes.put_u8(player.penalty);
+                bytes.put_u8(player.secs_till_unpenalized);
+                bytes.put_u8(player.warnings);
+                bytes.put_u8(player.cautions);
+            }
+        }
+        assert!(bytes.len() == GAMECONTROLLER_STRUCT_SIZE);
+        bytes.freeze()
+    }
+}
+
+fn get_duration(duration: SignedDuration, min: i64, max: i64) -> i64 {
+    (duration.whole_seconds()
+        + if duration.subsec_nanoseconds() > 0 {
+            1
+        } else {
+            0
+        })
+    .clamp(min, max)
+}
+
+fn get_color(color: Color) -> u8 {
+    match color {
+        Color::Blue => TEAM_BLUE,
+        Color::Red => TEAM_RED,
+        Color::Yellow => TEAM_YELLOW,
+        Color::Black => TEAM_BLACK,
+        Color::White => TEAM_WHITE,
+        Color::Green => TEAM_GREEN,
+        Color::Orange => TEAM_ORANGE,
+        Color::Purple => TEAM_PURPLE,
+        Color::Brown => TEAM_BROWN,
+        Color::Gray => TEAM_GRAY,
+    }
+}
+
+impl ControlMessage {
+    /// This function creates a new [ControlMessage] from a given
+    /// [game_controller_core::types::Game] and [game_controller_core::types::Params]. The caller
+    /// must also specify a packet number and if the message is targeted at a monitor application or
+    /// the players, since the header signature is different.
+    pub fn new(game: &Game, params: &Params, packet_number: u8, to_monitor: bool) -> Self {
+        let team_order = match game.sides {
+            SideMapping::HomeDefendsLeftGoal => [Side::Home, Side::Away],
+            SideMapping::HomeDefendsRightGoal => [Side::Away, Side::Home],
+        };
+        Self {
+            to_monitor,
+            packet_number,
+            players_per_team: params.competition.players_per_team,
+            competition_type: match params.competition.division {
+                Division::Small => COMPETITION_TYPE_SMALL,
+                Division::Middle => COMPETITION_TYPE_MIDDLE,
+                Division::Large => COMPETITION_TYPE_LARGE,
+            },
+            stopped: game.stopped,
+            game_phase: match (game.phase, game.state) {
+                (_, State::Timeout) => GAME_PHASE_TIMEOUT,
+                (Phase::FirstHalf | Phase::SecondHalf, _) => GAME_PHASE_NORMAL,
+                (Phase::FirstExtraHalf | Phase::SecondExtraHalf, _) => GAME_PHASE_EXTRA_TIME,
+                (Phase::PenaltyShootout, _) => GAME_PHASE_PENALTY_SHOOT_OUT,
+            },
+            state: match game.state {
+                State::Initial | State::Timeout => STATE_INITIAL,
+                State::Ready => STATE_READY,
+                State::Set => STATE_SET,
+                State::Playing => STATE_PLAYING,
+                State::Finished => STATE_FINISHED,
+            },
+            set_play: match game.set_play {
+                SetPlay::NoSetPlay | SetPlay::KickOff => SET_PLAY_NONE,
+                SetPlay::DirectFreeKick => SET_PLAY_DIRECT_FREE_KICK,
+                SetPlay::IndirectFreeKick => SET_PLAY_INDIRECT_FREE_KICK,
+                SetPlay::PenaltyKick => SET_PLAY_PENALTY_KICK,
+                SetPlay::ThrowIn => SET_PLAY_THROW_IN,
+                SetPlay::GoalKick => SET_PLAY_GOAL_KICK,
+                SetPlay::CornerKick => SET_PLAY_CORNER_KICK,
+            },
+            first_half: matches!(game.phase, Phase::FirstHalf | Phase::FirstExtraHalf),
+            kicking_team: game
+                .kicking_side
+                .map_or(KICKING_TEAM_NONE, |side| params.game.teams[side].number),
+            secs_remaining: get_duration(
+                game.primary_timer.get_remaining(),
+                i16::MIN as i64,
+                i16::MAX as i64,
+            ) as i16,
+            secondary_time: get_duration(
+                game.secondary_timer.get_remaining(),
+                i16::MIN as i64,
+                i16::MAX as i64,
+            ) as i16,
+            teams: team_order.map(|side| ControlMessageTeam {
+                number: params.game.teams[side].number,
+                field_player_color: get_color(params.game.teams[side].field_player_color),
+                goalkeeper_color: get_color(params.game.teams[side].goalkeeper_color),
+                goalkeeper: game.teams[side]
+                    .goalkeeper
+                    .map_or(0u8, |goalkeeper| goalkeeper.into()),
+                score: game.teams[side].score,
+                penalty_shot: game.teams[side].penalty_shot,
+                single_shots: game.teams[side].penalty_shot_mask,
+                message_budget: game.teams[side].message_budget,
+                players: game.teams[side]
+                    .players
+                    // The alternative to this clone is doing iter() here, and collecting into a
+                    // Vec in the end, and then try_into() that Vec into the fixed size array.
+                    .clone()
+                    .map(|player| ControlMessagePlayer {
+                        penalty: match player.penalty {
+                            Penalty::NoPenalty => PENALTY_NONE,
+                            Penalty::IllegalPositioning => PENALTY_ILLEGAL_POSITIONING,
+                            Penalty::MotionInSet => PENALTY_MOTION_IN_SET,
+                            Penalty::LocalGameStuck => PENALTY_LOCAL_GAME_STUCK,
+                            Penalty::IncapableRobot => PENALTY_INCAPABLE_ROBOT,
+                            Penalty::PickedUp => PENALTY_PICK_UP,
+                            Penalty::BallHolding => PENALTY_BALL_HOLDING,
+                            Penalty::LeavingTheField => PENALTY_LEAVING_THE_FIELD,
+                            Penalty::PlayingWithArmsHands => PENALTY_PLAYING_WITH_ARMS_HANDS,
+                            Penalty::Pushing => PENALTY_PUSHING,
+                            Penalty::SentOff => PENALTY_SENT_OFF,
+                            Penalty::Substitute => PENALTY_SUBSTITUTE,
+                        },
+                        secs_till_unpenalized: get_duration(
+                            player.penalty_timer.get_remaining(),
+                            u8::MIN as i64,
+                            u8::MAX as i64,
+                        ) as u8,
+                        warnings: player.warnings,
+                        cautions: player.cautions,
+                    }),
+            }),
+        }
+    }
+}
