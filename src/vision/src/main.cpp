@@ -19,7 +19,11 @@ int main(int argc, char **argv) {
     if (argc > 2) {
         config_path = argv[2];
     }
-    node->Init(config_template_path, config_path);
+    std::string config_user_path = "";
+    if (argc > 3) {
+        config_user_path = argv[3];
+    }
+    node->Init(config_template_path, config_path, config_user_path);
 
     rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 4);
     executor.add_node(node);

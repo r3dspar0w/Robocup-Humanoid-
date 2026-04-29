@@ -7,8 +7,10 @@
 #include <filesystem>
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 #include <sstream>
 #include <fstream>
+#include <system_error>
 
 #include <yaml-cpp/yaml.h>
 #include "ament_index_cpp/get_package_share_directory.hpp"
@@ -71,7 +73,12 @@ VisionNode::VisionNode(const std::string &node_name, const rclcpp::NodeOptions &
 }
 
 // TODO(GW): oneline offline
-void VisionNode::Init(const std::string &cfg_template_path, const std::string &cfg_path) {
+void VisionNode::Init(const std::string &cfg_template_path, const std::string &cfg_path, const std::string &cfg_user_path) {
+    if (!cfg_user_path.empty()) {
+        cfg_save_path_ = cfg_user_path;
+    } else {
+        cfg_save_path_ = cfg_path.empty() ? cfg_template_path : cfg_path;
+    }
     if (!std::filesystem::exists(cfg_template_path)) {
         // TODO(SS): throw exception here
         std::cerr << "Error: Configuration template file '" << cfg_template_path << "' does not exist." << std::endl;
@@ -85,6 +92,10 @@ void VisionNode::Init(const std::string &cfg_template_path, const std::string &c
         YAML::Node cfg_node = YAML::LoadFile(cfg_path);
         // merge input cfg to template cfg
         MergeYAML(node, cfg_node);
+    }
+    if (!cfg_user_path.empty() && std::filesystem::exists(cfg_user_path)) {
+        YAML::Node cfg_user_node = YAML::LoadFile(cfg_user_path);
+        MergeYAML(node, cfg_user_node);
     }
 
     std::cout << "loaded file: " << std::endl
@@ -325,6 +336,15 @@ void VisionNode::Init(const std::string &cfg_template_path, const std::string &c
         field_line_pub_ = this->create_publisher<vision_interface::msg::LineSegments>("/booster_soccer/line_segments" + topic_suffix, rclcpp::QoS(1));
     }
     ball_pub_ = this->create_publisher<vision_interface::msg::Ball>("/booster_soccer/ball" + topic_suffix, rclcpp::QoS(1));
+    color_picker_status_pub_ = this->create_publisher<std_msgs::msg::String>(
+        "/booster_soccer/color_picker/status" + topic_suffix, rclcpp::QoS(10));
+    color_picker_command_sub_ = this->create_subscription<std_msgs::msg::String>(
+        "/booster_soccer/color_picker/command" + topic_suffix, rclcpp::QoS(10),
+        std::bind(&VisionNode::ColorPickerCommandCallback, this, std::placeholders::_1));
+    color_picker_point_sub_ = this->create_subscription<geometry_msgs::msg::PointStamped>(
+        "/booster_soccer/color_picker/point" + topic_suffix, rclcpp::QoS(10),
+        std::bind(&VisionNode::ColorPickerPointCallback, this, std::placeholders::_1));
+    PublishColorPickerStatus("ready: publish {label,x,y} to /booster_soccer/color_picker/command or set label then click /booster_soccer/color_picker/point");
 
     if (offline_mode_) {
         pose_tf_sub_ = this->create_subscription<geometry_msgs::msg::TransformStamped>("/booster_soccer/t_head2base" + topic_suffix, 10, std::bind(&VisionNode::PoseTFCallBack, this, std::placeholders::_1));
@@ -463,6 +483,187 @@ static cv::Mat DrawDebugOverlay(
     return img_out;
 }
 
+void VisionNode::PublishColorPickerStatus(const std::string &status) {
+    if (!color_picker_status_pub_) {
+        return;
+    }
+
+    std_msgs::msg::String msg;
+    msg.data = status;
+    color_picker_status_pub_->publish(msg);
+    std::cout << "[Color Picker] " << status << std::endl;
+}
+
+bool VisionNode::SaveRobotColorConfig() {
+    if (cfg_save_path_.empty()) {
+        PublishColorPickerStatus("error: no config path available for saving robot color bounds");
+        return false;
+    }
+
+    std::ofstream config_file(cfg_save_path_);
+    if (!config_file.is_open()) {
+        const std::filesystem::path save_path(cfg_save_path_);
+        if (save_path.has_parent_path()) {
+            std::error_code ec;
+            std::filesystem::create_directories(save_path.parent_path(), ec);
+        }
+        config_file.clear();
+        config_file.open(cfg_save_path_);
+        if (!config_file.is_open()) {
+            PublishColorPickerStatus("error: failed to open " + cfg_save_path_ + " for writing");
+            return false;
+        }
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(color_picker_mutex_);
+        config_file << config_node_;
+    }
+    PublishColorPickerStatus("saved: " + cfg_save_path_);
+    return true;
+}
+
+bool VisionNode::ApplyColorPick(const std::string &label, int x, int y, int radius,
+                                int h_tolerance, int s_tolerance, int v_tolerance, bool save) {
+    static const std::vector<std::string> valid_labels = {
+        "Teammate", "Opponent", "Goalkeeper", "OpponentGoalie"};
+    if (std::find(valid_labels.begin(), valid_labels.end(), label) == valid_labels.end()) {
+        PublishColorPickerStatus("error: label must be Teammate, Opponent, Goalkeeper, or OpponentGoalie");
+        return false;
+    }
+
+    cv::Mat image;
+    {
+        std::lock_guard<std::mutex> lock(color_picker_mutex_);
+        if (latest_color_image_.empty()) {
+            PublishColorPickerStatus("error: no camera image has been received yet");
+            return false;
+        }
+        image = latest_color_image_.clone();
+    }
+
+    x = std::clamp(x, 0, image.cols - 1);
+    y = std::clamp(y, 0, image.rows - 1);
+    radius = std::max(1, radius);
+    cv::Rect roi(std::max(0, x - radius),
+                 std::max(0, y - radius),
+                 std::min(image.cols - std::max(0, x - radius), radius * 2 + 1),
+                 std::min(image.rows - std::max(0, y - radius), radius * 2 + 1));
+
+    cv::Mat hsv;
+    cv::cvtColor(image(roi), hsv, cv::COLOR_BGR2HSV);
+    const cv::Scalar mean_hsv = cv::mean(hsv);
+    const int h = static_cast<int>(std::round(mean_hsv[0]));
+    const int s = static_cast<int>(std::round(mean_hsv[1]));
+    const int v = static_cast<int>(std::round(mean_hsv[2]));
+
+    const int s_min = std::clamp(s - s_tolerance, 0, 255);
+    const int s_max = std::clamp(s + s_tolerance, 0, 255);
+    const int v_min = std::clamp(v - v_tolerance, 0, 255);
+    const int v_max = std::clamp(v + v_tolerance, 0, 255);
+    int h_min = h - h_tolerance;
+    int h_max = h + h_tolerance;
+
+    std::vector<std::pair<cv::Scalar, cv::Scalar>> bounds;
+    YAML::Node yaml_bounds(YAML::NodeType::Sequence);
+    auto add_bound = [&](int low_h, int high_h) {
+        bounds.emplace_back(cv::Scalar(low_h, s_min, v_min), cv::Scalar(high_h, s_max, v_max));
+        YAML::Node bound(YAML::NodeType::Sequence);
+        bound.push_back(low_h);
+        bound.push_back(s_min);
+        bound.push_back(v_min);
+        bound.push_back(high_h);
+        bound.push_back(s_max);
+        bound.push_back(v_max);
+        yaml_bounds.push_back(bound);
+    };
+
+    if (h_min < 0) {
+        add_bound(0, std::clamp(h_max, 0, 179));
+        add_bound(std::clamp(180 + h_min, 0, 179), 179);
+    } else if (h_max > 179) {
+        add_bound(std::clamp(h_min, 0, 179), 179);
+        add_bound(0, std::clamp(h_max - 180, 0, 179));
+    } else {
+        add_bound(h_min, h_max);
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(color_picker_mutex_);
+        if (!color_classifier_) {
+            color_classifier_ = std::make_shared<ColorClassifier>();
+        }
+        color_classifier_->SetClassBounds(label, bounds);
+        active_color_pick_label_ = label;
+        config_node_["robot_color_classifier"]["class_bounds"][label] = yaml_bounds;
+    }
+
+    std::ostringstream status;
+    status << "picked " << label << " at (" << x << "," << y << ") HSV=["
+           << h << "," << s << "," << v << "] bounds=" << yaml_bounds;
+    PublishColorPickerStatus(status.str());
+
+    return !save || SaveRobotColorConfig();
+}
+
+void VisionNode::ColorPickerCommandCallback(const std_msgs::msg::String::SharedPtr msg) {
+    if (!msg) {
+        return;
+    }
+
+    YAML::Node command;
+    try {
+        command = YAML::Load(msg->data);
+    } catch (const std::exception &e) {
+        PublishColorPickerStatus(std::string("error: invalid color picker command: ") + e.what());
+        return;
+    }
+
+    std::string label;
+    {
+        std::lock_guard<std::mutex> lock(color_picker_mutex_);
+        label = active_color_pick_label_;
+    }
+    if (command["label"]) {
+        label = command["label"].as<std::string>();
+        {
+            std::lock_guard<std::mutex> lock(color_picker_mutex_);
+            active_color_pick_label_ = label;
+        }
+    }
+
+    if (!command["x"] || !command["y"]) {
+        PublishColorPickerStatus("active label: " + label);
+        return;
+    }
+
+    ApplyColorPick(label,
+                   command["x"].as<int>(),
+                   command["y"].as<int>(),
+                   as_or<int>(command["radius"], 8),
+                   as_or<int>(command["h_tolerance"], 10),
+                   as_or<int>(command["s_tolerance"], 60),
+                   as_or<int>(command["v_tolerance"], 60),
+                   as_or<bool>(command["save"], true));
+}
+
+void VisionNode::ColorPickerPointCallback(const geometry_msgs::msg::PointStamped::SharedPtr msg) {
+    if (!msg) {
+        return;
+    }
+
+    const int radius = msg->point.z > 0.0 ? static_cast<int>(std::round(msg->point.z)) : 8;
+    std::string label;
+    {
+        std::lock_guard<std::mutex> lock(color_picker_mutex_);
+        label = active_color_pick_label_;
+    }
+    ApplyColorPick(label,
+                   static_cast<int>(std::round(msg->point.x)),
+                   static_cast<int>(std::round(msg->point.y)),
+                   radius, 10, 60, 60, true);
+}
+
 void VisionNode::ProcessData(SyncedDataBlock &synced_data, vision_interface::msg::Detections &detection_msg) {
     double timestamp = synced_data.color_data.timestamp;
     double depth_time_diff = (timestamp - synced_data.depth_data.timestamp) * 1000;
@@ -475,6 +676,10 @@ void VisionNode::ProcessData(SyncedDataBlock &synced_data, vision_interface::msg
     }
     cv::Mat color = synced_data.color_data.data;
     cv::Mat depth = synced_data.depth_data.data;
+    {
+        std::lock_guard<std::mutex> lock(color_picker_mutex_);
+        latest_color_image_ = color.clone();
+    }
 
     cv::Mat depth_float;
     if (!depth.empty() && depth.depth() == CV_16U) {
@@ -578,13 +783,24 @@ void VisionNode::ProcessData(SyncedDataBlock &synced_data, vision_interface::msg
         detection_obj.ymax = detection.bbox.y + detection.bbox.height;
         detection_obj.label = detection.class_name;
 
-        if ((color_classifier_ != nullptr) && (detection.class_name == "Opponent")) {
+        bool has_color_classifier = false;
+        {
+            std::lock_guard<std::mutex> lock(color_picker_mutex_);
+            has_color_classifier = color_classifier_ != nullptr;
+        }
+        if (has_color_classifier && (detection.class_name == "Opponent")) {
             // get a crop of the image given detection.bbox
             cv::Mat crop = color(detection.bbox);
-            std::string robot_color_str = NormalizeColorName(color_classifier_->Classify(crop));
+            std::string robot_label;
+            std::string robot_color_str;
+            {
+                std::lock_guard<std::mutex> lock(color_picker_mutex_);
+                robot_label = color_classifier_->ClassifyRobotLabel(crop);
+                robot_color_str = NormalizeColorName(color_classifier_->Classify(crop));
+            }
             // add robot color to detection_obj
             detection_obj.color = robot_color_str;
-            detection_obj.label = RobotLabelFromColor(robot_color_str, team_color_);
+            detection_obj.label = robot_label.empty() ? RobotLabelFromColor(robot_color_str, team_color_) : robot_label;
             detection.class_name = detection_obj.label;
         }
 
@@ -686,6 +902,10 @@ void VisionNode::ColorCallback(const sensor_msgs::msg::Image::ConstSharedPtr &ms
     if (msg->encoding == "rgb8") {
         cv::cvtColor(img, img, cv::COLOR_RGB2BGR);
     }
+    {
+        std::lock_guard<std::mutex> lock(color_picker_mutex_);
+        latest_color_image_ = img.clone();
+    }
 
     vision_interface::msg::Detections detection_msg;
     detection_msg.header = msg->header;
@@ -719,6 +939,10 @@ void VisionNode::CompressedColorCallback(const sensor_msgs::msg::CompressedImage
     } catch (std::exception &e) {
         std::cerr << "decode exception: " << e.what() << std::endl;
         return;
+    }
+    {
+        std::lock_guard<std::mutex> lock(color_picker_mutex_);
+        latest_color_image_ = img.clone();
     }
 
     vision_interface::msg::Detections detection_msg;

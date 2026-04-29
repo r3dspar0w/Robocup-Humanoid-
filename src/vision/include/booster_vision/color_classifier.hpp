@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <map>
 #include <yaml-cpp/yaml.h>
 
 namespace booster_vision {
@@ -13,6 +14,7 @@ public:
     ~ColorClassifier() = default;
 
     void Init(const YAML::Node &node) {
+        class_bounds_.clear();
         if (node["red_bounds"]) {
             red_bounds_.clear();
             for (const auto &bound : node["red_bounds"]) {
@@ -64,11 +66,55 @@ public:
                     cv::Scalar(bound[3].as<int>(), bound[4].as<int>(), bound[5].as<int>()));
             }
         }
+
+        if (node["class_bounds"]) {
+            for (const auto &item : node["class_bounds"]) {
+                const std::string label = item.first.as<std::string>();
+                auto &bounds = class_bounds_[label];
+                bounds.clear();
+                for (const auto &bound : item.second) {
+                    if (bound.size() != 6) {
+                        std::cerr << "Invalid " << label << " bounds size: " << bound.size() << std::endl;
+                        continue;
+                    }
+                    bounds.emplace_back(
+                        cv::Scalar(bound[0].as<int>(), bound[1].as<int>(), bound[2].as<int>()),
+                        cv::Scalar(bound[3].as<int>(), bound[4].as<int>(), bound[5].as<int>()));
+                }
+            }
+        }
     }
 
     std::string Classify(const cv::Mat &input_img) {
         auto [color, mask, counts] = getDominantColorAndMask(input_img);
         return color;
+    }
+
+    std::string ClassifyRobotLabel(const cv::Mat &input_img) {
+        if (class_bounds_.empty()) {
+            return "";
+        }
+
+        cv::Mat hsv;
+        cv::cvtColor(input_img, hsv, cv::COLOR_BGR2HSV);
+        cv::GaussianBlur(hsv, hsv, cv::Size(5, 5), 0);
+
+        std::string best_label;
+        int best_count = 0;
+        for (const auto &entry : class_bounds_) {
+            cv::Mat mask = getColorMask(hsv, entry.second);
+            const int count = cv::countNonZero(mask);
+            if (count > best_count) {
+                best_label = entry.first;
+                best_count = count;
+            }
+        }
+
+        return best_count > 0 ? best_label : "";
+    }
+
+    void SetClassBounds(const std::string &label, const std::vector<std::pair<cv::Scalar, cv::Scalar>> &bounds) {
+        class_bounds_[label] = bounds;
     }
 
     cv::Mat getColorMask(const cv::Mat &input_img, const std::vector<std::pair<cv::Scalar, cv::Scalar>> &color_bounds) {
@@ -130,6 +176,7 @@ private:
         {cv::Scalar(0, 0, 180), cv::Scalar(179, 70, 255)}};
     std::vector<std::pair<cv::Scalar, cv::Scalar>> green_bounds_ = {
         {cv::Scalar(30, 45, 45), cv::Scalar(80, 255, 255)}};
+    std::map<std::string, std::vector<std::pair<cv::Scalar, cv::Scalar>>> class_bounds_;
 };
 
 } // namespace booster_vision

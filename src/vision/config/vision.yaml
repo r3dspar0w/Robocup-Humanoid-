@@ -66,6 +66,14 @@ robot_color_classifier:
     - [0, 0, 180, 179, 70, 255]
   green_bounds:
     - [30, 45, 45, 80, 255, 255]
+  class_bounds:
+    Teammate:
+      - [0, 80, 50, 20, 255, 255]
+      - [160, 80, 100, 179, 255, 255]
+    Goalkeeper:
+      - [0, 0, 180, 179, 70, 255]
+    OpponentGoalie:
+      - [100, 140, 50, 140, 255, 255]
 use_depth: true
 ball_pose_estimator:
   use_depth: true

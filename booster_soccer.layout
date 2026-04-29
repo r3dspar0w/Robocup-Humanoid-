@@ -46,7 +46,7 @@
       "publish": {
         "type": "point",
         "poseTopic": "/move_base_simple/goal",
-        "pointTopic": "/clicked_point",
+        "pointTopic": "/booster_soccer/color_picker/point",
         "poseEstimateTopic": "/initialpose",
         "poseEstimateXDeviation": 0.5,
         "poseEstimateYDeviation": 0.5,
@@ -58,11 +58,43 @@
     },
     "Terminal!8jkcv": {},
     "Publish!1hm7w2y": {
-      "buttonText": "Publish",
+      "buttonText": "Locate",
       "buttonTooltip": "",
       "advancedView": true,
       "value": "{\n  \"data\": \"locate\"\n}",
       "topicName": "/booster_agent/soccer_game_control",
+      "datatype": "std_msgs/msg/String"
+    },
+    "Publish!teammate": {
+      "buttonText": "Pick Teammate",
+      "buttonTooltip": "Set the color picker target label to Teammate, then click the robot color in the image panel.",
+      "advancedView": true,
+      "value": "{\n  \"data\": \"{label: Teammate}\"\n}",
+      "topicName": "/booster_soccer/color_picker/command",
+      "datatype": "std_msgs/msg/String"
+    },
+    "Publish!opponent": {
+      "buttonText": "Pick Opponent",
+      "buttonTooltip": "Set the color picker target label to Opponent, then click the robot color in the image panel.",
+      "advancedView": true,
+      "value": "{\n  \"data\": \"{label: Opponent}\"\n}",
+      "topicName": "/booster_soccer/color_picker/command",
+      "datatype": "std_msgs/msg/String"
+    },
+    "Publish!goalkeeper": {
+      "buttonText": "Pick Goalie",
+      "buttonTooltip": "Set the color picker target label to Goalkeeper, then click the robot color in the image panel.",
+      "advancedView": true,
+      "value": "{\n  \"data\": \"{label: Goalkeeper}\"\n}",
+      "topicName": "/booster_soccer/color_picker/command",
+      "datatype": "std_msgs/msg/String"
+    },
+    "Publish!opponentgoalie": {
+      "buttonText": "Pick Opponent Goalie",
+      "buttonTooltip": "Set the color picker target label to OpponentGoalie, then click the robot color in the image panel.",
+      "advancedView": true,
+      "value": "{\n  \"data\": \"{label: OpponentGoalie}\"\n}",
+      "topicName": "/booster_soccer/color_picker/command",
       "datatype": "std_msgs/msg/String"
     },
     "Canvas!44ot63c": {
@@ -194,7 +226,27 @@
         "direction": "column",
         "splitPercentage": 59.17874396135267
       },
-      "second": "Publish!1hm7w2y",
+      "second": {
+        "first": {
+          "first": {
+            "first": "Publish!teammate",
+            "second": "Publish!opponent",
+            "direction": "row",
+            "splitPercentage": 50
+          },
+          "second": {
+            "first": "Publish!goalkeeper",
+            "second": "Publish!opponentgoalie",
+            "direction": "row",
+            "splitPercentage": 50
+          },
+          "direction": "column",
+          "splitPercentage": 50
+        },
+        "second": "Publish!1hm7w2y",
+        "direction": "column",
+        "splitPercentage": 66
+      },
       "direction": "column",
       "splitPercentage": 76.53061224489794
     },

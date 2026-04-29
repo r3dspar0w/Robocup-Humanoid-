@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <map>
+#include <mutex>
 #include <string>
 
 #include <rclcpp/rclcpp.hpp>
@@ -11,6 +12,8 @@
 #include <image_transport/image_transport.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <geometry_msgs/msg/pose.hpp>
+#include <geometry_msgs/msg/point_stamped.hpp>
+#include <std_msgs/msg/string.hpp>
 #include "vision_interface/msg/detections.hpp"
 
 #include "vision_interface/msg/line_segments.hpp"
@@ -38,7 +41,7 @@ public:
     VisionNode(const std::string &node_name, const rclcpp::NodeOptions &options = rclcpp::NodeOptions());
     ~VisionNode() = default;
 
-    void Init(const std::string &cfg_template_path, const std::string &cfg_path);
+    void Init(const std::string &cfg_template_path, const std::string &cfg_path, const std::string &cfg_user_path = "");
     void ColorCallback(const sensor_msgs::msg::Image::ConstSharedPtr &msg);
     void CompressedColorCallback(const sensor_msgs::msg::CompressedImage::SharedPtr msg);
     void SegmentationCallback(const sensor_msgs::msg::Image::ConstSharedPtr &msg);
@@ -49,10 +52,16 @@ public:
     void PoseCallBack(const geometry_msgs::msg::Pose::SharedPtr msg);
     void CalParamCallback(const vision_interface::msg::CalParam::SharedPtr msg);
     void CameraInfoCallback(const sensor_msgs::msg::CameraInfo::SharedPtr msg);
+    void ColorPickerCommandCallback(const std_msgs::msg::String::SharedPtr msg);
+    void ColorPickerPointCallback(const geometry_msgs::msg::PointStamped::SharedPtr msg);
     void ProcessData(SyncedDataBlock &synced_data, vision_interface::msg::Detections &detections);
     void ProcessSegmentationData(SyncedDataBlock &synced_data, vision_interface::msg::LineSegments &field_line_segs_msg);
 
 private:
+    bool ApplyColorPick(const std::string &label, int x, int y, int radius, int h_tolerance, int s_tolerance, int v_tolerance, bool save);
+    bool SaveRobotColorConfig();
+    void PublishColorPickerStatus(const std::string &status);
+
     bool use_depth_ = false;
     bool show_det_ = false;
     bool show_seg_ = false;
@@ -70,6 +79,8 @@ private:
     std::string intrin_topic_;
     std::string img_log_path_;
     std::string team_color_ = "red";
+    std::string cfg_save_path_;
+    std::string active_color_pick_label_ = "Teammate";
 
     Intrinsics intr_;
     Pose p_eye2head_;
@@ -110,6 +121,9 @@ private:
     rclcpp::Subscription<geometry_msgs::msg::Pose>::SharedPtr pose_sub_;
     rclcpp::Subscription<vision_interface::msg::CalParam>::SharedPtr calParam_sub_; // Sub for calibration params
     rclcpp::Subscription<sensor_msgs::msg::CameraInfo>::SharedPtr camera_info_sub_;
+    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr color_picker_command_sub_;
+    rclcpp::Subscription<geometry_msgs::msg::PointStamped>::SharedPtr color_picker_point_sub_;
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr color_picker_status_pub_;
 
     rclcpp::CallbackGroup::SharedPtr callback_group_sub_1_;
     rclcpp::CallbackGroup::SharedPtr callback_group_sub_2_;
@@ -117,6 +131,8 @@ private:
     rclcpp::CallbackGroup::SharedPtr callback_group_sub_4_;
 
     std::shared_ptr<ColorClassifier> color_classifier_;
+    cv::Mat latest_color_image_;
+    std::mutex color_picker_mutex_;
 
     std::shared_ptr<DataLogger> data_logger_;
     std::shared_ptr<DataSyncer> data_syncer_;
