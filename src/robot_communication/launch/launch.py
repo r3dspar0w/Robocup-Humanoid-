@@ -5,6 +5,7 @@ import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
+from ament_index_python.packages import get_package_share_directory
 from launch_ros.actions import Node
 
 
@@ -23,9 +24,10 @@ def _scalar(value):
 
 
 def _load_brain_config_defaults():
-    config_file = os.path.normpath(os.path.join(
-        os.path.dirname(__file__),
-        '../../brain/config/config.yaml'))
+    config_file = os.path.join(
+        get_package_share_directory('brain'),
+        'config',
+        'config.yaml')
     defaults = {}
     stack = []
 
