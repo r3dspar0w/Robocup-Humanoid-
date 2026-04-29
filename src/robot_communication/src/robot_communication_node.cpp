@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <cstring>
 #include <functional>
+#include <iomanip>
 #include <map>
 #include <memory>
 #include <optional>
@@ -116,6 +117,17 @@ std::string describeCompactPacket(const CompactTeamPacket &packet)
            << " robot_grid_x=" << robot_x
            << " robot_grid_y=" << robot_y
            << " robot_theta=" << robot_theta;
+    return stream.str();
+}
+
+std::string compactPacketToHex(const CompactTeamPacket &packet)
+{
+    std::ostringstream stream;
+    stream << std::hex << std::uppercase << std::setfill('0');
+    for (std::size_t i = 0; i < packet.bytes.size(); ++i) {
+        if (i > 0) stream << ' ';
+        stream << "0x" << std::setw(2) << static_cast<int>(packet.bytes[i]);
+    }
     return stream.str();
 }
 
@@ -613,7 +625,8 @@ private:
             }
             last_sequence_by_player_[compact_player_id] = packet->sequence();
 
-            RCLCPP_INFO(get_logger(), "Received team broadcast: %s", describeCompactPacket(*packet).c_str());
+            RCLCPP_INFO(get_logger(), "Received team broadcast raw: [%s]", compactPacketToHex(*packet).c_str());
+            RCLCPP_INFO(get_logger(), "Received team broadcast decoded: [%s]", describeCompactPacket(*packet).c_str());
             pub_in_->publish(makeMinimalMessageFromCompactPacket(*packet));
         }
     }
