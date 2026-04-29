@@ -105,21 +105,34 @@ std::vector<visualization_msgs::msg::Marker> createFieldZoneMarkers(
 
     const double halfLength = fd.length / 2.0;
     const double halfWidth = fd.width / 2.0;
+    const double dashLength = 0.20;
+    const double gapLength = 0.10;
+
     for (int i = 1; i < FIELD_ZONE_COLS; ++i) {
         const double x = -halfLength + fd.length * i / FIELD_ZONE_COLS;
-        geometry_msgs::msg::Point p1, p2;
-        p1.x = x; p1.y = -halfWidth; p1.z = 0.03;
-        p2.x = x; p2.y = halfWidth; p2.z = 0.03;
-        grid.points.push_back(p1);
-        grid.points.push_back(p2);
+        double y = -halfWidth;
+        while (y < halfWidth) {
+            const double y2 = std::min(y + dashLength, halfWidth);
+            geometry_msgs::msg::Point p1, p2;
+            p1.x = x; p1.y = y; p1.z = 0.03;
+            p2.x = x; p2.y = y2; p2.z = 0.03;
+            grid.points.push_back(p1);
+            grid.points.push_back(p2);
+            y += dashLength + gapLength;
+        }
     }
     for (int i = 1; i < FIELD_ZONE_ROWS; ++i) {
         const double y = -halfWidth + fd.width * i / FIELD_ZONE_ROWS;
-        geometry_msgs::msg::Point p1, p2;
-        p1.x = -halfLength; p1.y = y; p1.z = 0.03;
-        p2.x = halfLength; p2.y = y; p2.z = 0.03;
-        grid.points.push_back(p1);
-        grid.points.push_back(p2);
+        double x = -halfLength;
+        while (x < halfLength) {
+            const double x2 = std::min(x + dashLength, halfLength);
+            geometry_msgs::msg::Point p1, p2;
+            p1.x = x; p1.y = y; p1.z = 0.03;
+            p2.x = x2; p2.y = y; p2.z = 0.03;
+            grid.points.push_back(p1);
+            grid.points.push_back(p2);
+            x += dashLength + gapLength;
+        }
     }
     markers.push_back(grid);
 
