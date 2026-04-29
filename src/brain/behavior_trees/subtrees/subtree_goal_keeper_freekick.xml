@@ -4,17 +4,32 @@
    <include path="./subtree_locate.xml" />
    <BehaviorTree ID="GoalKeeperFreekick">
       <ReactiveSequence >
-         <!-- Searches for the ball AND tracks it once it is found -->
-         <SubTree ID="CamFindAndTrackBall" _autoremap="true" />
+         <SelfLocate mode="trust_direction" />
+         <SubTree ID="Locate" _autoremap="true" _while="decision!='find'" />
 
-         <!-- if ball is not known, GO TO READY POSITION -->
-         <GoToReadyPosition _while="!ball_location_known" />
+         <Sequence _while="ball_out">
+            <SubTree ID="CamFindAndTrackBall" _autoremap="true" />
+            <GoBackInField />
+            <SubTree ID="Locate" _autoremap="true" _while="decision!='find'" />
+         </Sequence>
 
-         <!-- If ball is known, BLOCK THE GOAL -->
-         <GoToGoalBlockingPosition _while="ball_location_known" />
+         <ReactiveSequence _while="!ball_out">
+            <SubTree ID="CamFindAndTrackBall" _autoremap="true" />
 
-         <!-- Constantly updates position -->
-         <SelfLocate mode="trust_direction" _while="odom_calibrated" />
+            <GoalieDecide
+               decision_out="{decision}"
+               decision_in="{decision}"
+               chase_threshold="3.0"
+               adjust_angle_tolerance="0.18"
+               adjust_y_tolerance="0.12"
+            />
+
+            <GoToGoalBlockingPosition _while="decision=='find'" theta_tolerance="0.6" vx_limit="0.7" vy_limit="0.5" />
+            <GoToGoalBlockingPosition _while="decision == 'retreat'" theta_tolerance="0.6" vx_limit="0.9" vy_limit="0.6" />
+            <GoalieChase _while="decision == 'chase'" vx_limit="0.8" vy_limit="0.3" vtheta_limit="1.0" dist="0.1" safe_dist="0.5" />
+            <Adjust _while="decision =='adjust'" turn_threshold="0.8" range="0.2" vx_limit="0.8" vy_limit="0.6" vtheta_limit="1.0" vtheta_factor="4.5" tangential_speed_far="0.9" tangential_speed_near="0.3" />
+            <Kick _while="decision == 'kick'" speed_limit="1.2" min_msec_kick="600"/>
+         </ReactiveSequence>
       </ReactiveSequence>
    </BehaviorTree>
 </root>
