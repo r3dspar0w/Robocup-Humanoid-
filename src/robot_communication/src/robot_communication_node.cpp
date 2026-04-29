@@ -39,8 +39,8 @@ constexpr uint8_t COMPACT_PLAYER_ID_MASK = 0x0F;
 constexpr uint8_t COMPACT_ROLE_MASK = 0x30;
 constexpr uint8_t COMPACT_READY_MASK = 0x40;
 constexpr uint8_t COMPACT_ROLE_SHIFT = 4;
-constexpr uint8_t COMPACT_BALL_ZONE_MASK = 0x0F;
-constexpr uint8_t COMPACT_SEQUENCE_SHIFT = 4;
+constexpr uint8_t COMPACT_UNKNOWN_BALL = 0xFF;
+constexpr uint8_t COMPACT_BALL_COMPONENT_MASK = 0x0F;
 constexpr uint16_t COMPACT_POSE_COMPONENT_MASK = 0x1F;
 constexpr int COMPACT_ROBOT_Y_SHIFT = 5;
 constexpr int COMPACT_ROBOT_THETA_SHIFT = 10;
@@ -56,8 +56,9 @@ enum CompactRole : uint8_t
 struct CompactTeamPacket
 {
     // Existing compact wire format, kept at 5 bytes:
-    // [password][id/role/alive][sequence + ball zone][pose byte 0][pose byte 1]
-    // Ball zone still occupies 4 bits (0-9); the upper 4 bits carry communication_id modulo 16.
+    // [password][id/role/alive][ball x/y grid][pose byte 0][pose byte 1]
+    // Byte 2 is fully reserved for ball position: high nibble = x grid, low nibble = y grid.
+    // 0xFF means the ball position is unknown.
     std::array<uint8_t, COMPACT_PACKET_SIZE> bytes{};
 
     static uint16_t decodeCompactRobotPose(const uint8_t *packet)
@@ -73,8 +74,7 @@ struct CompactTeamPacket
         const uint8_t role = (packet[1] & COMPACT_ROLE_MASK) >> COMPACT_ROLE_SHIFT;
         if (role > ROLE_DEFENDER) return false;
 
-        const uint8_t ball_zone = packet[2] & COMPACT_BALL_ZONE_MASK;
-        return ball_zone <= 9;
+        return true;
     }
 
     int playerId() const
@@ -82,17 +82,6 @@ struct CompactTeamPacket
         return bytes[1] & COMPACT_PLAYER_ID_MASK;
     }
 
-    int sequence() const
-    {
-        return (bytes[2] >> COMPACT_SEQUENCE_SHIFT) & 0x0F;
-    }
-
-    bool newerThan(int previous_sequence) const
-    {
-        if (previous_sequence < 0) return true;
-        const int delta = (sequence() - previous_sequence + 16) % 16;
-        return delta > 0 && delta <= 8;
-    }
 };
 
 std::string describeCompactPacket(const CompactTeamPacket &packet)
@@ -101,8 +90,9 @@ std::string describeCompactPacket(const CompactTeamPacket &packet)
     const int player_id = identity & COMPACT_PLAYER_ID_MASK;
     const int role = (identity & COMPACT_ROLE_MASK) >> COMPACT_ROLE_SHIFT;
     const bool ready = (identity & COMPACT_READY_MASK) != 0;
-    const int sequence = packet.sequence();
-    const int ball_zone = packet.bytes[2] & COMPACT_BALL_ZONE_MASK;
+    const bool ball_known = packet.bytes[2] != COMPACT_UNKNOWN_BALL;
+    const int ball_x = (packet.bytes[2] >> 4) & COMPACT_BALL_COMPONENT_MASK;
+    const int ball_y = packet.bytes[2] & COMPACT_BALL_COMPONENT_MASK;
     const uint16_t robot_pose = CompactTeamPacket::decodeCompactRobotPose(packet.bytes.data());
     const int robot_x = robot_pose & COMPACT_POSE_COMPONENT_MASK;
     const int robot_y = (robot_pose >> COMPACT_ROBOT_Y_SHIFT) & COMPACT_POSE_COMPONENT_MASK;
@@ -112,8 +102,9 @@ std::string describeCompactPacket(const CompactTeamPacket &packet)
     stream << "player_id=" << player_id
            << " role=" << role
            << " state=" << (ready ? "ready" : "fallen_or_not_ready")
-           << " seq=" << sequence
-           << " ball_zone=" << ball_zone
+           << " ball_known=" << ball_known
+           << " ball_grid_x=" << ball_x
+           << " ball_grid_y=" << ball_y
            << " robot_grid_x=" << robot_x
            << " robot_grid_y=" << robot_y
            << " robot_theta=" << robot_theta;
@@ -192,14 +183,19 @@ public:
 
     void open()
     {
-        send_socket_ = socket(AF_INET, SOCK_DGRAM, 0);
-        if (send_socket_ < 0) {
-            throw std::runtime_error(std::string("failed to create team broadcast send socket: ") + strerror(errno));
+        socket_ = socket(AF_INET, SOCK_DGRAM, 0);
+        if (socket_ < 0) {
+            throw std::runtime_error(std::string("failed to create team broadcast socket: ") + strerror(errno));
         }
 
         int broadcast = 1;
-        if (setsockopt(send_socket_, SOL_SOCKET, SO_BROADCAST, &broadcast, sizeof(broadcast)) < 0) {
+        if (setsockopt(socket_, SOL_SOCKET, SO_BROADCAST, &broadcast, sizeof(broadcast)) < 0) {
             throw std::runtime_error(std::string("failed to set team SO_BROADCAST: ") + strerror(errno));
+        }
+
+        int reuse = 1;
+        if (setsockopt(socket_, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) < 0) {
+            throw std::runtime_error(std::string("failed to set team SO_REUSEADDR: ") + strerror(errno));
         }
 
         send_addr_.sin_family = AF_INET;
@@ -209,35 +205,25 @@ public:
             throw std::runtime_error("invalid team broadcast address: " + broadcast_address_);
         }
 
-        receive_socket_ = socket(AF_INET, SOCK_DGRAM, 0);
-        if (receive_socket_ < 0) {
-            throw std::runtime_error(std::string("failed to create team broadcast receive socket: ") + strerror(errno));
-        }
-
-        int reuse = 1;
-        if (setsockopt(receive_socket_, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) < 0) {
-            throw std::runtime_error(std::string("failed to set team SO_REUSEADDR: ") + strerror(errno));
-        }
-
         sockaddr_in local_addr{};
         local_addr.sin_family = AF_INET;
         local_addr.sin_addr.s_addr = htonl(INADDR_ANY);
         local_addr.sin_port = htons(team_port_);
 
-        if (bind(receive_socket_, reinterpret_cast<sockaddr *>(&local_addr), sizeof(local_addr)) < 0) {
-            throw std::runtime_error(std::string("failed to bind team broadcast receive socket: ") + strerror(errno));
+        if (bind(socket_, reinterpret_cast<sockaddr *>(&local_addr), sizeof(local_addr)) < 0) {
+            throw std::runtime_error(std::string("failed to bind team broadcast socket: ") + strerror(errno));
         }
 
-        const int flags = fcntl(receive_socket_, F_GETFL, 0);
+        const int flags = fcntl(socket_, F_GETFL, 0);
         if (flags >= 0) {
-            fcntl(receive_socket_, F_SETFL, flags | O_NONBLOCK);
+            fcntl(socket_, F_SETFL, flags | O_NONBLOCK);
         }
     }
 
     bool send(const CompactTeamPacket &packet)
     {
         const ssize_t ret = sendto(
-            send_socket_,
+            socket_,
             packet.bytes.data(),
             packet.bytes.size(),
             0,
@@ -259,7 +245,7 @@ public:
         socklen_t from_addr_len = sizeof(from_addr);
 
         const ssize_t len = recvfrom(
-            receive_socket_,
+            socket_,
             buffer.data(),
             buffer.size(),
             0,
@@ -288,13 +274,9 @@ public:
 
     void closeSockets()
     {
-        if (send_socket_ >= 0) {
-            close(send_socket_);
-            send_socket_ = -1;
-        }
-        if (receive_socket_ >= 0) {
-            close(receive_socket_);
-            receive_socket_ = -1;
+        if (socket_ >= 0) {
+            close(socket_);
+            socket_ = -1;
         }
     }
 
@@ -302,79 +284,9 @@ private:
     rclcpp::Logger logger_;
     int team_port_ = 0;
     std::string broadcast_address_;
-    int send_socket_ = -1;
-    int receive_socket_ = -1;
+    int socket_ = -1;
     sockaddr_in send_addr_{};
     std::size_t packet_len_ = 0;
-};
-
-class DebugUdpChannel
-{
-public:
-    DebugUdpChannel(rclcpp::Logger logger, bool enabled, const std::string &target_ip, int port, double max_hz)
-        : logger_(logger), enabled_(enabled), target_ip_(target_ip), port_(port), min_interval_ms_(hzToIntervalMs(std::min(max_hz, 1.0)))
-    {
-    }
-
-    ~DebugUdpChannel()
-    {
-        if (socket_ >= 0) close(socket_);
-    }
-
-    void open()
-    {
-        if (!enabled_) return;
-
-        socket_ = socket(AF_INET, SOCK_DGRAM, 0);
-        if (socket_ < 0) {
-            throw std::runtime_error(std::string("failed to create debug UDP socket: ") + strerror(errno));
-        }
-
-        target_addr_.sin_family = AF_INET;
-        target_addr_.sin_port = htons(port_);
-        if (inet_pton(AF_INET, target_ip_.c_str(), &target_addr_.sin_addr) != 1
-            || !isUnicastIpv4(target_addr_.sin_addr.s_addr)) {
-            throw std::runtime_error("invalid debug target IP: " + target_ip_);
-        }
-    }
-
-    void sendIfAllowed(const CompactTeamPacket &packet, const rclcpp::Time &now)
-    {
-        if (!enabled_ || socket_ < 0) return;
-        if (last_send_time_.nanoseconds() != 0
-            && (now - last_send_time_).nanoseconds() < min_interval_ms_ * 1000000LL) {
-            return;
-        }
-
-        const ssize_t ret = sendto(
-            socket_,
-            packet.bytes.data(),
-            packet.bytes.size(),
-            0,
-            reinterpret_cast<const sockaddr *>(&target_addr_),
-            sizeof(target_addr_));
-
-        if (ret < 0) {
-            RCLCPP_WARN(logger_, "Debug UDP send failed: %s", strerror(errno));
-        } else {
-            last_send_time_ = now;
-        }
-    }
-
-private:
-    static int64_t hzToIntervalMs(double hz)
-    {
-        return static_cast<int64_t>(std::ceil(1000.0 / std::max(hz, 0.001)));
-    }
-
-    rclcpp::Logger logger_;
-    bool enabled_ = false;
-    std::string target_ip_;
-    int port_ = 0;
-    int64_t min_interval_ms_ = 1000;
-    int socket_ = -1;
-    sockaddr_in target_addr_{};
-    rclcpp::Time last_send_time_{0, 0, RCL_ROS_TIME};
 };
 
 class RobotCommunicationNode : public rclcpp::Node
@@ -389,7 +301,6 @@ public:
         max_hz_ = declare_parameter<double>("team_communication.max_hz", 5.0);
         max_packets_per_game_ = declare_parameter<int>("team_communication.max_packets_per_game", 12000);
         event_driven_ = declare_parameter<bool>("team_communication.event_driven", true);
-        heartbeat_sec_ = declare_parameter<double>("team_communication.heartbeat_sec", 2.0);
         compact_secret_password_ = declare_parameter<int>("compact_secret_password", 0xA7);
         field_length_ = declare_parameter<double>("field_length", 14.0);
         field_width_ = declare_parameter<double>("field_width", 9.0);
@@ -397,7 +308,7 @@ public:
         const bool debug_enabled = declare_parameter<bool>("debug_communication.enabled", false);
         const std::string debug_target_ip = declare_parameter<std::string>("debug_communication.target_ip", "192.168.0.100");
         const int debug_port = declare_parameter<int>("debug_communication.port", 11000);
-        const double debug_max_hz = declare_parameter<double>("debug_communication.max_hz", 1.0);
+        const double debug_max_hz = std::min(declare_parameter<double>("debug_communication.max_hz", 1.0), 1.0);
 
         compact_secret_password_ = std::clamp(compact_secret_password_, 0, 255);
         field_length_ = std::max(field_length_, 1e-3);
@@ -406,8 +317,20 @@ public:
         if (debug_enabled && debug_port == team_port_) {
             throw std::runtime_error("debug_communication.port must not equal the team broadcast port");
         }
+        if (debug_enabled) {
+            in_addr debug_addr{};
+            if (inet_pton(AF_INET, debug_target_ip.c_str(), &debug_addr) != 1
+                || !isUnicastIpv4(debug_addr.s_addr)) {
+                throw std::runtime_error("invalid debug target IP: " + debug_target_ip);
+            }
+            RCLCPP_WARN(
+                get_logger(),
+                "debug_communication is configured for %s:%d at max %.2f Hz, but no debug payload publisher is implemented in robot_communication_node. Team packets are not sent on the debug channel.",
+                debug_target_ip.c_str(),
+                debug_port,
+                debug_max_hz);
+        }
         min_send_interval_ms_ = static_cast<int64_t>(std::ceil(1000.0 / std::max(max_hz_, 0.001)));
-        heartbeat_interval_ms_ = static_cast<int64_t>(std::ceil(std::max(heartbeat_sec_, 0.1) * 1000.0));
 
         pub_in_ = create_publisher<TeamCommunication>("/booster_soccer/team_comm/in", 10);
         sub_out_ = create_subscription<TeamCommunication>(
@@ -418,10 +341,6 @@ public:
         if (enabled_) {
             network_ = std::make_unique<UdpBroadcastNetwork>(get_logger(), team_port_, broadcast_address_);
             network_->open();
-
-            debug_channel_ = std::make_unique<DebugUdpChannel>(
-                get_logger(), debug_enabled, debug_target_ip, debug_port, debug_max_hz);
-            debug_channel_->open();
 
             receive_flag_.store(true);
             receive_thread_ = std::thread([this]() { receiveLoop(); });
@@ -470,21 +389,13 @@ private:
             return;
         }
 
-        const bool heartbeat_due = last_send_time_.nanoseconds() == 0
-            || (now - last_send_time_).nanoseconds() >= heartbeat_interval_ms_ * 1000000LL;
-        if (event_driven_ && !pending_packet_changed_ && !heartbeat_due) return;
+        if (event_driven_ && !pending_packet_changed_) return;
 
-        CompactTeamPacket tx_packet = *pending_packet_;
-        tx_packet.bytes[2] = static_cast<uint8_t>(
-            ((local_sequence_ & 0x0F) << COMPACT_SEQUENCE_SHIFT)
-            | (tx_packet.bytes[2] & COMPACT_BALL_ZONE_MASK));
-
+        const CompactTeamPacket tx_packet = *pending_packet_;
         if (network_->send(tx_packet)) {
-            local_sequence_ = (local_sequence_ + 1) & 0x0F;
             packets_sent_++;
             last_send_time_ = now;
             pending_packet_changed_ = false;
-            debug_channel_->sendIfAllowed(tx_packet, now);
             RCLCPP_DEBUG(
                 get_logger(),
                 "TX team broadcast packet %d/%d: %s",
@@ -499,7 +410,7 @@ private:
         CompactTeamPacket packet;
         packet.bytes[0] = static_cast<uint8_t>(compact_secret_password_);
         packet.bytes[1] = makeCompactIdentityByte(msg);
-        packet.bytes[2] = static_cast<uint8_t>(calcBallZone(msg) & COMPACT_BALL_ZONE_MASK);
+        packet.bytes[2] = makeCompactBallPosition(msg);
         const uint16_t robot_pose = makeCompactRobotPose(msg);
         packet.bytes[3] = static_cast<uint8_t>(robot_pose & 0xFF);
         packet.bytes[4] = static_cast<uint8_t>((robot_pose >> 8) & 0xFF);
@@ -551,23 +462,39 @@ private:
         return -PI + ((std::clamp(index, 0, 31) + 0.5) * ((2.0 * PI) / 32.0));
     }
 
-    uint8_t calcBallZone(const TeamCommunication &msg) const
+    uint8_t makeCompactBallPosition(const TeamCommunication &msg) const
     {
-        if (!msg.ball_location_known) return 0;
+        if (!msg.ball_location_known) return COMPACT_UNKNOWN_BALL;
 
         const double half_length = field_length_ * 0.5;
         const double half_width = field_width_ * 0.5;
         const double x = std::clamp(msg.ball_pos_to_field_x, -half_length, half_length);
         const double y = std::clamp(msg.ball_pos_to_field_y, -half_width, half_width);
-        const int row = std::clamp(static_cast<int>(std::floor((half_length - x) / (field_length_ / 3.0))), 0, 2);
-        const int col = std::clamp(static_cast<int>(std::floor((half_width - y) / (field_width_ / 3.0))), 0, 2);
-        return static_cast<uint8_t>(row * 3 + col + 1);
+        const uint8_t x_grid = calcCoordinateGridIndex4Bit(x, -half_length, half_length);
+        const uint8_t y_grid = calcCoordinateGridIndex4Bit(y, -half_width, half_width);
+        return static_cast<uint8_t>((x_grid << 4) | y_grid);
+    }
+
+    uint8_t calcCoordinateGridIndex4Bit(double value, double min_value, double max_value) const
+    {
+        const double clamped = std::clamp(value, min_value, max_value);
+        const double span = std::max(max_value - min_value, 1e-3);
+        const int index = std::clamp(static_cast<int>(std::floor(((clamped - min_value) / span) * 16.0)), 0, 15);
+        return static_cast<uint8_t>(index);
+    }
+
+    double gridIndex4BitToCoordinateCenter(int index, double min_value, double max_value) const
+    {
+        const double span = std::max(max_value - min_value, 1e-3);
+        return min_value + ((std::clamp(index, 0, 15) + 0.5) * (span / 16.0));
     }
 
     TeamCommunication makeMinimalMessageFromCompactPacket(const CompactTeamPacket &packet) const
     {
         TeamCommunication msg;
-        const int ball_zone = packet.bytes[2] & COMPACT_BALL_ZONE_MASK;
+        const bool ball_known = packet.bytes[2] != COMPACT_UNKNOWN_BALL;
+        const int ball_x = (packet.bytes[2] >> 4) & COMPACT_BALL_COMPONENT_MASK;
+        const int ball_y = packet.bytes[2] & COMPACT_BALL_COMPONENT_MASK;
         const uint8_t identity = packet.bytes[1];
         const uint16_t robot_pose = CompactTeamPacket::decodeCompactRobotPose(packet.bytes.data());
         const int robot_x = robot_pose & COMPACT_POSE_COMPONENT_MASK;
@@ -575,7 +502,7 @@ private:
         const int robot_theta = (robot_pose >> COMPACT_ROBOT_THETA_SHIFT) & COMPACT_POSE_COMPONENT_MASK;
 
         msg.validation = VALIDATION_COMMUNICATION;
-        msg.communication_id = packet.sequence();
+        msg.communication_id = 0;
         msg.team_id = team_id_;
         msg.player_id = identity & COMPACT_PLAYER_ID_MASK;
         msg.player_role = (identity & COMPACT_ROLE_MASK) >> COMPACT_ROLE_SHIFT;
@@ -583,14 +510,12 @@ private:
         msg.robot_pose_to_field_x = gridIndexToCoordinateCenter(robot_x, -field_length_ * 0.5, field_length_ * 0.5);
         msg.robot_pose_to_field_y = gridIndexToCoordinateCenter(robot_y, -field_width_ * 0.5, field_width_ * 0.5);
         msg.robot_pose_to_field_theta = thetaGridIndexToAngleCenter(robot_theta);
-        msg.ball_location_known = ball_zone >= 1 && ball_zone <= 9;
+        msg.ball_location_known = ball_known;
         msg.ball_detected = msg.ball_location_known;
 
         if (msg.ball_location_known) {
-            const int row = (ball_zone - 1) / 3;
-            const int col = (ball_zone - 1) % 3;
-            msg.ball_pos_to_field_x = (field_length_ * 0.5) - ((row + 0.5) * (field_length_ / 3.0));
-            msg.ball_pos_to_field_y = (field_width_ * 0.5) - ((col + 0.5) * (field_width_ / 3.0));
+            msg.ball_pos_to_field_x = gridIndex4BitToCoordinateCenter(ball_x, -field_length_ * 0.5, field_length_ * 0.5);
+            msg.ball_pos_to_field_y = gridIndex4BitToCoordinateCenter(ball_y, -field_width_ * 0.5, field_width_ * 0.5);
             msg.ball_pos_to_field_z = 0.0;
         }
 
@@ -616,14 +541,12 @@ private:
                 continue;
             }
 
-            const auto last_sequence_it = last_sequence_by_player_.find(compact_player_id);
-            const int last_sequence = last_sequence_it == last_sequence_by_player_.end()
-                ? -1
-                : last_sequence_it->second;
-            if (!packet->newerThan(last_sequence)) {
+            const auto last_packet_it = last_packet_by_player_.find(compact_player_id);
+            if (last_packet_it != last_packet_by_player_.end()
+                && last_packet_it->second == packet->bytes) {
                 continue;
             }
-            last_sequence_by_player_[compact_player_id] = packet->sequence();
+            last_packet_by_player_[compact_player_id] = packet->bytes;
 
             RCLCPP_INFO(get_logger(), "Received team broadcast raw: [%s]", compactPacketToHex(*packet).c_str());
             RCLCPP_INFO(get_logger(), "Received team broadcast decoded: [%s]", describeCompactPacket(*packet).c_str());
@@ -639,21 +562,17 @@ private:
     double max_hz_ = 5.0;
     int max_packets_per_game_ = 12000;
     bool event_driven_ = true;
-    double heartbeat_sec_ = 2.0;
     int64_t min_send_interval_ms_ = 200;
-    int64_t heartbeat_interval_ms_ = 2000;
     int compact_secret_password_ = 0xA7;
     double field_length_ = 14.0;
     double field_width_ = 9.0;
 
     std::unique_ptr<UdpBroadcastNetwork> network_;
-    std::unique_ptr<DebugUdpChannel> debug_channel_;
     std::optional<CompactTeamPacket> pending_packet_;
     bool pending_packet_changed_ = false;
-    int local_sequence_ = 0;
     int packets_sent_ = 0;
     rclcpp::Time last_send_time_{0, 0, RCL_ROS_TIME};
-    std::map<int, int> last_sequence_by_player_;
+    std::map<int, std::array<uint8_t, COMPACT_PACKET_SIZE>> last_packet_by_player_;
 
     std::atomic<bool> receive_flag_{false};
     std::thread receive_thread_;

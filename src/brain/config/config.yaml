@@ -77,7 +77,6 @@ brain_node:
       max_hz: 5.0
       max_packets_per_game: 12000
       event_driven: true
-      heartbeat_sec: 2.0
 
     debug_communication:
       enabled: false

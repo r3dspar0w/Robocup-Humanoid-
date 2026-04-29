@@ -51,34 +51,7 @@ BrainCommunication::BrainCommunication(Brain *argBrain) : brain(argBrain)
 BrainCommunication::~BrainCommunication()
 {
     clearupGameControllerUnicast();
-
-    sockaddr_in local_addr{};
-    local_addr.sin_family = AF_INET;
-    local_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-
-    local_addr.sin_port = htons(_discovery_udp_port);
-    _broadcast_discovery_flag.store(false);
-    _receive_discovery_flag.store(false);
-    if (_discovery_send_socket >= 0) {
-        int ret = sendto(_discovery_send_socket, nullptr, 0, 0, (sockaddr *)&local_addr, sizeof(local_addr));
-        if (ret < 0){
-            RCLCPP_ERROR(brain->get_logger(), "Failed to send empty packet to self to unblock discovery send socket: %s", strerror(errno));
-        }
-    }
-    clearupDiscoveryBroadcast();
-    clearupDiscoveryReceiver();
-
-    _unicast_communication_flag.store(false);
-    _receive_communication_flag.store(false);
-    local_addr.sin_port = htons(_unicast_udp_port);
-    if (_unicast_socket >= 0) {
-        int ret = sendto(_unicast_socket, nullptr, 0, 0, (sockaddr *)&local_addr, sizeof(local_addr));
-        if (ret < 0) {
-           RCLCPP_ERROR(brain->get_logger(), "Failed to send empty packet to self to unblock communication send socket: %s", strerror(errno));
-        }
-    }
-    clearupCommunicationUnicast();
-    clearupCommunicationReceiver();
+    clearupRelayPublishLoop();
 }
 
 void BrainCommunication::initCommunication()
@@ -89,20 +62,19 @@ void BrainCommunication::initCommunication()
     {
         int teamId = brain->config->get_team_id();
         cout << RED_CODE << "Communication enabled." << RESET_CODE << endl;
-        _discovery_udp_port = 10000 + teamId;
-        _unicast_udp_port = 10000 + teamId;
+        _team_port = 10000 + teamId;
         initRelayCommunication();
 
         if (_enable_robot_comm_relay) {
-            initCommunicationUnicast();
+            initRelayPublishLoop();
             RCLCPP_INFO(
                 brain->get_logger(),
-                "HSL team communication uses robot_communication_node broadcast relay on UDP port %d. Legacy discovery and unicast teammate sockets are disabled.",
-                _unicast_udp_port);
+                "HSL team communication uses robot_communication_node broadcast relay on UDP port %d.",
+                _team_port);
         } else {
             RCLCPP_WARN(
                 brain->get_logger(),
-                "Team communication relay disabled. Legacy discovery/unicast teammate sockets are not started because HSL team communication must use the broadcast relay.");
+                "Team communication relay disabled. No robot-to-robot team communication will be published.");
         }
     }
     else
@@ -134,9 +106,8 @@ void BrainCommunication::initRelayCommunication()
 // soccer agent will switch team_id, determine whether the team has changed based on the port and the current teamId
 bool BrainCommunication::isTeamChanged(){
     int teamId = brain->config->get_team_id();
-    if (teamId != (_discovery_udp_port - 10000) || teamId != (_unicast_udp_port - 10000)) {
-        RCLCPP_INFO(brain->get_logger(), "Team changed current discovery_port=%d unicast_port=%d, team_id to %d", 
-        _discovery_udp_port, _unicast_udp_port, teamId);
+    if (teamId != (_team_port - 10000)) {
+        RCLCPP_INFO(brain->get_logger(), "Team changed current team_port=%d, team_id to %d", _team_port, teamId);
         return true;
     }
     return false;
@@ -187,53 +158,6 @@ void BrainCommunication::clearupGameControllerUnicast()
     }
 }
 
-void BrainCommunication::initDiscoveryBroadcast()
-{
-    RCLCPP_WARN(
-        brain->get_logger(),
-        "Legacy discovery broadcast is disabled. HSL team communication uses only the robot_communication broadcast relay.");
-}
-
-void BrainCommunication::clearupDiscoveryBroadcast()
-{
-    _broadcast_discovery_flag.store(false);
-    if (_discovery_send_socket >= 0)
-    {
-        close(_discovery_send_socket);
-        _discovery_send_socket = -1;
-        cout << RED_CODE << format("Discovery send socket has been closed.")
-            << RESET_CODE << endl;
-    }
-
-    if (_discovery_broadcast_thread.joinable())
-    {
-        _discovery_broadcast_thread.join();
-    }
-}
-
-void BrainCommunication::initDiscoveryReceiver()
-{
-    RCLCPP_WARN(
-        brain->get_logger(),
-        "Legacy discovery receiver is disabled. HSL team communication listens only through the robot_communication broadcast relay.");
-}
-
-void BrainCommunication::clearupDiscoveryReceiver()
-{
-    // _receive_discovery_flag.store(false);
-    if (_discovery_recv_socket >= 0)
-    {
-        close(_discovery_recv_socket);
-        _discovery_recv_socket = -1;
-        cout << RED_CODE << format("Discovery receiver socket has been closed.")
-            << RESET_CODE << endl;
-    }
-    if (_discovery_recv_thread.joinable())
-    {
-        _discovery_recv_thread.join();
-    }
-}
-
 void BrainCommunication::unicastToGameController() {
     while (_unicast_gamecontrol_flag.load(std::memory_order_relaxed))
     {
@@ -251,44 +175,20 @@ void BrainCommunication::unicastToGameController() {
     }
 }
 
-// This is for robot to broadcast 'i exist'
-void BrainCommunication::broadcastDiscovery() {
-    RCLCPP_WARN(brain->get_logger(), "Legacy discovery broadcast loop is disabled.");
-}
-
-void BrainCommunication::spinDiscoveryReceiver() {    
-    RCLCPP_WARN(brain->get_logger(), "Legacy discovery receiver loop is disabled.");
-}
-
-void BrainCommunication::cleanupExpiredTeammates() {
-    std::lock_guard<std::mutex> lock(_teammate_addresses_mutex);    
-    for (auto it = _teammate_addresses.begin(); it != _teammate_addresses.end();) {
-        auto timeDiff = this->brain->get_clock()->now().nanoseconds() - it->second.lastUpdate.nanoseconds();
-        if (timeDiff > TEAMMATE_TIMEOUT_MS * 1e6) {
-            cout << YELLOW_CODE << format("Teammate id %d timed out", it->second.playerId) 
-                 << RESET_CODE << endl;
-            it = _teammate_addresses.erase(it);
-        } else {
-            ++it;
-        }
-    }
-}
-
-void BrainCommunication::initCommunicationUnicast() {
+void BrainCommunication::initRelayPublishLoop() {
     try
     {
         if (!_enable_robot_comm_relay) {
-            RCLCPP_WARN(brain->get_logger(), "Legacy unicast communication is disabled for HSL compliance.");
             return;
         }
 
-        _unicast_communication_flag.store(true);
-        _unicast_thread = std::thread([this](){ this->unicastCommunication(); });
+        _relay_publish_flag.store(true);
+        _relay_publish_thread = std::thread([this](){ this->relayPublishLoop(); });
     }
     catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
-        brain->log->log("error/communication", format("Failed to initialize unicast communication: %s", e.what()));
+        brain->log->log("error/communication", format("Failed to initialize relay communication publisher: %s", e.what()));
     }
     
 }
@@ -464,59 +364,27 @@ void BrainCommunication::processTeamCommunicationMsg(const TeamCommunicationMsg 
         - Decide Passing vs Shooting
         - Decide Positioning
 */
-void BrainCommunication::unicastCommunication() {
+void BrainCommunication::relayPublishLoop() {
     auto log = [=](string msg) {
         brain->log->debug("sendMsg", msg);
     };
-    while (_unicast_communication_flag) {
-        cleanupExpiredTeammates();
+    while (_relay_publish_flag) {
         TeamCommunicationMsg msg = makeTeamCommunicationMsg();
         log(format("ImAlive: %d, ImLead: %d, myCost: %.1f, myCmdId: %d, myCmd: %d", msg.isAlive, msg.isLead, msg.cost, msg.cmdId, msg.cmd));
 
         if (_enable_robot_comm_relay && _relay_pub) {
             _relay_pub->publish(toRelayMsg(msg));
-            this_thread::sleep_for(chrono::milliseconds(UNICAST_INTERVAL_MS));
+            this_thread::sleep_for(chrono::milliseconds(RELAY_PUBLISH_INTERVAL_MS));
             continue;
         }
 
-        this_thread::sleep_for(chrono::milliseconds(UNICAST_INTERVAL_MS));
+        this_thread::sleep_for(chrono::milliseconds(RELAY_PUBLISH_INTERVAL_MS));
     }
 }
 
-void BrainCommunication::clearupCommunicationUnicast() {
-    // _unicast_communication_flag.store(false);
-    if (_unicast_socket >= 0) {
-        close(_unicast_socket);
-        _unicast_socket = -1;
-        cout << RED_CODE << format("Communication send socket has been closed.")
-            << RESET_CODE << endl;
-    }
-
-    if (_unicast_thread.joinable()) {
-        _unicast_thread.join();
-    }
-}
-
-void BrainCommunication::initCommunicationReceiver() {
-    RCLCPP_WARN(
-        brain->get_logger(),
-        "Legacy direct teammate receiver is disabled. HSL team communication listens only through the robot_communication broadcast relay.");
-}
-
-// ---------------------- Receiving Teammates Info ---------------------------
-void BrainCommunication::spinCommunicationReceiver() {
-    RCLCPP_WARN(brain->get_logger(), "Legacy direct teammate receiver loop is disabled.");
-}
-
-void BrainCommunication::clearupCommunicationReceiver() {
-    // _receive_communication_flag.store(false);
-    if (_communication_recv_socket >= 0) {
-        close(_communication_recv_socket);
-        _communication_recv_socket = -1;
-        cout << RED_CODE << format("Communication receive socket has been closed.")
-            << RESET_CODE << endl;
-    }
-    if (_communication_recv_thread.joinable()) {
-        _communication_recv_thread.join();
+void BrainCommunication::clearupRelayPublishLoop() {
+    _relay_publish_flag.store(false);
+    if (_relay_publish_thread.joinable()) {
+        _relay_publish_thread.join();
     }
 }

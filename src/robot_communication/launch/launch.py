@@ -86,9 +86,6 @@ def launch_robot_communication(context, *args, **kwargs):
                 'team_communication.event_driven': _arg_or_default(
                     context, 'team_event_driven',
                     defaults.get('brain_node.ros__parameters.team_communication.event_driven', True)),
-                'team_communication.heartbeat_sec': _arg_or_default(
-                    context, 'team_heartbeat_sec',
-                    defaults.get('brain_node.ros__parameters.team_communication.heartbeat_sec', 2.0)),
                 'debug_communication.enabled': _arg_or_default(
                     context, 'debug_communication_enabled',
                     defaults.get('brain_node.ros__parameters.debug_communication.enabled', False)),
@@ -118,7 +115,6 @@ def generate_launch_description():
         DeclareLaunchArgument('team_max_hz', default_value=''),
         DeclareLaunchArgument('team_max_packets_per_game', default_value=''),
         DeclareLaunchArgument('team_event_driven', default_value=''),
-        DeclareLaunchArgument('team_heartbeat_sec', default_value=''),
         DeclareLaunchArgument('debug_communication_enabled', default_value=''),
         DeclareLaunchArgument('debug_target_ip', default_value=''),
         DeclareLaunchArgument('debug_port', default_value=''),

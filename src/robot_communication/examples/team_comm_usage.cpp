@@ -27,7 +27,6 @@ public:
             10,
             [this](const TeamCommunication::SharedPtr msg) {
                 // Update shared world model with latest valid data only.
-                // Ignore duplicates/old packets at the strategy layer if a richer sequence is added later.
                 RCLCPP_INFO(
                     get_logger(),
                     "teammate=%d role=%d alive=%d ball_known=%d robot=(%.2f, %.2f, %.2f)",
@@ -45,7 +44,9 @@ public:
             [this]() {
                 TeamCommunication msg;
                 msg.validation = 31202;
-                msg.communication_id = sequence_++;
+                // communication_id is available on the ROS side, but is not transmitted
+                // in the compact 5-byte UDP team packet.
+                msg.communication_id = communication_id_++;
                 msg.team_id = 67;
                 msg.player_id = 1;
                 msg.player_role = 2;
@@ -59,7 +60,7 @@ public:
     }
 
 private:
-    int sequence_ = 0;
+    int communication_id_ = 0;
     rclcpp::Publisher<TeamCommunication>::SharedPtr pub_;
     rclcpp::Subscription<TeamCommunication>::SharedPtr sub_;
     rclcpp::TimerBase::SharedPtr timer_;
