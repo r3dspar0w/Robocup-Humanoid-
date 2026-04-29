@@ -1,0 +1,56 @@
+- name: Invisibles
+  number: 0
+  fieldPlayerColors: [red, blue, yellow, black, white, green, orange, purple, brown, gray]
+  goalkeeperColors: [blue, yellow, black, white, green, orange, purple, brown, gray, red]
+- name: Bembelbots
+  number: 3
+  fieldPlayerColors: [red, blue, yellow, black, white, green, orange, purple, brown, gray]
+  goalkeeperColors: [blue, yellow, black, white, green, orange, purple, brown, gray, red]
+- name: Berlin United
+  number: 4
+  fieldPlayerColors: [blue, purple]
+  goalkeeperColors: [blue, purple, white]
+- name: B-Human
+  number: 5
+  fieldPlayerColors: [red, white]
+  goalkeeperColors: [blue, purple, white, red]
+- name: Hamburg Bit-Bots
+  number: 6
+  fieldPlayerColors: [red, blue, yellow, black, white, green, orange, purple, brown, gray]
+  goalkeeperColors: [blue, yellow, black, white, green, orange, purple, brown, gray, red]
+- name: whIRLwind Amsterdam
+  number: 8
+  fieldPlayerColors: [red, blue, yellow, black, white, green, orange, purple, brown, gray]
+  goalkeeperColors: [blue, yellow, black, white, green, orange, purple, brown, gray, red]
+- name: WF Wolves
+  number: 9
+  fieldPlayerColors: [red, blue, yellow, black, white, green, orange, purple, brown, gray]
+  goalkeeperColors: [blue, yellow, black, white, green, orange, purple, brown, gray, red]
+- name: Ruhrbot Devils
+  number: 12
+  fieldPlayerColors: [red, blue, yellow, black, white, green, orange, purple, brown, gray]
+  goalkeeperColors: [blue, yellow, black, white, green, orange, purple, brown, gray, red]
+- name: HTWK Robots
+  number: 14
+  fieldPlayerColors: [blue, red]
+  goalkeeperColors: [yellow, blue, red]
+- name: ZJUDancer
+  number: 17
+  fieldPlayerColors: [blue, purple]
+  goalkeeperColors: [blue, purple]
+- name: SPQR
+  number: 19
+  fieldPlayerColors: [red, blue, yellow, black, white, green, orange, purple, brown, gray]
+  goalkeeperColors: [blue, yellow, black, white, green, orange, purple, brown, gray, red]
+- name: HULKs
+  number: 24
+  fieldPlayerColors: [blue, red, green]
+  goalkeeperColors: [blue, red, green]
+- name: R-ZWEI KICKERS
+  number: 50
+  fieldPlayerColors: [red, blue, yellow, black, white, green, orange, purple, brown, gray]
+  goalkeeperColors: [blue, yellow, black, white, green, orange, purple, brown, gray, red]
+- name: B-Team
+  number: 70
+  fieldPlayerColors: [red, blue, yellow, black, white, green, orange, purple, brown, gray]
+  goalkeeperColors: [blue, yellow, black, white, green, orange, purple, brown, gray, red]

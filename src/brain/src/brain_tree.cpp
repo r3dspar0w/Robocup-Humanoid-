@@ -1475,6 +1475,54 @@ NodeStatus Kick::onRunning()
         brain->log->debug("Kick", msg);
     };
 
+    double elapsed = brain->msecsSince(_startTime);
+
+    // ── ATOMIC LOCK WINDOW ──────────────────────────────────────────────────
+    // For the first _lockDurationMs milliseconds after the kick started,
+    // skip ALL abort/validity checks and just keep driving the kick motion.
+    // This prevents CoM-induced camera sway from flipping 'centered' to 0
+    // and aborting the kick animation before it physically completes.
+    if (elapsed < _lockDurationMs) {
+        // ── VELOCITY PROFILING (Step 5) ──────────────────────────────────────
+        // Phase 1 — Stabilization (0 → STABILIZE_MS):
+        //   Walk slowly toward the ball so the robot's CoM settles onto the
+        //   support foot before contact. Prevents stumbling / glancing blows.
+        // Phase 2 — Burst (STABILIZE_MS → lock end):
+        //   Full speed to drive the ball cleanly through the instep.
+        //
+        // Ball angle comes from dead reckoning (brain.cpp) so it stays valid
+        // even when vision is temporarily blind during the wind-up.
+        // ─────────────────────────────────────────────────────────────────────
+        const double STABILIZE_MS   = 300.0;
+        const double STABILIZE_FACTOR = 0.35;  // 35 % of full speed during settle phase
+
+        bool preferStraight = false;
+        getInput("prefer_straight", preferStraight);
+
+        double speedFactor = (elapsed < STABILIZE_MS) ? STABILIZE_FACTOR : 1.0;
+        string phase = (elapsed < STABILIZE_MS) ? "stabilize" : "burst";
+        log(format("kick locked [%s] (%.0f / %.0f ms) factor=%.2f",
+                   phase.c_str(), elapsed, _lockDurationMs, speedFactor));
+
+        if (preferStraight) {
+            double straightSpeed;
+            getInput("straight_speed_limit", straightSpeed);
+            // Apply profile: slow stabilization, then full straight kick
+            brain->client->setVelocity(fabs(straightSpeed) * speedFactor, 0, 0);
+        } else {
+            // Use ball.yawToRobot — kept current by dead reckoning when ball not visible
+            double angle = brain->data->ball.yawToRobot;
+            double speed = getInput<double>("speed_limit").value();
+            // Only ramp up _speed during burst phase to avoid fighting stabilization
+            if (elapsed >= STABILIZE_MS) {
+                _speed += 0.1;
+            }
+            speed = min(speed, _speed) * speedFactor;
+            brain->client->crabWalk(angle, speed);
+        }
+        return NodeStatus::RUNNING;
+    }
+    // ── END ATOMIC LOCK WINDOW ──────────────────────────────────────────────
 
     bool enableAbort = brain->config->get_abort_kick_when_ball_moved();
     auto ballRange = brain->data->ball.range;
@@ -1491,10 +1539,8 @@ NodeStatus Kick::onRunning()
         return NodeStatus::SUCCESS;
     }
 
-
     if (ballRange < _minRange) _minRange = ballRange;    
 
-    
     bool avoidPushing = brain->config->get_avoid_during_kick();
     double kickAoSafeDist = brain->config->get_kick_ao_safe_dist();
     if (
@@ -1505,7 +1551,6 @@ NodeStatus Kick::onRunning()
         brain->client->setVelocity(-0.1, 0, 0);
         return NodeStatus::SUCCESS;
     }
-
 
     double msecs = getInput<double>("min_msec_kick").value();
     bool preferStraight = false;

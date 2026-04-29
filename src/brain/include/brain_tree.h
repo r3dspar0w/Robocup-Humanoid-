@@ -382,7 +382,10 @@ private:
     string _state = "kick"; // stablize | kick
     int _msecKick = 1000;    
     double _speed; 
-    double _minRange; 
+    double _minRange;
+    // Atomic lock: once kick starts, block all abort conditions for this many ms
+    // This prevents CoM-induced camera sway from prematurely aborting the kick animation
+    double _lockDurationMs = 800.0;
     tuple<double, double, double> _calcSpeed();
     bool _shouldUseStraightKick(double yawTolerance, double yTolerance, double goalTolerance, double goalpostMargin, double obstacleDist);
 };

@@ -863,8 +863,30 @@ void Brain::updateBallMemory()
         tree->setEntry<bool>("ball_out", false); 
     }
 
-    
-    updateRelativePos(data->ball);
+    // ── ODOMETRY DEAD RECKONING ──────────────────────────────────────────────
+    // When the ball is not visually detected but memory is still valid, re-project
+    // ball.posToField through the current odometry pose every tick.
+    // This keeps ball.posToRobot / yawToRobot / range accurate during the blind
+    // window (e.g. kick wind-up, head looking down), preventing the kick from
+    // walking in the wrong direction or aborting because ball.range jumped to 0.
+    bool ballMemoryValid = tree->getEntry<bool>("ball_location_known");
+    if (!data->ballDetected && ballMemoryValid) {
+        auto est = field2robot({data->ball.posToField.x, data->ball.posToField.y, 0.0});
+        data->ball.posToRobot.x = est.x;
+        data->ball.posToRobot.y = est.y;
+        data->ball.range        = std::hypot(est.x, est.y);
+        data->ball.yawToRobot   = std::atan2(est.y, est.x);
+        log->debug("DeadReckoning", format(
+            "ball not seen — DR pos: (%.2f, %.2f) range: %.2f yaw: %.2f",
+            data->ball.posToRobot.x, data->ball.posToRobot.y,
+            data->ball.range, data->ball.yawToRobot
+        ));
+    } else {
+        // Ball is visible — normal path: re-project from live vision data
+        updateRelativePos(data->ball);
+    }
+    // ── END ODOMETRY DEAD RECKONING ─────────────────────────────────────────
+
     updateRelativePos(data->tmBall);
     tree->setEntry<double>("ball_range", data->ball.range);
 }
