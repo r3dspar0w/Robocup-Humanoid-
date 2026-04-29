@@ -130,8 +130,6 @@ public:
 
     bool shouldExitRLVisionKick = false; // Whether to exit RL-based vision kick mode, used to coordinate with brain tree and ensure smooth transition back to normal behavior after visual kick.
 
-    int discoveryMsgId = 0;
-    rclcpp::Time discoveryMsgTime;
     int sendId = 0;
     rclcpp::Time sendTime;
     int receiveId[HL_MAX_NUM_PLAYERS];
