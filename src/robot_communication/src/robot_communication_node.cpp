@@ -462,6 +462,32 @@ private:
         return -PI + ((std::clamp(index, 0, 31) + 0.5) * ((2.0 * PI) / 32.0));
     }
 
+    std::string describeCompactPacketInFieldUnits(const CompactTeamPacket &packet) const
+    {
+        const bool ball_known = packet.bytes[2] != COMPACT_UNKNOWN_BALL;
+        const int ball_x = (packet.bytes[2] >> 4) & COMPACT_BALL_COMPONENT_MASK;
+        const int ball_y = packet.bytes[2] & COMPACT_BALL_COMPONENT_MASK;
+        const uint16_t robot_pose = CompactTeamPacket::decodeCompactRobotPose(packet.bytes.data());
+        const int robot_x = robot_pose & COMPACT_POSE_COMPONENT_MASK;
+        const int robot_y = (robot_pose >> COMPACT_ROBOT_Y_SHIFT) & COMPACT_POSE_COMPONENT_MASK;
+        const int robot_theta = (robot_pose >> COMPACT_ROBOT_THETA_SHIFT) & COMPACT_POSE_COMPONENT_MASK;
+
+        std::ostringstream stream;
+        stream << std::fixed << std::setprecision(2);
+        stream << "robot_x_m=" << gridIndexToCoordinateCenter(robot_x, -field_length_ * 0.5, field_length_ * 0.5)
+               << " robot_y_m=" << gridIndexToCoordinateCenter(robot_y, -field_width_ * 0.5, field_width_ * 0.5)
+               << " robot_theta_rad=" << thetaGridIndexToAngleCenter(robot_theta);
+
+        if (ball_known) {
+            stream << " ball_x_m=" << gridIndex4BitToCoordinateCenter(ball_x, -field_length_ * 0.5, field_length_ * 0.5)
+                   << " ball_y_m=" << gridIndex4BitToCoordinateCenter(ball_y, -field_width_ * 0.5, field_width_ * 0.5);
+        } else {
+            stream << " ball_position=unknown";
+        }
+
+        return stream.str();
+    }
+
     uint8_t makeCompactBallPosition(const TeamCommunication &msg) const
     {
         if (!msg.ball_location_known) return COMPACT_UNKNOWN_BALL;
@@ -550,6 +576,7 @@ private:
 
             RCLCPP_INFO(get_logger(), "Received team broadcast raw: [%s]", compactPacketToHex(*packet).c_str());
             RCLCPP_INFO(get_logger(), "Received team broadcast decoded: [%s]", describeCompactPacket(*packet).c_str());
+            RCLCPP_INFO(get_logger(), "Received team broadcast field: [%s]", describeCompactPacketInFieldUnits(*packet).c_str());
             pub_in_->publish(makeMinimalMessageFromCompactPacket(*packet));
         }
     }
