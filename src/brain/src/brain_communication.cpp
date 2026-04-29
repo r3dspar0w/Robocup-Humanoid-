@@ -59,21 +59,23 @@ BrainCommunication::~BrainCommunication()
     local_addr.sin_port = htons(_discovery_udp_port);
     _broadcast_discovery_flag.store(false);
     _receive_discovery_flag.store(false);
-    // Send an empty packet to unblock send and receive threads
-    int ret = sendto(_discovery_send_socket, nullptr, 0, 0, (sockaddr *)&local_addr, sizeof(local_addr));
-    if (ret < 0){
-        RCLCPP_ERROR(brain->get_logger(), "Failed to send empty packet to self to unblock discovery send socket: %s", strerror(errno));
+    if (_discovery_send_socket >= 0) {
+        int ret = sendto(_discovery_send_socket, nullptr, 0, 0, (sockaddr *)&local_addr, sizeof(local_addr));
+        if (ret < 0){
+            RCLCPP_ERROR(brain->get_logger(), "Failed to send empty packet to self to unblock discovery send socket: %s", strerror(errno));
+        }
     }
     clearupDiscoveryBroadcast();
     clearupDiscoveryReceiver();
 
     _unicast_communication_flag.store(false);
     _receive_communication_flag.store(false);
-    // Send an empty packet to unblock send and receive threads
     local_addr.sin_port = htons(_unicast_udp_port);
-    ret = sendto(_unicast_socket, nullptr, 0, 0, (sockaddr *)&local_addr, sizeof(local_addr));
-    if (ret < 0) {
-       RCLCPP_ERROR(brain->get_logger(), "Failed to send empty packet to self to unblock communication send socket: %s", strerror(errno));
+    if (_unicast_socket >= 0) {
+        int ret = sendto(_unicast_socket, nullptr, 0, 0, (sockaddr *)&local_addr, sizeof(local_addr));
+        if (ret < 0) {
+           RCLCPP_ERROR(brain->get_logger(), "Failed to send empty packet to self to unblock communication send socket: %s", strerror(errno));
+        }
     }
     clearupCommunicationUnicast();
     clearupCommunicationReceiver();
@@ -87,17 +89,21 @@ void BrainCommunication::initCommunication()
     {
         int teamId = brain->config->get_team_id();
         cout << RED_CODE << "Communication enabled." << RESET_CODE << endl;
-        _discovery_udp_port = 20000 + teamId;
-        _unicast_udp_port = 30000 + teamId;
+        _discovery_udp_port = 10000 + teamId;
+        _unicast_udp_port = 10000 + teamId;
         initRelayCommunication();
 
-        initDiscoveryBroadcast();
-        initDiscoveryReceiver();
-        RCLCPP_INFO(brain->get_logger(), "InitCommunication Discovery enabled. UDP port: %d", _discovery_udp_port);
-
-        initCommunicationUnicast();
-        initCommunicationReceiver();
-        RCLCPP_INFO(brain->get_logger(), "InitCommunication Communication enabled. UDP port: %d", _unicast_udp_port);
+        if (_enable_robot_comm_relay) {
+            initCommunicationUnicast();
+            RCLCPP_INFO(
+                brain->get_logger(),
+                "HSL team communication uses robot_communication_node broadcast relay on UDP port %d. Legacy discovery and unicast teammate sockets are disabled.",
+                _unicast_udp_port);
+        } else {
+            RCLCPP_WARN(
+                brain->get_logger(),
+                "Team communication relay disabled. Legacy discovery/unicast teammate sockets are not started because HSL team communication must use the broadcast relay.");
+        }
     }
     else
     {
@@ -128,7 +134,7 @@ void BrainCommunication::initRelayCommunication()
 // soccer agent will switch team_id, determine whether the team has changed based on the port and the current teamId
 bool BrainCommunication::isTeamChanged(){
     int teamId = brain->config->get_team_id();
-    if (teamId != (_discovery_udp_port - 20000) || teamId != (_unicast_udp_port - 30000)) {
+    if (teamId != (_discovery_udp_port - 10000) || teamId != (_unicast_udp_port - 10000)) {
         RCLCPP_INFO(brain->get_logger(), "Team changed current discovery_port=%d unicast_port=%d, team_id to %d", 
         _discovery_udp_port, _unicast_udp_port, teamId);
         return true;
@@ -183,40 +189,9 @@ void BrainCommunication::clearupGameControllerUnicast()
 
 void BrainCommunication::initDiscoveryBroadcast()
 {
-    try
-    {
-        _discovery_send_socket = socket(AF_INET, SOCK_DGRAM, 0);
-        if (_discovery_send_socket < 0)
-        {
-            cout << RED_CODE << format("socket failed: %s", strerror(errno))
-                << RESET_CODE << endl;
-            throw std::runtime_error(strerror(errno));
-        }
-
-        // Set broadcast options
-        int broadcast = 1;
-        if (setsockopt(_discovery_send_socket, SOL_SOCKET, SO_BROADCAST, 
-                    &broadcast, sizeof(broadcast)) < 0)
-        {
-            cout << RED_CODE << format("Failed to set SO_BROADCAST: %s", strerror(errno))
-                << RESET_CODE << endl;
-            throw std::runtime_error(strerror(errno));
-        }
-
-        // Configure broadcast address
-        _saddr.sin_family = AF_INET;
-        _saddr.sin_addr.s_addr = INADDR_BROADCAST;  // 255.255.255.255
-        _saddr.sin_port = htons(_discovery_udp_port);
-
-        _broadcast_discovery_flag.store(true);
-        _discovery_broadcast_thread = std::thread([this](){ this->broadcastDiscovery(); });
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-        brain->log->log("error/communication", format("Failed to initialize discovery broadcast: %s", e.what()));
-    }
-    
+    RCLCPP_WARN(
+        brain->get_logger(),
+        "Legacy discovery broadcast is disabled. HSL team communication uses only the robot_communication broadcast relay.");
 }
 
 void BrainCommunication::clearupDiscoveryBroadcast()
@@ -238,48 +213,9 @@ void BrainCommunication::clearupDiscoveryBroadcast()
 
 void BrainCommunication::initDiscoveryReceiver()
 {
-    try
-    {
-        _discovery_recv_socket = socket(AF_INET, SOCK_DGRAM, 0);
-        if (_discovery_recv_socket < 0)
-        {
-            cout << RED_CODE << format("socket failed: %s", strerror(errno))
-                << RESET_CODE << endl;
-            throw std::runtime_error(strerror(errno));
-        }
-
-        // Allow address reuse
-        int reuse = 1;
-        if (setsockopt(_discovery_recv_socket, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) < 0)
-        {
-            cout << RED_CODE << format("Failed to set SO_REUSEADDR: %s", strerror(errno))
-                << RESET_CODE << endl;
-            throw std::runtime_error(strerror(errno));
-        }
-
-        sockaddr_in addr{};
-        addr.sin_family = AF_INET;
-        addr.sin_addr.s_addr = htonl(INADDR_ANY);  // Receive data from all network interfaces
-        addr.sin_port = htons(_discovery_udp_port);
-        
-        if (bind(_discovery_recv_socket, (sockaddr *)&addr, sizeof(addr)) < 0)
-        {
-            cout << RED_CODE << format("bind failed: %s (port=%d)", strerror(errno), _discovery_udp_port)
-                << RESET_CODE << endl;
-            throw std::runtime_error(strerror(errno));
-        }
-
-        cout << GREEN_CODE << format("Listening for UDP broadcast on port %d", _discovery_udp_port)
-            << RESET_CODE << endl;
-
-        _receive_discovery_flag.store(true);
-        _discovery_recv_thread = std::thread([this](){ this->spinDiscoveryReceiver(); });
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-        brain->log->log("error/communication", format("Failed to initialize discovery receiver: %s", e.what()));
-    }
+    RCLCPP_WARN(
+        brain->get_logger(),
+        "Legacy discovery receiver is disabled. HSL team communication listens only through the robot_communication broadcast relay.");
 }
 
 void BrainCommunication::clearupDiscoveryReceiver()
@@ -317,76 +253,11 @@ void BrainCommunication::unicastToGameController() {
 
 // This is for robot to broadcast 'i exist'
 void BrainCommunication::broadcastDiscovery() {
-    while (_broadcast_discovery_flag.load(std::memory_order_relaxed))
-    {
-        TeamDiscoveryMsg msg;
-
-        msg.communicationId = _discovery_msg_id++;
-        msg.teamId = brain->config->get_team_id();
-        msg.playerId = brain->config->get_player_id();
-
-        int ret = sendto(_discovery_send_socket, &msg, sizeof(msg), 0, (sockaddr *)&_saddr, sizeof(_saddr));
-        if (ret < 0)
-        {
-            cout << RED_CODE << format("sendto failed: %s", strerror(errno))
-                << RESET_CODE << endl;
-        }
-
-        brain->data->discoveryMsgId = msg.communicationId;
-        brain->data->discoveryMsgTime = brain->get_clock()->now();
-        this_thread::sleep_for(chrono::milliseconds(BROADCAST_DISCOVERY_INTERVAL_MS));
-    } 
+    RCLCPP_WARN(brain->get_logger(), "Legacy discovery broadcast loop is disabled.");
 }
 
 void BrainCommunication::spinDiscoveryReceiver() {    
-    sockaddr_in addr{};
-    socklen_t addr_len = sizeof(addr);
-
-    TeamDiscoveryMsg msg;
-
-    while (_receive_discovery_flag.load(std::memory_order_relaxed)) {
-
-        ssize_t len = recvfrom(_discovery_recv_socket, &msg, sizeof(msg), 0, (sockaddr *)&addr, &addr_len);
-
-        if (len < 0)
-        {
-            cout << RED_CODE << format("receiving UDP message failed: %s", strerror(errno))
-                << RESET_CODE << endl;
-            continue;
-        }
-
-        if (len != sizeof(TeamDiscoveryMsg)) {
-            cout << YELLOW_CODE << format("received TeamDiscoveryMsg packet with wrong size: %ld, expected: %ld", len, sizeof(TeamDiscoveryMsg))
-                << RESET_CODE << endl;
-            continue;
-        }
-
-        if (msg.validation != VALIDATION_DISCOVERY) { // fail to pass validation
-            cout << RED_CODE << format("received TeamDiscoveryMsg packet with invalid validation: %d", msg.validation)
-                << RESET_CODE << endl;
-            continue;
-        } 
-
-        if (msg.teamId != brain->config->get_team_id()) { // Ignore messages from other teams
-            cout << YELLOW_CODE << format("Received message from team %d, expected team %d", msg.teamId, brain->config->get_team_id())
-                << RESET_CODE << endl;
-            continue;
-        }
-
-        if (msg.playerId == brain->config->get_player_id()) {  // Ignore own messages
-            continue;
-        } else {
-
-            
-            auto time_now = brain->get_clock()->now();
-            std::lock_guard<std::mutex> lock(_teammate_addresses_mutex);
-            _teammate_addresses[addr.sin_addr.s_addr] = {
-                addr.sin_addr.s_addr,
-                msg.playerId,
-                time_now
-            };
-        }
-    }
+    RCLCPP_WARN(brain->get_logger(), "Legacy discovery receiver loop is disabled.");
 }
 
 void BrainCommunication::cleanupExpiredTeammates() {
@@ -406,15 +277,10 @@ void BrainCommunication::cleanupExpiredTeammates() {
 void BrainCommunication::initCommunicationUnicast() {
     try
     {
-        _unicast_socket = socket(AF_INET, SOCK_DGRAM, 0);
-        if (_unicast_socket < 0) {
-            cout << RED_CODE << format("socket failed: %s", strerror(errno))
-                << RESET_CODE << endl;
-            throw std::runtime_error("Failed to create unicast socket");
+        if (!_enable_robot_comm_relay) {
+            RCLCPP_WARN(brain->get_logger(), "Legacy unicast communication is disabled for HSL compliance.");
+            return;
         }
-
-        _unicast_saddr.sin_family = AF_INET;
-        _unicast_saddr.sin_port = htons(_unicast_udp_port);
 
         _unicast_communication_flag.store(true);
         _unicast_thread = std::thread([this](){ this->unicastCommunication(); });
@@ -609,23 +475,10 @@ void BrainCommunication::unicastCommunication() {
 
         if (_enable_robot_comm_relay && _relay_pub) {
             _relay_pub->publish(toRelayMsg(msg));
+            this_thread::sleep_for(chrono::milliseconds(UNICAST_INTERVAL_MS));
+            continue;
         }
 
-        std::lock_guard<std::mutex> lock(_teammate_addresses_mutex);
-        for (auto it = _teammate_addresses.begin(); it != _teammate_addresses.end(); ++it) {
-            auto ip = it->second.ip;
-
-            brain->data->tmIP = inet_ntoa(*(in_addr *)&ip);
-            brain->data->sendId = msg.communicationId;
-            brain->data->sendTime = brain->get_clock()->now();
-            
-            _unicast_saddr.sin_addr.s_addr = ip;
-            int ret = sendto(_unicast_socket, &msg, sizeof(msg), 0, (sockaddr *)&_unicast_saddr, sizeof(_unicast_saddr));
-            if (ret < 0) {
-                cout << RED_CODE << format("sendto failed: %s", strerror(errno))
-                    << RESET_CODE << endl;
-            }
-        }
         this_thread::sleep_for(chrono::milliseconds(UNICAST_INTERVAL_MS));
     }
 }
@@ -645,81 +498,14 @@ void BrainCommunication::clearupCommunicationUnicast() {
 }
 
 void BrainCommunication::initCommunicationReceiver() {
-    try
-    {
-        _communication_recv_socket = socket(AF_INET, SOCK_DGRAM, 0);
-        if (_communication_recv_socket < 0) {
-            cout << RED_CODE << format("socket failed: %s", strerror(errno))
-                << RESET_CODE << endl;
-            throw std::runtime_error(strerror(errno));
-        }
-
-        // Allow address reuse
-        int reuse = 1;
-        if (setsockopt(_communication_recv_socket, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) < 0)
-        {
-            cout << RED_CODE << format("Failed to set SO_REUSEADDR: %s", strerror(errno))
-                << RESET_CODE << endl;
-            throw std::runtime_error(strerror(errno));
-        }
-
-        sockaddr_in addr{};
-        addr.sin_family = AF_INET;
-        addr.sin_addr.s_addr = htonl(INADDR_ANY);
-        addr.sin_port = htons(_unicast_udp_port);
-        
-        if (bind(_communication_recv_socket, (sockaddr *)&addr, sizeof(addr)) < 0) {
-            cout << RED_CODE << format("bind failed: %s (port=%d)", strerror(errno), _unicast_udp_port)
-                << RESET_CODE << endl;
-            throw std::runtime_error(strerror(errno));
-        }
-
-        _receive_communication_flag.store(true);
-        _communication_recv_thread = std::thread([this](){ this->spinCommunicationReceiver(); });
-    
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-        brain->log->log("error/communication", format("Failed to initialize communication receiver: %s", e.what()));
-    }
+    RCLCPP_WARN(
+        brain->get_logger(),
+        "Legacy direct teammate receiver is disabled. HSL team communication listens only through the robot_communication broadcast relay.");
 }
 
 // ---------------------- Receiving Teammates Info ---------------------------
 void BrainCommunication::spinCommunicationReceiver() {
-    auto log = [=](string msg) {
-        brain->log->debug("receiveMsg", msg);
-    };
-    sockaddr_in addr{};
-    socklen_t addr_len = sizeof(addr);
-
-    TeamCommunicationMsg msg;
-
-    while (_receive_communication_flag.load(std::memory_order_relaxed)) {
-
-        ssize_t len = recvfrom(_communication_recv_socket, &msg, sizeof(msg), 0, (sockaddr *)&addr, &addr_len);
-
-        if (len < 0) {
-            cout << RED_CODE << format("receiving UDP message failed: %s", strerror(errno))
-                << RESET_CODE << endl;
-            continue;
-        }
-
-        if (len != sizeof(TeamCommunicationMsg)) {
-            cout << YELLOW_CODE << format("received TeamCommunicationMsg packet with wrong size: %ld, expected: %ld", len, sizeof(TeamCommunicationMsg))
-                << RESET_CODE << endl;
-            continue;
-        }
-
-        if (msg.validation != VALIDATION_COMMUNICATION) { // fail to pass validation
-            cout << RED_CODE << format("received TeamCommunicationMsg packet with invalid validation: %d", msg.validation)
-                << RESET_CODE << endl;
-            continue;
-        }
-
-        processTeamCommunicationMsg(msg, "direct");
-
-    }
+    RCLCPP_WARN(brain->get_logger(), "Legacy direct teammate receiver loop is disabled.");
 }
 
 void BrainCommunication::clearupCommunicationReceiver() {

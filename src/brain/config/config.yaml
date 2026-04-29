@@ -70,6 +70,20 @@ brain_node:
 
     enable_com: true
     enable_robot_comm_relay: true
+
+    team_communication:
+      enabled: true
+      broadcast_address: "255.255.255.255"
+      max_hz: 5.0
+      max_packets_per_game: 12000
+      event_driven: true
+      heartbeat_sec: 2.0
+
+    debug_communication:
+      enabled: false
+      target_ip: "192.168.0.100"
+      port: 11000
+      max_hz: 1.0
     
     rerunLog:
       enable_tcp: true
