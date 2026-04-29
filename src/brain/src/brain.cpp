@@ -43,9 +43,10 @@ int fieldZoneForPoint(double x, double y, const FieldDimensions &fd)
     if (col < 0) col = 0;
     if (rowFromBottom < 0) rowFromBottom = 0;
 
-    // Number zones row-major from the top-left of the field view: 1..3, 4..6, 7..9.
+    // Number zones top-to-bottom by column from the left of the field view:
+    // 1..3 on the left, 4..6 in the middle, 7..9 on the right.
     const int rowFromTop = FIELD_ZONE_ROWS - 1 - rowFromBottom;
-    return rowFromTop * FIELD_ZONE_COLS + col + 1;
+    return col * FIELD_ZONE_ROWS + rowFromTop + 1;
 }
 
 std::string zoneText(int zone)
@@ -124,7 +125,7 @@ std::vector<visualization_msgs::msg::Marker> createFieldZoneMarkers(
 
     for (int row = 0; row < FIELD_ZONE_ROWS; ++row) {
         for (int col = 0; col < FIELD_ZONE_COLS; ++col) {
-            const int zone = row * FIELD_ZONE_COLS + col + 1;
+            const int zone = col * FIELD_ZONE_ROWS + row + 1;
             visualization_msgs::msg::Marker label;
             label.header.frame_id = frame_id;
             label.header.stamp = stamp;
