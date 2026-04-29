@@ -290,6 +290,7 @@ private:
     rclcpp::Publisher<brain::msg::Kick>::SharedPtr pubKickBall;
     rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr pubTeammatesPoses;
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pubSpeak;
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pubFieldZoneStatus;
 
     // ------------------------------------------------------ debug logs related ------------------------------------------------------
     void logLags();

@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <fstream> 
+#include <sstream>
+#include <iomanip>
 #include <yaml-cpp/yaml.h>
 
 #include "brain.h"
@@ -15,6 +17,180 @@ using namespace std;
 using std::placeholders::_1;
 
 #define SUB_STATE_QUEUE_SIZE 1
+
+namespace
+{
+constexpr int FIELD_ZONE_ROWS = 3;
+constexpr int FIELD_ZONE_COLS = 3;
+constexpr int FIELD_ZONE_GRID_ID = 300;
+constexpr int FIELD_ZONE_LABEL_ID_START = 310;
+constexpr int FIELD_ZONE_STATUS_ID = 320;
+
+int fieldZoneForPoint(double x, double y, const FieldDimensions &fd)
+{
+    const double halfLength = fd.length / 2.0;
+    const double halfWidth = fd.width / 2.0;
+
+    if (x < -halfLength || x > halfLength || y < -halfWidth || y > halfWidth) {
+        return 0;
+    }
+
+    int col = static_cast<int>((x + halfLength) / (fd.length / FIELD_ZONE_COLS));
+    int rowFromBottom = static_cast<int>((y + halfWidth) / (fd.width / FIELD_ZONE_ROWS));
+
+    if (col >= FIELD_ZONE_COLS) col = FIELD_ZONE_COLS - 1;
+    if (rowFromBottom >= FIELD_ZONE_ROWS) rowFromBottom = FIELD_ZONE_ROWS - 1;
+    if (col < 0) col = 0;
+    if (rowFromBottom < 0) rowFromBottom = 0;
+
+    // Number zones top-to-bottom by column from the left of the field view:
+    // 1..3 on the left, 4..6 in the middle, 7..9 on the right.
+    const int rowFromTop = FIELD_ZONE_ROWS - 1 - rowFromBottom;
+    return col * FIELD_ZONE_ROWS + rowFromTop + 1;
+}
+
+std::string zoneText(int zone)
+{
+    return zone > 0 ? "zone " + std::to_string(zone) : "outside the field";
+}
+
+std::string zoneFieldText(int zone)
+{
+    return zone > 0 ? zoneText(zone) + " of the field" : zoneText(zone);
+}
+
+std::string detectionLabelForSpeech(const std::string &label)
+{
+    if (label == "Goalkeeper") return "Goalie";
+    if (label == "OpponentGoalie") return "Opponent goalie";
+    if (label == "Person") return "Robot";
+    return label;
+}
+
+visualization_msgs::msg::Marker makeDeleteMarker(
+    const std::string &ns,
+    int id,
+    const std::string &frame_id,
+    rclcpp::Time stamp)
+{
+    visualization_msgs::msg::Marker marker;
+    marker.header.frame_id = frame_id;
+    marker.header.stamp = stamp;
+    marker.ns = ns;
+    marker.id = id;
+    marker.action = visualization_msgs::msg::Marker::DELETE;
+    return marker;
+}
+
+std::vector<visualization_msgs::msg::Marker> createFieldZoneMarkers(
+    const FieldDimensions &fd,
+    const std::string &frame_id,
+    rclcpp::Time stamp)
+{
+    std::vector<visualization_msgs::msg::Marker> markers;
+
+    visualization_msgs::msg::Marker grid;
+    grid.header.frame_id = frame_id;
+    grid.header.stamp = stamp;
+    grid.ns = "field_zones";
+    grid.id = FIELD_ZONE_GRID_ID;
+    grid.type = visualization_msgs::msg::Marker::LINE_LIST;
+    grid.action = visualization_msgs::msg::Marker::ADD;
+    grid.scale.x = 0.035;
+    grid.color.r = 0.0f;
+    grid.color.g = 0.95f;
+    grid.color.b = 1.0f;
+    grid.color.a = 1.0f;
+    grid.lifetime = rclcpp::Duration::from_seconds(0);
+
+    const double halfLength = fd.length / 2.0;
+    const double halfWidth = fd.width / 2.0;
+    const double dashLength = 0.20;
+    const double gapLength = 0.10;
+
+    for (int i = 1; i < FIELD_ZONE_COLS; ++i) {
+        const double x = -halfLength + fd.length * i / FIELD_ZONE_COLS;
+        double y = -halfWidth;
+        while (y < halfWidth) {
+            const double y2 = std::min(y + dashLength, halfWidth);
+            geometry_msgs::msg::Point p1, p2;
+            p1.x = x; p1.y = y; p1.z = 0.03;
+            p2.x = x; p2.y = y2; p2.z = 0.03;
+            grid.points.push_back(p1);
+            grid.points.push_back(p2);
+            y += dashLength + gapLength;
+        }
+    }
+    for (int i = 1; i < FIELD_ZONE_ROWS; ++i) {
+        const double y = -halfWidth + fd.width * i / FIELD_ZONE_ROWS;
+        double x = -halfLength;
+        while (x < halfLength) {
+            const double x2 = std::min(x + dashLength, halfLength);
+            geometry_msgs::msg::Point p1, p2;
+            p1.x = x; p1.y = y; p1.z = 0.03;
+            p2.x = x2; p2.y = y; p2.z = 0.03;
+            grid.points.push_back(p1);
+            grid.points.push_back(p2);
+            x += dashLength + gapLength;
+        }
+    }
+    markers.push_back(grid);
+
+    for (int row = 0; row < FIELD_ZONE_ROWS; ++row) {
+        for (int col = 0; col < FIELD_ZONE_COLS; ++col) {
+            const int zone = col * FIELD_ZONE_ROWS + row + 1;
+            visualization_msgs::msg::Marker label;
+            label.header.frame_id = frame_id;
+            label.header.stamp = stamp;
+            label.ns = "field_zone_labels";
+            label.id = FIELD_ZONE_LABEL_ID_START + zone;
+            label.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
+            label.action = visualization_msgs::msg::Marker::ADD;
+            label.pose.position.x = -halfLength + fd.length * (col + 0.5) / FIELD_ZONE_COLS;
+            label.pose.position.y = halfWidth - fd.width * (row + 0.5) / FIELD_ZONE_ROWS;
+            label.pose.position.z = 0.08;
+            label.pose.orientation.w = 1.0;
+            label.scale.z = 0.45;
+            label.color.r = 1.0f;
+            label.color.g = 0.9f;
+            label.color.b = 0.05f;
+            label.color.a = 1.0f;
+            label.text = std::to_string(zone);
+            label.lifetime = rclcpp::Duration::from_seconds(0);
+            markers.push_back(label);
+        }
+    }
+
+    return markers;
+}
+
+visualization_msgs::msg::Marker createFieldZoneStatusMarker(
+    const std::string &text,
+    const FieldDimensions &fd,
+    const std::string &frame_id,
+    rclcpp::Time stamp)
+{
+    visualization_msgs::msg::Marker marker;
+    marker.header.frame_id = frame_id;
+    marker.header.stamp = stamp;
+    marker.ns = "field_zone_status";
+    marker.id = FIELD_ZONE_STATUS_ID;
+    marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
+    marker.action = visualization_msgs::msg::Marker::ADD;
+    marker.pose.position.x = 0.0;
+    marker.pose.position.y = fd.width / 2.0 + 1.0;
+    marker.pose.position.z = 1.5;
+    marker.pose.orientation.w = 1.0;
+    marker.scale.z = 0.28;
+    marker.color.r = 0.05f;
+    marker.color.g = 0.9f;
+    marker.color.b = 1.0f;
+    marker.color.a = 1.0f;
+    marker.text = text;
+    marker.lifetime = rclcpp::Duration::from_seconds(0);
+    return marker;
+}
+}
 
 Brain::Brain() : rclcpp::Node("brain_node")
 {
@@ -227,6 +403,7 @@ void Brain::init()
     pubBallPosition = create_publisher<geometry_msgs::msg::Point>("/booster_soccer/ball_position" + topic_suffix, 10);
     pubTeammatesPoses = create_publisher<std_msgs::msg::Float64MultiArray>("/booster_soccer/teammates_poses" + topic_suffix, 10);
     pubKickBall = create_publisher<brain::msg::Kick>("/kick_ball", 10);
+    pubFieldZoneStatus = create_publisher<std_msgs::msg::String>("/booster_soccer/field_zone_status" + topic_suffix, 10);
 
     pubSpeak = create_publisher<std_msgs::msg::String>("/speak", 10);
 
@@ -1313,7 +1490,7 @@ void Brain::detectionsCallback(const vision_interface::msg::Detections &msg)
             if (config->get_treat_person_as_robot())
                 robots.push_back(obj);
         }
-        if (obj.label == "Opponent" || obj.label == "Goalkeeper" || obj.label == "OpponentGoalie")
+        if (obj.label == "Teammate" || obj.label == "Opponent" || obj.label == "Goalkeeper" || obj.label == "OpponentGoalie")
             robots.push_back(obj);
         if (obj.label == "LCross" || obj.label == "TCross" || obj.label == "XCross" || obj.label == "PenaltyPoint")
             markings.push_back(obj);
@@ -2504,6 +2681,7 @@ void Brain::publishVisualizationMarkers()
 
     // 1. Publish field map (fixed)
     auto &fd = config->fieldDimensions;
+    auto stamp = this->now();
     
     // Center line
     auto center_line = visualizer->createFieldCenterLineMarker(fd.width, "map");
@@ -2522,6 +2700,11 @@ void Brain::publishVisualizationMarkers()
     marker_array.markers.push_back(field_boundary);
     localization_marker_array.markers.push_back(field_boundary);
     field_map_array.markers.push_back(field_boundary);
+
+    auto zone_markers = createFieldZoneMarkers(fd, "map", stamp);
+    marker_array.markers.insert(marker_array.markers.end(), zone_markers.begin(), zone_markers.end());
+    localization_marker_array.markers.insert(localization_marker_array.markers.end(), zone_markers.begin(), zone_markers.end());
+    field_map_array.markers.insert(field_map_array.markers.end(), zone_markers.begin(), zone_markers.end());
     
     // Our goal area
     auto our_goal_area = visualizer->createGoalAreaMarker(true, fd.length, fd.goalAreaLength, fd.goalAreaWidth, "map");
@@ -2569,12 +2752,16 @@ void Brain::publishVisualizationMarkers()
     localization_marker_array.markers.push_back(robot_marker);
 
     // 3. Publish ball position
-    auto ball_marker = visualizer->createBallMarker(
-        data->ball.posToField.x,
-        data->ball.posToField.y,
-        0.11, // ball radius is 0.11
-        "map");
-    marker_array.markers.push_back(ball_marker);
+    if (data->ballDetected) {
+        auto ball_marker = visualizer->createBallMarker(
+            data->ball.posToField.x,
+            data->ball.posToField.y,
+            0.11, // ball radius is 0.11
+            "map");
+        marker_array.markers.push_back(ball_marker);
+    } else {
+        marker_array.markers.push_back(makeDeleteMarker("ball", 1, "map", stamp));
+    }
 
     // 4. Publish observed Mark points (dynamic)
     std::vector<std::tuple<double, double, char>> mark_points;
@@ -2650,6 +2837,33 @@ void Brain::publishVisualizationMarkers()
         "map");
     marker_array.markers.push_back(localization_marker);
     localization_marker_array.markers.push_back(localization_marker);
+
+    const int myZone = fieldZoneForPoint(data->robotPoseToField.x, data->robotPoseToField.y, fd);
+    std::stringstream zoneStatus;
+    zoneStatus << "I am at " << zoneFieldText(myZone);
+
+    if (data->ballDetected) {
+        const int ballZone = fieldZoneForPoint(data->ball.posToField.x, data->ball.posToField.y, fd);
+        zoneStatus << "\nBall detected at " << zoneFieldText(ballZone);
+    }
+
+    auto robots = data->getRobots();
+    for (const auto &robot : robots) {
+        const int robotZone = fieldZoneForPoint(robot.posToField.x, robot.posToField.y, fd);
+        zoneStatus << "\n" << detectionLabelForSpeech(robot.label)
+                   << " detected at " << zoneFieldText(robotZone);
+    }
+
+    const std::string zoneStatusText = zoneStatus.str();
+    auto zone_status_marker = createFieldZoneStatusMarker(zoneStatusText, fd, "map", stamp);
+    marker_array.markers.push_back(zone_status_marker);
+    localization_marker_array.markers.push_back(zone_status_marker);
+
+    if (pubFieldZoneStatus) {
+        std_msgs::msg::String msg;
+        msg.data = zoneStatusText;
+        pubFieldZoneStatus->publish(msg);
+    }
 
     visualizer->publishMarkers(marker_array);
     visualizer->publishLocalizationMarkers(localization_marker_array);
