@@ -28,7 +28,16 @@
                      Striker has more layers of reactive sequences to handle multi step attack strategy. 
                      Goalkeeper has simpler nested sequences because logic is mostly reactive defence (position -> block -> clear)
                   -->
-                  <Sequence>
+                  <Sequence _while="!ball_location_known && global_ball_zone >= 1 && !(global_ball_zone > 3)" name="own third ball search">
+                     <SubTree ID="FindBall" _autoremap="true" />
+                  </Sequence>
+
+                  <Sequence _while="!ball_location_known && global_ball_zone >= 4 && !(global_ball_zone > 9)" name="far ball look and block">
+                     <GoalieLookAtGlobalBallZone />
+                     <GoToGoalBlockingPosition theta_tolerance="0.6" vx_limit="0.7" vy_limit="0.5" />
+                  </Sequence>
+
+                  <Sequence _while="ball_location_known || global_ball_zone == 0" name="normal goalie decision">
                      <SubTree ID="CamFindAndTrackBall" _autoremap="true" />
 
                      <!-- One of the main difference between striker and goalie BT -->

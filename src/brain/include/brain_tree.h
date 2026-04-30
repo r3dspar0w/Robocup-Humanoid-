@@ -130,6 +130,24 @@ private:
     Brain *brain;
 };
 
+class GoalieLookAtGlobalBallZone : public SyncActionNode
+{
+public:
+    GoalieLookAtGlobalBallZone(const std::string &name, const NodeConfig &config, Brain *_brain)
+        : SyncActionNode(name, config), brain(_brain) {}
+
+    static BT::PortsList providedPorts()
+    {
+        return {};
+    }
+
+    BT::NodeStatus tick() override;
+
+private:
+    Brain *brain;
+    int _lastLookZone = 0;
+};
+
 
 class CamTrackBall : public SyncActionNode
 {

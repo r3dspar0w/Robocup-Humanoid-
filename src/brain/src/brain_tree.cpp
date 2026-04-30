@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cmath>
 #include <cstdlib>
 #include "brain_tree.h"
@@ -230,6 +231,7 @@ void BrainTree::init()
     REGISTER_BUILDER(MoveToPoseOnField)
     REGISTER_BUILDER(GoBackInField)
     REGISTER_BUILDER(GoalieDecide)
+    REGISTER_BUILDER(GoalieLookAtGlobalBallZone)
     REGISTER_BUILDER(WaveHand)
     REGISTER_BUILDER(MoveHead)
     REGISTER_BUILDER(CheckAndStandUp)
@@ -450,6 +452,33 @@ NodeStatus CamFindBall::tick()
     return NodeStatus::SUCCESS;
 }
 
+NodeStatus GoalieLookAtGlobalBallZone::tick()
+{
+    const int zone = brain->tree->getEntry<int>("global_ball_zone");
+    if (brain->tree->getEntry<bool>("ball_location_known") || zone < 4 || zone > 9) {
+        _lastLookZone = 0;
+        return NodeStatus::SUCCESS;
+    }
+
+    if (_lastLookZone == zone) {
+        return NodeStatus::SUCCESS;
+    }
+
+    Pose2D targetField;
+    targetField.x = brain->tree->getEntry<double>("team_global_ball_x");
+    targetField.y = brain->tree->getEntry<double>("team_global_ball_y");
+    targetField.theta = 0.0;
+
+    Pose2D targetRobot = brain->data->field2robot(targetField);
+    const double range = std::max(norm(targetRobot.x, targetRobot.y), 1e-3);
+    const double yaw = atan2(targetRobot.y, targetRobot.x);
+    const double pitch = atan2(brain->config->get_robot_height(), range);
+
+    brain->client->moveHead(pitch, yaw);
+    _lastLookZone = zone;
+    return NodeStatus::SUCCESS;
+}
+
 NodeStatus CamScanField::tick()
 {
     brain->log->strategy("--------------------------");
@@ -647,6 +676,15 @@ NodeStatus GoToGoalBlockingPosition::tick() {
     auto fd = brain->config->fieldDimensions;
     auto ballPos = brain->data->ball.posToField;
     auto robotPose = brain->data->robotPoseToField;
+    if (!brain->tree->getEntry<bool>("ball_location_known")
+        && brain->tree->getEntry<int>("team_global_ball_zone") > 0) {
+        ballPos.x = brain->tree->getEntry<double>("team_global_ball_x");
+        ballPos.y = brain->tree->getEntry<double>("team_global_ball_y");
+        ballPos.z = brain->tree->getEntry<double>("team_global_ball_z");
+    } else if (!brain->tree->getEntry<bool>("ball_location_known")
+        && brain->tree->getEntry<bool>("tm_ball_pos_reliable")) {
+        ballPos = brain->data->tmBall.posToField;
+    }
 
     string curRole = brain->tree->getEntry<string>("player_role");
 
@@ -1102,6 +1140,7 @@ NodeStatus GoalieDecide::tick()
         && ballInFront
         && brain->data->ballDetected
         && ballRange < 1.0;
+    const int globalBallZone = brain->tree->getEntry<int>("global_ball_zone");
 
     const double chaseCommitBias = 0.10;
     const double stopChasingThreshold = 0.45;
@@ -1119,7 +1158,15 @@ NodeStatus GoalieDecide::tick()
     bool currentlyChasingAfterHysteresis = false;
 
     string newDecision;
-    if (!(iKnowBallPos || tmBallPosReliable))
+    if (globalBallZone >= 1 && globalBallZone <= 3 && !iKnowBallPos)
+    {
+        newDecision = "find";
+    }
+    else if (globalBallZone >= 4 && globalBallZone <= 9 && !canClearNow)
+    {
+        newDecision = "retreat";
+    }
+    else if (!(iKnowBallPos || tmBallPosReliable))
     {
         newDecision = "find";
     }

@@ -60,7 +60,7 @@ enum CompactRole : uint8_t
 struct CompactTeamPacket
 {
     // Existing compact wire format, kept at 5 bytes:
-    // [password][id/role/alive][ball zone][pose byte 0][pose byte 1]
+    // [password][id/role/alive][ball zone][pose byte 0][pose byte 1 ]
     // Byte 2 is 1..9 for a 3x3 field zone, or 0xFF when the ball position is unknown.
     std::array<uint8_t, COMPACT_PACKET_SIZE> bytes{};
 
