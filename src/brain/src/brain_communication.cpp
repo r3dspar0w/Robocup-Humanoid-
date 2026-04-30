@@ -1,6 +1,33 @@
 #include "brain.h"
 #include "brain_communication.h"
 
+#include <algorithm>
+
+namespace
+{
+constexpr int FIELD_ZONE_ROWS = 3;
+constexpr int FIELD_ZONE_COLS = 3;
+
+int fieldZoneForPoint(double x, double y, const FieldDimensions &fd)
+{
+    const double halfLength = fd.length / 2.0;
+    const double halfWidth = fd.width / 2.0;
+
+    if (x < -halfLength || x > halfLength || y < -halfWidth || y > halfWidth) {
+        return 0;
+    }
+
+    int col = static_cast<int>((x + halfLength) / (fd.length / FIELD_ZONE_COLS));
+    int rowFromBottom = static_cast<int>((y + halfWidth) / (fd.width / FIELD_ZONE_ROWS));
+
+    col = std::clamp(col, 0, FIELD_ZONE_COLS - 1);
+    rowFromBottom = std::clamp(rowFromBottom, 0, FIELD_ZONE_ROWS - 1);
+
+    const int rowFromTop = FIELD_ZONE_ROWS - 1 - rowFromBottom;
+    return col * FIELD_ZONE_ROWS + rowFromTop + 1;
+}
+}
+
 /*
 It handles 3 Critical things:
     1. Game Controller Communication
@@ -358,6 +385,39 @@ void BrainCommunication::processTeamCommunicationMsg(const TeamCommunicationMsg 
     tmStatus.timeLastCom = brain->get_clock()->now();
     tmStatus.cmd = msg.cmd;
     tmStatus.cmdId = msg.cmdId;
+
+    if (msg.ballLocationKnown) {
+        const int ball_zone = fieldZoneForPoint(
+            msg.ballPosToField.x,
+            msg.ballPosToField.y,
+            brain->config->fieldDimensions);
+        if (ball_zone > 0) {
+            const int last_zone = brain->tree->getEntry<int>("team_global_ball_zone");
+            const bool ball_changed =
+                !brain->tree->getEntry<bool>("team_global_ball_known")
+                || last_zone != ball_zone;
+
+            if (ball_changed) {
+                brain->tree->setEntry<bool>("team_global_ball_known", true);
+                brain->tree->setEntry<double>("team_global_ball_x", msg.ballPosToField.x);
+                brain->tree->setEntry<double>("team_global_ball_y", msg.ballPosToField.y);
+                brain->tree->setEntry<double>("team_global_ball_z", msg.ballPosToField.z);
+                brain->tree->setEntry<int>("team_global_ball_player_id", msg.playerId);
+                brain->tree->setEntry<int>("team_global_ball_zone", ball_zone);
+                brain->tree->setEntry<int>("team_global_ball_zone_player_id", msg.playerId);
+                if (brain->tree->getEntry<int>("self_ball_zone") == 0) {
+                    brain->tree->setEntry<int>("global_ball_zone", ball_zone);
+                }
+                log(format(
+                    "Updated team global ball from player %d: zone=%d x=%.2f y=%.2f z=%.2f",
+                    msg.playerId,
+                    ball_zone,
+                    msg.ballPosToField.x,
+                    msg.ballPosToField.y,
+                    msg.ballPosToField.z));
+            }
+        }
+    }
 
     if (msg.cmdId > brain->data->tmCmdId) {
         brain->data->tmCmdId = msg.cmdId;

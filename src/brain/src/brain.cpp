@@ -867,6 +867,15 @@ void Brain::updateBallMemory()
     updateRelativePos(data->ball);
     updateRelativePos(data->tmBall);
     tree->setEntry<double>("ball_range", data->ball.range);
+
+    if (tree->getEntry<bool>("ball_location_known")) {
+        const int selfBallZone = fieldZoneForPoint(data->ball.posToField.x, data->ball.posToField.y, config->fieldDimensions);
+        tree->setEntry<int>("self_ball_zone", selfBallZone);
+        tree->setEntry<int>("global_ball_zone", selfBallZone);
+    } else {
+        tree->setEntry<int>("self_ball_zone", 0);
+        tree->setEntry<int>("global_ball_zone", tree->getEntry<int>("team_global_ball_zone"));
+    }
 }
 
 void Brain::updateRobotMemory() {

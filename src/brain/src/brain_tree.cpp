@@ -259,12 +259,21 @@ void BrainTree::initEntry()
     setEntry<string>("player_role", brain->config->get_player_role());
     setEntry<bool>("ball_location_known", false);
     setEntry<bool>("tm_ball_pos_reliable", false);
+    setEntry<bool>("team_global_ball_known", false);
     setEntry<bool>("ball_out", false);
     setEntry<bool>("track_ball", true);
     setEntry<bool>("odom_calibrated", false);
     setEntry<string>("decision", "");
     setEntry<string>("defend_decision", "chase");
     setEntry<double>("ball_range", 0);
+    setEntry<double>("team_global_ball_x", 0);
+    setEntry<double>("team_global_ball_y", 0);
+    setEntry<double>("team_global_ball_z", 0);
+    setEntry<int>("team_global_ball_player_id", 0);
+    setEntry<int>("self_ball_zone", 0);
+    setEntry<int>("team_global_ball_zone", 0);
+    setEntry<int>("team_global_ball_zone_player_id", 0);
+    setEntry<int>("global_ball_zone", 0);
 
     setEntry<bool>("gamecontroller_isKickOff", true);
     setEntry<string>("gc_game_state", "");

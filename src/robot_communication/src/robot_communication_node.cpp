@@ -15,6 +15,7 @@
 #include <stdexcept>
 #include <string>
 #include <thread>
+#include <utility>
 
 #include <arpa/inet.h>
 #include <fcntl.h>
@@ -40,7 +41,10 @@ constexpr uint8_t COMPACT_ROLE_MASK = 0x30;
 constexpr uint8_t COMPACT_READY_MASK = 0x40;
 constexpr uint8_t COMPACT_ROLE_SHIFT = 4;
 constexpr uint8_t COMPACT_UNKNOWN_BALL = 0xFF;
-constexpr uint8_t COMPACT_BALL_COMPONENT_MASK = 0x0F;
+constexpr uint8_t COMPACT_MIN_BALL_ZONE = 1;
+constexpr uint8_t COMPACT_MAX_BALL_ZONE = 9;
+constexpr int FIELD_ZONE_ROWS = 3;
+constexpr int FIELD_ZONE_COLS = 3;
 constexpr uint16_t COMPACT_POSE_COMPONENT_MASK = 0x1F;
 constexpr int COMPACT_ROBOT_Y_SHIFT = 5;
 constexpr int COMPACT_ROBOT_THETA_SHIFT = 10;
@@ -56,9 +60,8 @@ enum CompactRole : uint8_t
 struct CompactTeamPacket
 {
     // Existing compact wire format, kept at 5 bytes:
-    // [password][id/role/alive][ball x/y grid][pose byte 0][pose byte 1]
-    // Byte 2 is fully reserved for ball position: high nibble = x grid, low nibble = y grid.
-    // 0xFF means the ball position is unknown.
+    // [password][id/role/alive][ball zone][pose byte 0][pose byte 1]
+    // Byte 2 is 1..9 for a 3x3 field zone, or 0xFF when the ball position is unknown.
     std::array<uint8_t, COMPACT_PACKET_SIZE> bytes{};
 
     static uint16_t decodeCompactRobotPose(const uint8_t *packet)
@@ -73,6 +76,12 @@ struct CompactTeamPacket
 
         const uint8_t role = (packet[1] & COMPACT_ROLE_MASK) >> COMPACT_ROLE_SHIFT;
         if (role > ROLE_DEFENDER) return false;
+
+        const uint8_t ball = packet[2];
+        if (ball != COMPACT_UNKNOWN_BALL
+            && (ball < COMPACT_MIN_BALL_ZONE || ball > COMPACT_MAX_BALL_ZONE)) {
+            return false;
+        }
 
         return true;
     }
@@ -91,8 +100,7 @@ std::string describeCompactPacket(const CompactTeamPacket &packet)
     const int role = (identity & COMPACT_ROLE_MASK) >> COMPACT_ROLE_SHIFT;
     const bool ready = (identity & COMPACT_READY_MASK) != 0;
     const bool ball_known = packet.bytes[2] != COMPACT_UNKNOWN_BALL;
-    const int ball_x = (packet.bytes[2] >> 4) & COMPACT_BALL_COMPONENT_MASK;
-    const int ball_y = packet.bytes[2] & COMPACT_BALL_COMPONENT_MASK;
+    const int ball_zone = ball_known ? static_cast<int>(packet.bytes[2]) : 0;
     const uint16_t robot_pose = CompactTeamPacket::decodeCompactRobotPose(packet.bytes.data());
     const int robot_x = robot_pose & COMPACT_POSE_COMPONENT_MASK;
     const int robot_y = (robot_pose >> COMPACT_ROBOT_Y_SHIFT) & COMPACT_POSE_COMPONENT_MASK;
@@ -103,8 +111,7 @@ std::string describeCompactPacket(const CompactTeamPacket &packet)
            << " role=" << role
            << " state=" << (ready ? "ready" : "fallen_or_not_ready")
            << " ball_known=" << ball_known
-           << " ball_grid_x=" << ball_x
-           << " ball_grid_y=" << ball_y
+           << " ball_zone=" << ball_zone
            << " robot_grid_x=" << robot_x
            << " robot_grid_y=" << robot_y
            << " robot_theta=" << robot_theta;
@@ -462,11 +469,44 @@ private:
         return -PI + ((std::clamp(index, 0, 31) + 0.5) * ((2.0 * PI) / 32.0));
     }
 
+    uint8_t zoneForFieldPoint(double x, double y) const
+    {
+        const double half_length = field_length_ * 0.5;
+        const double half_width = field_width_ * 0.5;
+
+        if (x < -half_length || x > half_length || y < -half_width || y > half_width) {
+            return 0;
+        }
+
+        int col = static_cast<int>((x + half_length) / (field_length_ / FIELD_ZONE_COLS));
+        int row_from_bottom = static_cast<int>((y + half_width) / (field_width_ / FIELD_ZONE_ROWS));
+
+        col = std::clamp(col, 0, FIELD_ZONE_COLS - 1);
+        row_from_bottom = std::clamp(row_from_bottom, 0, FIELD_ZONE_ROWS - 1);
+
+        const int row_from_top = FIELD_ZONE_ROWS - 1 - row_from_bottom;
+        return static_cast<uint8_t>(col * FIELD_ZONE_ROWS + row_from_top + 1);
+    }
+
+    std::pair<double, double> zoneCenter(int zone) const
+    {
+        const int clamped_zone = std::clamp(zone, 1, FIELD_ZONE_ROWS * FIELD_ZONE_COLS);
+        const int zero_based = clamped_zone - 1;
+        const int col = zero_based / FIELD_ZONE_ROWS;
+        const int row_from_top = zero_based % FIELD_ZONE_ROWS;
+        const double half_length = field_length_ * 0.5;
+        const double half_width = field_width_ * 0.5;
+
+        return {
+            -half_length + field_length_ * (col + 0.5) / FIELD_ZONE_COLS,
+            half_width - field_width_ * (row_from_top + 0.5) / FIELD_ZONE_ROWS
+        };
+    }
+
     std::string describeCompactPacketInFieldUnits(const CompactTeamPacket &packet) const
     {
         const bool ball_known = packet.bytes[2] != COMPACT_UNKNOWN_BALL;
-        const int ball_x = (packet.bytes[2] >> 4) & COMPACT_BALL_COMPONENT_MASK;
-        const int ball_y = packet.bytes[2] & COMPACT_BALL_COMPONENT_MASK;
+        const int ball_zone = ball_known ? static_cast<int>(packet.bytes[2]) : 0;
         const uint16_t robot_pose = CompactTeamPacket::decodeCompactRobotPose(packet.bytes.data());
         const int robot_x = robot_pose & COMPACT_POSE_COMPONENT_MASK;
         const int robot_y = (robot_pose >> COMPACT_ROBOT_Y_SHIFT) & COMPACT_POSE_COMPONENT_MASK;
@@ -479,8 +519,10 @@ private:
                << " robot_theta_rad=" << thetaGridIndexToAngleCenter(robot_theta);
 
         if (ball_known) {
-            stream << " ball_x_m=" << gridIndex4BitToCoordinateCenter(ball_x, -field_length_ * 0.5, field_length_ * 0.5)
-                   << " ball_y_m=" << gridIndex4BitToCoordinateCenter(ball_y, -field_width_ * 0.5, field_width_ * 0.5);
+            const auto [ball_x, ball_y] = zoneCenter(ball_zone);
+            stream << " ball_zone=" << ball_zone
+                   << " ball_x_m=" << ball_x
+                   << " ball_y_m=" << ball_y;
         } else {
             stream << " ball_position=unknown";
         }
@@ -492,35 +534,15 @@ private:
     {
         if (!msg.ball_location_known) return COMPACT_UNKNOWN_BALL;
 
-        const double half_length = field_length_ * 0.5;
-        const double half_width = field_width_ * 0.5;
-        const double x = std::clamp(msg.ball_pos_to_field_x, -half_length, half_length);
-        const double y = std::clamp(msg.ball_pos_to_field_y, -half_width, half_width);
-        const uint8_t x_grid = calcCoordinateGridIndex4Bit(x, -half_length, half_length);
-        const uint8_t y_grid = calcCoordinateGridIndex4Bit(y, -half_width, half_width);
-        return static_cast<uint8_t>((x_grid << 4) | y_grid);
-    }
-
-    uint8_t calcCoordinateGridIndex4Bit(double value, double min_value, double max_value) const
-    {
-        const double clamped = std::clamp(value, min_value, max_value);
-        const double span = std::max(max_value - min_value, 1e-3);
-        const int index = std::clamp(static_cast<int>(std::floor(((clamped - min_value) / span) * 16.0)), 0, 15);
-        return static_cast<uint8_t>(index);
-    }
-
-    double gridIndex4BitToCoordinateCenter(int index, double min_value, double max_value) const
-    {
-        const double span = std::max(max_value - min_value, 1e-3);
-        return min_value + ((std::clamp(index, 0, 15) + 0.5) * (span / 16.0));
+        const uint8_t zone = zoneForFieldPoint(msg.ball_pos_to_field_x, msg.ball_pos_to_field_y);
+        return zone == 0 ? COMPACT_UNKNOWN_BALL : zone;
     }
 
     TeamCommunication makeMinimalMessageFromCompactPacket(const CompactTeamPacket &packet) const
     {
         TeamCommunication msg;
         const bool ball_known = packet.bytes[2] != COMPACT_UNKNOWN_BALL;
-        const int ball_x = (packet.bytes[2] >> 4) & COMPACT_BALL_COMPONENT_MASK;
-        const int ball_y = packet.bytes[2] & COMPACT_BALL_COMPONENT_MASK;
+        const int ball_zone = ball_known ? static_cast<int>(packet.bytes[2]) : 0;
         const uint8_t identity = packet.bytes[1];
         const uint16_t robot_pose = CompactTeamPacket::decodeCompactRobotPose(packet.bytes.data());
         const int robot_x = robot_pose & COMPACT_POSE_COMPONENT_MASK;
@@ -540,8 +562,9 @@ private:
         msg.ball_detected = msg.ball_location_known;
 
         if (msg.ball_location_known) {
-            msg.ball_pos_to_field_x = gridIndex4BitToCoordinateCenter(ball_x, -field_length_ * 0.5, field_length_ * 0.5);
-            msg.ball_pos_to_field_y = gridIndex4BitToCoordinateCenter(ball_y, -field_width_ * 0.5, field_width_ * 0.5);
+            const auto [ball_x, ball_y] = zoneCenter(ball_zone);
+            msg.ball_pos_to_field_x = ball_x;
+            msg.ball_pos_to_field_y = ball_y;
             msg.ball_pos_to_field_z = 0.0;
         }
 
