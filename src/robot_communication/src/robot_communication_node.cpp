@@ -31,6 +31,7 @@ namespace
 {
 constexpr int VALIDATION_COMMUNICATION = 31202;
 constexpr int TEAM_PORT_BASE = 10000;
+constexpr int64_t TEAM_HEARTBEAT_INTERVAL_MS = 2000;
 constexpr std::size_t COMPACT_PACKET_SIZE = 5;
 constexpr std::size_t MAX_TEAM_PACKET_SIZE = 512;
 constexpr std::size_t RECEIVE_BUFFER_SIZE = MAX_TEAM_PACKET_SIZE;
@@ -330,7 +331,9 @@ public:
                 debug_port,
                 debug_max_hz);
         }
-        min_send_interval_ms_ = static_cast<int64_t>(std::ceil(1000.0 / std::max(max_hz_, 0.001)));
+        min_send_interval_ms_ = std::min(
+            TEAM_HEARTBEAT_INTERVAL_MS,
+            static_cast<int64_t>(std::ceil(1000.0 / std::max(max_hz_, 0.001))));
 
         pub_in_ = create_publisher<TeamCommunication>("/booster_soccer/team_comm/in", 10);
         sub_out_ = create_subscription<TeamCommunication>(
@@ -350,8 +353,8 @@ public:
 
             RCLCPP_INFO(
                 get_logger(),
-                "HSL team broadcast enabled: team=%d player=%d port=%d max_hz=%.2f budget=%d broadcast=%s debug=%s",
-                team_id_, player_id_, team_port_, max_hz_, max_packets_per_game_, broadcast_address_.c_str(),
+                "HSL team broadcast enabled: team=%d player=%d port=%d max_hz=%.2f heartbeat=%.1fs budget=%d broadcast=%s debug=%s",
+                team_id_, player_id_, team_port_, max_hz_, TEAM_HEARTBEAT_INTERVAL_MS / 1000.0, max_packets_per_game_, broadcast_address_.c_str(),
                 debug_enabled ? "enabled" : "disabled");
         } else {
             RCLCPP_INFO(get_logger(), "HSL team broadcast disabled");
@@ -389,7 +392,9 @@ private:
             return;
         }
 
-        if (event_driven_ && !pending_packet_changed_) return;
+        const bool heartbeat_due = last_send_time_.nanoseconds() == 0
+            || (now - last_send_time_).nanoseconds() >= TEAM_HEARTBEAT_INTERVAL_MS * 1000000LL;
+        if (event_driven_ && !pending_packet_changed_ && !heartbeat_due) return;
 
         const CompactTeamPacket tx_packet = *pending_packet_;
         if (network_->send(tx_packet)) {
