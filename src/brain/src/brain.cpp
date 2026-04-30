@@ -18,6 +18,9 @@ using std::placeholders::_1;
 
 #define SUB_STATE_QUEUE_SIZE 1
 
+static rclcpp::Time g_local_stop_until;
+static bool g_local_stop_active = false;
+
 namespace
 {
 constexpr int FIELD_ZONE_ROWS = 3;
@@ -523,6 +526,41 @@ void Brain::loadConfig()
 
 void Brain::tick()
 {
+    if (g_local_stop_active) {
+        if (get_clock()->now() < g_local_stop_until) {
+            client->setVelocity(0.0, 0.0, 0.0);
+            client->moveHead(0.0, 0.0);
+            tree->setEntry<int>("control_state", 1);
+
+            RCLCPP_WARN_THROTTLE(
+                get_logger(),
+                *get_clock(),
+                1000,
+                "[LOCAL_STOP_HOLD] holding robot still, control_state=1, velocity forced 0"
+            );
+
+            return;
+        } else {
+            g_local_stop_active = false;
+
+            std::string gc_state = tree->getEntry<std::string>("gc_game_state");
+
+            if (gc_state == "READY" || gc_state == "SET" || gc_state == "PLAY") {
+                tree->setEntry<int>("control_state", 3);
+                RCLCPP_WARN(
+                    get_logger(),
+                    "[LOCAL_STOP_HOLD] ended, gc_game_state=%s -> restored control_state=3",
+                    gc_state.c_str()
+                );
+            } else {
+                RCLCPP_WARN(
+                    get_logger(),
+                    "[LOCAL_STOP_HOLD] ended, gc_game_state=%s -> not restoring action mode",
+                    gc_state.c_str()
+                );
+            }
+        }
+    }
     // Output debug & log related information
     logDebugInfo();
     logLags();
@@ -2731,6 +2769,7 @@ void Brain::agentCommandCallback(const std_msgs::msg::String::SharedPtr msg) {
         control_state = 3;
         game_state = "READY";
     } else if (msg->data == "play") {
+        g_local_stop_active = false;
         control_state = 3;
         game_state = "PLAY";
 
@@ -2738,8 +2777,20 @@ void Brain::agentCommandCallback(const std_msgs::msg::String::SharedPtr msg) {
         tree->setEntry<bool>("gc_is_kickoff_side", true);
         tree->setEntry<bool>("gc_is_sub_state_kickoff_side", true);
     } else if (msg->data == "stop") {
-        control_state = 3;
-        game_state = "END";
+        control_state = 1;
+        game_state = tree->getEntry<std::string>("gc_game_state");
+
+        client->setVelocity(0.0, 0.0, 0.0);
+        client->moveHead(0.0, 0.0);
+
+        g_local_stop_until = get_clock()->now() + rclcpp::Duration::from_seconds(5.0);
+        g_local_stop_active = true;
+
+        RCLCPP_WARN(
+            get_logger(),
+            "[AgentCommand] STOP received -> LOCAL_STOP_HOLD 5s, control_state=1, keep gc_game_state=%s",
+            game_state.c_str()
+        );
     } else {
         RCLCPP_WARN(get_logger(), "Unknown agent command: %s", msg->data.c_str());
         return;

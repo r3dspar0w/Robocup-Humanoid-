@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/string.hpp>
 
 #include "RoboCupGameControlData.h"
 
@@ -38,4 +39,5 @@ private:
 
     // Ros2 publisher
     rclcpp::Publisher<game_controller_interface::msg::GameControlData>::SharedPtr _publisher;
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr _stop_publisher;
 };

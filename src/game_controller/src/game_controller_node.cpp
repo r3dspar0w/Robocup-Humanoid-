@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <cerrno>
 #include <cstring>
+#include <std_msgs/msg/string.hpp>
 
 #include "../include/game_controller_node.h"
 
@@ -113,6 +114,87 @@ void GameControllerNode::spin()
         }
 
         handle_packet(data, msg);
+
+        // Robot-side inference for official GameController Stop button.
+        // This does NOT modify the official GameController.
+        // It only changes the local ROS message sent to brain.
+        //
+        // Stop burst detected while real GC still says PLAYING:
+        //   publish local END to /booster_soccer/game_controller
+        //
+        // This stays active until the real GameController leaves PLAYING
+        // by sending READY / SET / FINISHED / INITIAL.
+        static rclcpp::Time last_packet_time = this->get_clock()->now();
+        static bool saw_playing_before = false;
+        static bool currently_inside_stop_burst = false;
+        static rclcpp::Time last_fast_packet_time = this->get_clock()->now();
+        static bool local_gc_stop_active = false;
+
+        rclcpp::Time now_time = this->get_clock()->now();
+
+        double dt = (now_time - last_packet_time).seconds();
+        last_packet_time = now_time;
+
+        bool currently_playing = (data.state == STATE_PLAYING);
+
+        if (currently_playing) {
+            saw_playing_before = true;
+        }
+
+        bool fast_packet =
+            currently_playing &&
+            saw_playing_before &&
+            dt > 0.02 &&
+            dt < 0.35;
+
+        if (fast_packet && !currently_inside_stop_burst) {
+            currently_inside_stop_burst = true;
+            last_fast_packet_time = now_time;
+            local_gc_stop_active = true;
+
+            RCLCPP_WARN(
+                get_logger(),
+                "[GC_LOCAL_STOP] Stop burst detected dt=%.3f -> local END active",
+                dt
+            );
+        }
+
+        if (fast_packet && currently_inside_stop_burst) {
+            last_fast_packet_time = now_time;
+        }
+
+        if (
+            currently_inside_stop_burst &&
+            !fast_packet &&
+            (now_time - last_fast_packet_time).seconds() > 1.0
+        ) {
+            currently_inside_stop_burst = false;
+        }
+
+        // If local stop is active, override outgoing ROS GameController message to END.
+        if (local_gc_stop_active) {
+            msg.state = STATE_FINISHED;
+            msg.secondary_state = STATE2_NORMAL;
+            msg.secondary_state_info[0] = static_cast<char>(data.kickingTeam);
+            msg.secondary_state_info[1] = 0;
+            msg.secondary_state_info[2] = 0;
+            msg.secondary_state_info[3] = 0;
+
+            RCLCPP_WARN_THROTTLE(
+                get_logger(),
+                *get_clock(),
+                1000,
+                "[GC_LOCAL_STOP] overriding outgoing ROS GC msg: state=END"
+            );
+        }
+
+        // Clear local stop only when the REAL official GC packet leaves PLAYING.
+        // Example: you press READY, SET, INITIAL, or END on the real GameController.
+        if (!currently_playing) {
+            local_gc_stop_active = false;
+            currently_inside_stop_burst = false;
+            saw_playing_before = false;
+        }
 
         _publisher->publish(msg);
 

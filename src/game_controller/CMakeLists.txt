@@ -13,7 +13,11 @@ find_package(game_controller_interface REQUIRED)
 
 add_executable(game_controller_node src/main.cpp src/game_controller_node.cpp)
 
-ament_target_dependencies(game_controller_node game_controller_interface rclcpp)
+ament_target_dependencies(game_controller_node
+  game_controller_interface
+  rclcpp
+  std_msgs
+)
 
 target_include_directories(game_controller_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
