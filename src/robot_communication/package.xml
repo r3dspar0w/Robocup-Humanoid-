@@ -11,6 +11,8 @@
 
   <depend>rclcpp</depend>
   <depend>game_controller_interface</depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>brain</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
